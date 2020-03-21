@@ -6,8 +6,6 @@ const HeaderOuter = styled.header`
 
   display: ${({ displayHeader }) => (displayHeader ? 'flex' : 'none')};
   background-color: ${({ theme }) => theme.colors.navBackground};
-
-  box-sizing: border-box;
 `;
 
 const HeaderInner = styled.div`

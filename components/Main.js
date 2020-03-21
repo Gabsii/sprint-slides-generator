@@ -5,8 +5,6 @@ const MainOuter = styled.main`
   width: 100%;
 
   background-color: ${({ theme }) => theme.colors.background};
-
-  box-sizing: border-box;
 `;
 
 const MainInner = styled.div`

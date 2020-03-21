@@ -7,8 +7,6 @@ const FooterOuter = styled.footer`
   display: ${({ displayFooter }) => (displayFooter ? 'flex' : 'none')};
 
   background-color: ${({ theme }) => theme.colors.navBackground};
-
-  box-sizing: border-box;
 `;
 
 const FooterInner = styled.div`
