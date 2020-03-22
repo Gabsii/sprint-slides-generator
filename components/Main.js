@@ -26,5 +26,8 @@ const Main = ({ children }) => (
 export default Main;
 
 Main.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
 };

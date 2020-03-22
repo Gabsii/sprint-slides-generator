@@ -42,7 +42,10 @@ const Layout = ({ children, title, displayHeader, displayFooter }) => (
 export default Layout;
 
 Layout.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
   title: PropTypes.string,
   displayHeader: PropTypes.bool,
   displayFooter: PropTypes.bool,

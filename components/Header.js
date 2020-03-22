@@ -27,6 +27,9 @@ const Header = ({ children, displayHeader }) => (
 export default Header;
 
 Header.propTypes = {
-  children: PropTypes.object,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
   displayHeader: PropTypes.bool,
 };

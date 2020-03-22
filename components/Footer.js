@@ -28,6 +28,9 @@ const Footer = ({ children, displayFooter }) => (
 export default Footer;
 
 Footer.propTypes = {
-  children: PropTypes.element,
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
   displayFooter: PropTypes.bool,
 };
