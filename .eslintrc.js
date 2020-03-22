@@ -13,6 +13,10 @@ module.exports = {
       modules: true
     }
   },
+  env: {
+    browser: true,
+    node: true,
+  },
   rules: {
     'react/react-in-jsx-scope': 'off',
     'prettier/prettier': ['error'],
