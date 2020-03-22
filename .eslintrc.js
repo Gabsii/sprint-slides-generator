@@ -61,6 +61,7 @@ module.exports = {
     'react/sort-comp': 0
   },
   globals: {
-    React: 'writable'
+    React: 'writable',
+    fetch: false,
   }
 };
