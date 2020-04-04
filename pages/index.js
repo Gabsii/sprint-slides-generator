@@ -1,5 +1,6 @@
 import Head from 'next/head';
 import Layout from '@components/Layout';
+import LoginForm from '@components/LoginForm';
 
 const Home = () => (
   <div>
@@ -8,7 +9,9 @@ const Home = () => (
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <Layout title="Index.js">
-      <div>here comes the content</div>
+      <div style={{ height: '100vh' }}>
+        <LoginForm />
+      </div>
     </Layout>
   </div>
 );

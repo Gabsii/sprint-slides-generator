@@ -20,6 +20,9 @@ const theme = {
     primary: '#0070f3',
     secondary: '#0070f3',
     navBackground: '#0070f3',
+    heading: '#ffffff',
+    text: '#ffffff',
+    background: '#000000',
   },
 };
 
