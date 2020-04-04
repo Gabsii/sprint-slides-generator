@@ -22,6 +22,7 @@ const theme = {
     navBackground: '#0070f3',
     heading: '#ffffff',
     text: '#ffffff',
+    link: '#ffb101',
     background: '#000000',
   },
 };
