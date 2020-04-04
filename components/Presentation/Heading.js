@@ -49,7 +49,7 @@ const H6 = styled.h6`
   font-size: 4.5vw;
 `;
 
-const Heading = ({ type, children }) => {
+const Heading = ({ type = 'h1', children }) => {
   switch (type) {
     case 'h1':
       return <H1>{children}</H1>;
@@ -63,8 +63,6 @@ const Heading = ({ type, children }) => {
       return <H5>{children}</H5>;
     case 'h6':
       return <H6>{children}</H6>;
-    default:
-      return <H1>{children}</H1>;
   }
 };
 
@@ -77,3 +75,12 @@ Heading.propTypes = {
     PropTypes.node,
   ]),
 };
+
+/** Unit Tests:
+ *
+ * - has children
+ * - has single child
+ * - can render
+ * - can render as any of h1-h6
+ * - can render without a type being passed
+ */

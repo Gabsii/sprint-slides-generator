@@ -19,3 +19,10 @@ Heading.propTypes = {
     PropTypes.node,
   ]),
 };
+
+/** Unit Tests:
+ *
+ * - has children
+ * - has single child
+ * - can render
+ */

@@ -49,5 +49,5 @@ Background.propTypes = {
  * - has children
  * - has single child
  * - can render
- * - has Background as child
+ * - can display a video
  */
