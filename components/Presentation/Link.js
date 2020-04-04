@@ -1,0 +1,34 @@
+import styled from 'styled-components';
+import PropTypes from 'prop-types';
+
+const LinkWrapper = styled.a`
+  text-align: center;
+
+  color: ${({ theme }) => theme.colors.link || '#000000'};
+  font-size: 24px;
+  font-size: 2vw;
+`;
+
+const Heading = ({ children, href }) => (
+  <LinkWrapper href={href} target="_blank">
+    {children}
+  </LinkWrapper>
+);
+
+export default Heading;
+
+Heading.propTypes = {
+  children: PropTypes.oneOfType([
+    PropTypes.arrayOf(PropTypes.node),
+    PropTypes.node,
+  ]),
+  href: PropTypes.string,
+};
+
+/** Unit Tests:
+ *
+ * - has children
+ * - has single child
+ * - can render
+ * - has href
+ */
