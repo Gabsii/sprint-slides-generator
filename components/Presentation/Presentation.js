@@ -16,6 +16,7 @@ const Button = styled.button`
   top: 50%;
   right: 0;
   z-index: +1;
+  transform: translateY(-50%);
 
   background-color: transparent;
 
