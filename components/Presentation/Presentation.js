@@ -38,6 +38,11 @@ const Button = styled.button`
   &:hover {
     cursor: pointer;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    filter: opacity(0.5);
+  }
 `;
 
 const Presentation = ({ children }) => {
@@ -59,11 +64,19 @@ const Presentation = ({ children }) => {
 
   return (
     <Wrapper>
-      <Button position="left" onClick={() => setActiveSlide(activeSlide - 1)}>
+      <Button
+        position="left"
+        disabled={activeSlide === 0}
+        onClick={() => setActiveSlide(activeSlide - 1)}
+      >
         -
       </Button>
       <div>{teenager}</div>
-      <Button position="right" onClick={() => setActiveSlide(activeSlide + 1)}>
+      <Button
+        position="right"
+        disabled={activeSlide === teenager.length - 1}
+        onClick={() => setActiveSlide(activeSlide + 1)}
+      >
         +
       </Button>
     </Wrapper>
@@ -85,4 +98,5 @@ Presentation.propTypes = {
  * - can increase/decrease active slide
  * - children have key set
  * - children have isActive set
+ * - buttons are disabled
  */
