@@ -79,7 +79,7 @@ const Presentation = ({ children }) => {
           }
         }}
       >
-        -
+        {'<'}
       </Button>
       <div>{teenager}</div>
       <Button
@@ -91,7 +91,7 @@ const Presentation = ({ children }) => {
           }
         }}
       >
-        +
+        {'>'}
       </Button>
     </Wrapper>
   );

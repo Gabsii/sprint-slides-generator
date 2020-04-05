@@ -1,4 +1,6 @@
 import Slide from '@components/Presentation/Slide';
+import UnorderedList from '@components/Presentation/UnorderedList';
+import OrderedList from '@components/Presentation/OrderedList';
 import Heading from '@components/Presentation/Heading';
 import Text from '@components/Presentation/Text';
 import Link from '@components/Presentation/Link';
@@ -41,6 +43,18 @@ const TestPresentation = () => (
       <Link href="https://www.theguardian.com/environment/bees">
         Nothing to see here...
       </Link>
+    </Slide>
+    <Slide>
+      <UnorderedList>
+        <div>this</div>
+      </UnorderedList>
+      <OrderedList>
+        <div>this</div>
+        <div>is</div>
+        <div>an</div>
+        <div>ordered</div>
+        <div>list</div>
+      </OrderedList>
     </Slide>
   </Presentation>
 );
