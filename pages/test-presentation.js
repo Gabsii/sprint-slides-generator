@@ -5,7 +5,7 @@ import Heading from '@components/Presentation/Heading';
 import Text from '@components/Presentation/Text';
 import Link from '@components/Presentation/Link';
 import Background from '@components/Presentation/Background';
-import Presentation from '@components/Presentation/Presentation';
+import Presentation from '@components/Presentation';
 
 const TestPresentation = () => (
   <Presentation>

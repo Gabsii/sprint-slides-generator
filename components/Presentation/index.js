@@ -68,6 +68,11 @@ const Presentation = ({ children }) => {
     }),
   );
 
+  // only renders the current slide
+  // const adults = teenager.filter(teen => {
+  //   return teen.props.isActive;
+  // });
+
   return (
     <Wrapper>
       <Button
