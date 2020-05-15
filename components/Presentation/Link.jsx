@@ -1,23 +1,28 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const TextWrapper = styled.div`
+const LinkWrapper = styled.a`
   text-align: center;
 
-  color: ${({ theme }) => theme.colors.text || '#000000'};
+  color: ${({ theme }) => theme.colors.link || '#000000'};
   font-size: 24px;
   font-size: 2vw;
 `;
 
-const Heading = ({ children }) => <TextWrapper>{children}</TextWrapper>;
+const Link = ({ children, href }) => (
+  <LinkWrapper href={href} target="_blank">
+    {children}
+  </LinkWrapper>
+);
 
-export default Heading;
+export default Link;
 
-Heading.propTypes = {
+Link.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+  href: PropTypes.string,
 };
 
 /** Unit Tests:
@@ -25,4 +30,5 @@ Heading.propTypes = {
  * - has children
  * - has single child
  * - can render
+ * - has href
  */

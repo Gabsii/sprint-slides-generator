@@ -1,34 +1,40 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
-const ULWrapper = styled.ol`
+const ULWrapper = styled.ul`
   color: ${({ theme }) => theme.colors.text || '#000000'};
-  list-style: ${({ listStyle }) => listStyle || 'decimal'};
+  list-style: ${({ listStyle }) => listStyle || 'inherit'};
   font-size: 24px;
   font-size: 2vw;
 `;
 
-const OrderedList = ({ children }) => {
+const LI = styled.li`
+  font-size: 16px;
+  font-size: 1.33vw;
+`;
+
+const UnorderedList = ({ children }) => {
   if (children.length > 1) {
     return (
       <ULWrapper>
         {children.map((child, index) => (
-          <li key={`li-child-${index}`}>{child}</li>
+          // TODO check if li tag exists
+          <LI key={`li-child-${index}`}>{child}</LI>
         ))}
       </ULWrapper>
     );
   } else {
     return (
       <ULWrapper>
-        <li>{children}</li>
+        <LI>{children}</LI>
       </ULWrapper>
     );
   }
 };
 
-export default OrderedList;
+export default UnorderedList;
 
-OrderedList.propTypes = {
+UnorderedList.propTypes = {
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,

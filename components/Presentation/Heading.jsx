@@ -2,7 +2,9 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const H1 = styled.h1`
-  text-align: center;
+  margin: 0;
+
+  text-align: ${({ textAlign }) => textAlign};
 
   color: ${({ theme }) => theme.colors.heading || '#000000'};
   font-size: 16px;
@@ -10,7 +12,9 @@ const H1 = styled.h1`
 `;
 
 const H2 = styled.h2`
-  text-align: center;
+  margin: 0;
+
+  text-align: ${({ textAlign }) => textAlign};
 
   color: ${({ theme }) => theme.colors.heading || '#000000'};
   font-size: 16px;
@@ -18,7 +22,9 @@ const H2 = styled.h2`
 `;
 
 const H3 = styled.h3`
-  text-align: center;
+  margin: 0;
+
+  text-align: ${({ textAlign }) => textAlign};
 
   color: ${({ theme }) => theme.colors.heading || '#000000'};
   font-size: 16px;
@@ -26,7 +32,9 @@ const H3 = styled.h3`
 `;
 
 const H4 = styled.h4`
-  text-align: center;
+  margin: 0;
+
+  text-align: ${({ textAlign }) => textAlign};
 
   color: ${({ theme }) => theme.colors.heading || '#000000'};
   font-size: 16px;
@@ -34,7 +42,9 @@ const H4 = styled.h4`
 `;
 
 const H5 = styled.h5`
-  text-align: center;
+  margin: 0;
+
+  text-align: ${({ textAlign }) => textAlign};
 
   color: ${({ theme }) => theme.colors.heading || '#000000'};
   font-size: 16px;
@@ -42,27 +52,29 @@ const H5 = styled.h5`
 `;
 
 const H6 = styled.h6`
-  text-align: center;
+  margin: 0;
+
+  text-align: ${({ textAlign }) => textAlign};
 
   color: ${({ theme }) => theme.colors.heading || '#000000'};
   font-size: 16px;
-  font-size: 4.5vw;
+  font-size: 4vw;
 `;
 
-const Heading = ({ type = 'h1', children }) => {
+const Heading = ({ type = 'h1', textAlign = 'center', children }) => {
   switch (type) {
     case 'h1':
-      return <H1>{children}</H1>;
+      return <H1 textAlign={textAlign}>{children}</H1>;
     case 'h2':
-      return <H2>{children}</H2>;
+      return <H2 textAlign={textAlign}>{children}</H2>;
     case 'h3':
-      return <H3>{children}</H3>;
+      return <H3 textAlign={textAlign}>{children}</H3>;
     case 'h4':
-      return <H4>{children}</H4>;
+      return <H4 textAlign={textAlign}>{children}</H4>;
     case 'h5':
-      return <H5>{children}</H5>;
+      return <H5 textAlign={textAlign}>{children}</H5>;
     case 'h6':
-      return <H6>{children}</H6>;
+      return <H6 textAlign={textAlign}>{children}</H6>;
   }
 };
 
@@ -70,6 +82,14 @@ export default Heading;
 
 Heading.propTypes = {
   type: PropTypes.string,
+  textAlign: PropTypes.oneOf([
+    'center',
+    'right',
+    'left',
+    'end',
+    'start',
+    'justify',
+  ]),
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,

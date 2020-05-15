@@ -6,12 +6,19 @@ import Text from '@components/Presentation/Text';
 import Link from '@components/Presentation/Link';
 import Background from '@components/Presentation/Background';
 import Presentation from '@components/Presentation';
+import Grid from '../components/Presentation/Grid';
 
 const TestPresentation = () => (
   <Presentation>
     <Slide>
-      <Heading type="h1">Hello</Heading>
-      <Text>This is some generically generated text.</Text>
+      <Text>Sprint 32</Text>
+      <Heading type="h1">Sprint Review</Heading>
+      <Heading type="h6">Team 503</Heading>
+      <Text position="bottom">
+        12.03.2020-25.03.2020
+        <br />
+        Presented by Lukas Gabsi
+      </Text>
       <Background
         src="https://images.unsplash.com/photo-1570786097801-b8b9531ed5cb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9"
         alt="dayoum a bee"
@@ -55,6 +62,17 @@ const TestPresentation = () => (
         <div>ordered</div>
         <div>list</div>
       </OrderedList>
+    </Slide>
+    <Slide>
+      <Grid>
+        <Heading>Hello</Heading>
+        <Heading>Hello</Heading>
+        <Heading>Hello</Heading>
+        <Heading>Hello</Heading>
+        <Heading>Hello</Heading>
+        <Heading>Hello</Heading>
+        <Heading>Hello</Heading>
+      </Grid>
     </Slide>
   </Presentation>
 );
