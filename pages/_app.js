@@ -1,6 +1,7 @@
 import App from 'next/app';
 import React from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import theme from '@utils/theme';
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -14,18 +15,6 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
   }
 `;
-
-const theme = {
-  colors: {
-    primary: '#0070f3',
-    secondary: '#0070f3',
-    navBackground: '#0070f3',
-    heading: '#ffffff',
-    text: '#ffffff',
-    link: '#ffb101',
-    background: '#000000',
-  },
-};
 
 export default class MyApp extends App {
   render() {
