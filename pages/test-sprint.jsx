@@ -4,6 +4,7 @@ import Text from '@components/Presentation/Text';
 import Background from '@components/Presentation/Background';
 import Presentation from '@components/Presentation';
 import Grid from '@components/Presentation/Grid';
+import Box from '@components/Presentation/Box';
 import UnorderedList from '@components/Presentation/UnorderedList';
 import Card from '../components/Card';
 import styled from 'styled-components';
@@ -46,7 +47,7 @@ const TestPresentation = () => (
       <Heading type="h6" textAlign="left">
         Team 503
       </Heading>
-      <Grid columns={3}>
+      <Grid>
         <Card
           alt="test"
           src="https://jira.towa-digital.com/secure/useravatar?ownerId=lukas.gabsi&avatarId=13505&size=xxlarge"
@@ -68,12 +69,32 @@ const TestPresentation = () => (
     </Slide>
     <Slide>
       <Heading type="h6" textAlign="left">
+        Highlights & Impediments
+      </Heading>
+      <Grid columns={2} width="90%">
+        <Box border="1px solid white" title="Highlights">
+          <Text>Käse</Text>
+          <Text>Käse</Text>
+          <Text>Käse</Text>
+          <Text>Käse</Text>
+        </Box>
+        <Box border="1px solid white" title="Impediments">
+          <Text>Käse</Text>
+          <Text>Käse</Text>
+          <Text>Käse</Text>
+          <Text>Käse</Text>
+          <Text>Käse</Text>
+        </Box>
+      </Grid>
+    </Slide>
+    <Slide>
+      <Heading type="h6" textAlign="left">
         Overview
       </Heading>
       <Overflowable>
         <OverflowableItem>
           <Text textAlign="left">Iss G'hörig</Text>
-          <UnorderedList>
+          <UnorderedList listStyle="square">
             <p>Projekt Setup</p>
             <p>Betrieb-Registrierung</p>
             <p>E-MailTemplate & Versand</p>
@@ -87,20 +108,20 @@ const TestPresentation = () => (
         </OverflowableItem>
         <OverflowableItem>
           <Text textAlign="left">BTV Kontoeröffnung</Text>
-          <UnorderedList>
+          <UnorderedList listStyle="square">
             <p>Bestandsaufnahme</p>
           </UnorderedList>
         </OverflowableItem>
         <OverflowableItem>
           <Text textAlign="left">Grünländer</Text>
-          <UnorderedList>
+          <UnorderedList listStyle="square">
             <p>Styling Eigenheiten</p>
             <p>Multiple Nutrition Tables</p>
           </UnorderedList>
         </OverflowableItem>
         <OverflowableItem>
           <Text textAlign="left">Patros</Text>
-          <UnorderedList>
+          <UnorderedList listStyle="square">
             <p>Restliche Packages outsourcen</p>
             <p>Teaser Recipes Hotspot</p>
           </UnorderedList>
@@ -113,7 +134,7 @@ const TestPresentation = () => (
       </Heading>
       <Overflowable>
         <OverflowableItem>
-          <UnorderedList>
+          <UnorderedList listStyle="square">
             <p>HINTERN-3: Grid Inspiration IE</p>
             <p>GRUENLAEND-27: FAQ-Seite</p>
             <p>PATROS-417: IE 11 JS error</p>

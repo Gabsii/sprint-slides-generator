@@ -13,10 +13,10 @@ const LI = styled.li`
   font-size: 1.33vw;
 `;
 
-const UnorderedList = ({ children }) => {
+const UnorderedList = ({ children, listStyle }) => {
   if (children.length > 1) {
     return (
-      <ULWrapper>
+      <ULWrapper listStyle={listStyle}>
         {children.map((child, index) => (
           // TODO check if li tag exists
           <LI key={`li-child-${index}`}>{child}</LI>
@@ -25,7 +25,7 @@ const UnorderedList = ({ children }) => {
     );
   } else {
     return (
-      <ULWrapper>
+      <ULWrapper listStyle={listStyle}>
         <LI>{children}</LI>
       </ULWrapper>
     );
@@ -39,6 +39,7 @@ UnorderedList.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+  listStyle: PropTypes.string,
 };
 
 /** Unit Tests:

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 const GridWrapper = styled.div`
   color: ${({ theme }) => theme.colors.text || '#000000'};
+  width: ${({ width }) => (width ? width : 'auto')};
   margin: 2rem;
 
   display: grid;
@@ -10,8 +11,10 @@ const GridWrapper = styled.div`
   gap: 10px;
 `;
 
-const Grid = ({ children, columns = 3 }) => (
-  <GridWrapper columns={columns}>{children}</GridWrapper>
+const Grid = ({ children, columns = 3, width }) => (
+  <GridWrapper columns={columns} width={width}>
+    {children}
+  </GridWrapper>
 );
 
 export default Grid;
@@ -22,6 +25,7 @@ Grid.propTypes = {
     PropTypes.node,
   ]),
   columns: PropTypes.number,
+  width: PropTypes.string,
 };
 
 /** Unit Tests:
