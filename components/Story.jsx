@@ -78,7 +78,9 @@ const Description = styled.div`
 
   padding: 2rem;
   font-size: 20px;
-  font-size: 2vh;
+  font-size: 2.5vh;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 const Stage = styled.a`
