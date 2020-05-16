@@ -15,6 +15,7 @@ const BaseHeading = styled.h1`
   display: ${({ display }) => display};
   text-align: ${({ textAlign }) => textAlign};
   color: ${({ theme }) => theme.colors.heading || '#000000'};
+  opacity: ${({ dark }) => (dark ? 0.15 : 1)};
 
   font-size: 24px;
   font-size: ${({ fontSize }) => fontSize};
@@ -24,6 +25,7 @@ const Heading = ({
   type = 'h1',
   textAlign = 'center',
   display = 'block',
+  dark = false,
   children,
 }) => {
   let fontSize = fontSizes[type];
@@ -34,6 +36,7 @@ const Heading = ({
       textAlign={textAlign}
       display={display}
       fontSize={fontSize}
+      dark={dark}
     >
       {children}
     </BaseHeading>
@@ -66,6 +69,7 @@ Heading.propTypes = {
     'initial',
     'unset',
   ]),
+  dark: PropTypes.bool,
   children: PropTypes.oneOfType([
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,

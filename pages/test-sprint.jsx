@@ -189,8 +189,8 @@ const TestPresentation = () => (
         <Heading type="h2" display="inline-block">
           33
         </Heading>
-        <Heading type="h2" display="inline-block">
-          /30
+        <Heading type="h2" display="inline-block" dark={true}>
+          &nbsp;/ 30
         </Heading>
       </span>
       <Text>Completed Storypoints vs. Commitment</Text>
