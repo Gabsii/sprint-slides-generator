@@ -7,7 +7,7 @@ const Wrapper = styled.div`
 
   display: ${({ isActive }) => (isActive ? 'flex' : 'none')};
   background-color: ${({ hasBackground, theme }) =>
-    !hasBackground ? theme.colors.background : 'transparent'};
+    !hasBackground ? theme.colors.slides.background : 'transparent'};
   flex-direction: column;
   justify-content: center;
   align-items: center;

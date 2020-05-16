@@ -8,6 +8,15 @@ const theme = {
     link: '#ffb101',
     background: '#000000',
     card: 'rgba(255,255,255, 0.2)',
+    slides: {
+      background: '#262726',
+    },
+    story: {
+      shortname: '#edeeea',
+      general: '#373737',
+    },
+    primaryFont: '#a67a4d',
+    avatar: '#464746',
   },
 };
 

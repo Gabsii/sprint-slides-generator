@@ -4,15 +4,16 @@ import Text from '@components/Presentation/Text';
 import Background from '@components/Presentation/Background';
 import Presentation from '@components/Presentation';
 import Grid from '@components/Presentation/Grid';
+import Story from '@components/Story';
 import Box from '@components/Presentation/Box';
 import UnorderedList from '@components/Presentation/UnorderedList';
-import Card from '../components/Card';
+import Card from '@components/Card';
 import styled from 'styled-components';
 
 const Overflowable = styled.div`
   width: 80%;
   height: 100%;
-  max-height: 100vh;
+  max-height: 75vh;
 
   margin: 5px 60px;
 
@@ -88,6 +89,42 @@ const TestPresentation = () => (
       </Grid>
     </Slide>
     <Slide>
+      <Heading type="h4">Hochland - alle Marken (4 SP)</Heading>
+      <Grid columns={2} width="90%">
+        <Story
+          assignee={{
+            name: 'Lukas Gabsi',
+            avatarUrls: {
+              '48x48':
+                'https://jira.towa-digital.com/secure/useravatar?ownerId=lukas.gabsi&avatarId=13505',
+            },
+          }}
+          story={{
+            name: 'Daten-Quellen',
+            shortName: 'PATROS-309',
+            points: 5,
+          }}
+          description="description comes here"
+        />
+        <Story
+          hasBorder={true}
+          assignee={{
+            name: 'Lukas Gabsi',
+            avatarUrls: {
+              '48x48':
+                'https://jira.towa-digital.com/secure/useravatar?ownerId=lukas.gabsi&avatarId=13505',
+            },
+          }}
+          story={{
+            name: 'Daten-Quellen',
+            shortName: 'PATROS-309',
+            points: 5,
+          }}
+          description="description comes here"
+        />
+      </Grid>
+    </Slide>
+    <Slide>
       <Heading type="h6" textAlign="left">
         Overview
       </Heading>
@@ -146,6 +183,17 @@ const TestPresentation = () => (
           </UnorderedList>
         </OverflowableItem>
       </Overflowable>
+    </Slide>
+    <Slide>
+      <span>
+        <Heading type="h2" display="inline-block">
+          33
+        </Heading>
+        <Heading type="h2" display="inline-block">
+          /30
+        </Heading>
+      </span>
+      <Text>Completed Storypoints vs. Commitment</Text>
     </Slide>
   </Presentation>
 );

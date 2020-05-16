@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 const BoxWrapper = styled.div`
   color: ${({ theme }) => theme.colors.text || '#000000'};
-  border: ${({ border }) => (border ? border : '')};
+  border: ${({ border }) => border};
   height: 100%;
   margin: 2rem;
 `;
@@ -14,7 +14,7 @@ const TitleBox = styled.div`
   top: -15px;
   left: 20px;
   padding: 5px 15px;
-  background: ${({ theme }) => theme.colors.background || '#000000'};
+  background: ${({ theme }) => theme.colors.slides.background || '#000000'};
 `;
 
 const ContentWrapper = styled.div`
@@ -24,7 +24,7 @@ const ContentWrapper = styled.div`
   flex-direction: column;
 `;
 
-const Box = ({ children, border, title }) => (
+const Box = ({ children, border = '', title }) => (
   <BoxWrapper border={border}>
     <TitleBox>{title}</TitleBox>
     <ContentWrapper>{children}</ContentWrapper>
