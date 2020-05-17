@@ -34,7 +34,7 @@ const StoryName = styled.span`
   padding: 10px 0;
 
   font-size: 24px;
-  font-size: 3.5vh;
+  font-size: 3.5vmax;
 `;
 
 const StoryShortname = styled.span`
@@ -78,7 +78,7 @@ const Description = styled.div`
 
   padding: 2rem;
   font-size: 20px;
-  font-size: 2.5vh;
+  font-size: 2.5vmin;
   overflow: hidden;
   text-overflow: ellipsis;
 `;

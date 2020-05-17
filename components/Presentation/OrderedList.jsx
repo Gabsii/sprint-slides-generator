@@ -5,7 +5,7 @@ const OLWrapper = styled.ol`
   color: ${({ theme }) => theme.colors.text || '#000000'};
   list-style: ${({ listStyle }) => listStyle || 'decimal'};
   font-size: 24px;
-  font-size: 2vw;
+  font-size: 2vmin;
 `;
 
 const OrderedList = ({ children }) => {

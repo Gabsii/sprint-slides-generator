@@ -2,12 +2,12 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 const fontSizes = {
-  h1: '8vw',
-  h2: '7vw',
-  h3: '6vw',
-  h4: '5vw',
-  h5: '4.5vw',
-  h6: '4vw',
+  h1: '8vmax',
+  h2: '7vmax',
+  h3: '6vmax',
+  h4: '5vmax',
+  h5: '4.5vmax',
+  h6: '4vmax',
 };
 
 const BaseHeading = styled.h1`

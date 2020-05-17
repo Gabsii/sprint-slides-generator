@@ -9,7 +9,7 @@ const TextWrapper = styled.p`
   bottom: ${({ position }) => (position === 'bottom' ? '25px' : 'initial')};
 
   font-size: 24px;
-  font-size: 2vw;
+  font-size: 2vmax;
   text-align: ${({ textAlign }) => textAlign};
 `;
 

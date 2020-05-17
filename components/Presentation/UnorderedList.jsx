@@ -5,12 +5,12 @@ const ULWrapper = styled.ul`
   color: ${({ theme }) => theme.colors.text || '#000000'};
   list-style: ${({ listStyle }) => listStyle || 'inherit'};
   font-size: 24px;
-  font-size: 2vw;
+  font-size: 2.33vmax;
 `;
 
 const LI = styled.li`
   font-size: 16px;
-  font-size: 1.33vw;
+  font-size: 2vmax;
 `;
 
 const UnorderedList = ({ children, listStyle }) => {

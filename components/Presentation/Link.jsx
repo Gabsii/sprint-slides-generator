@@ -6,7 +6,7 @@ const LinkWrapper = styled.a`
 
   color: ${({ theme }) => theme.colors.link || '#000000'};
   font-size: 24px;
-  font-size: 2vw;
+  font-size: 2vmin;
 `;
 
 const Link = ({ children, href }) => (

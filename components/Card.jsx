@@ -19,12 +19,12 @@ const FigCaption = styled.figcaption`
 `;
 
 const Name = styled.div`
-  font-size: 1rem;
+  font-size: 1vmax;
   color: ${({ theme }) => theme.colors.text};
 `;
 
 const Job = styled.div`
-  font-size: 0.825rem;
+  font-size: 0.825vmax;
   color: ${({ theme }) => darken(0.33, theme.colors.text)};
 `;
 
