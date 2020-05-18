@@ -4,7 +4,7 @@ module.exports = {
     'eslint:recommended',
     'plugin:react/recommended'
   ],
-  plugins: ['prettier', 'react', 'react-hooks', 'jsx-a11y'],
+  plugins: ['prettier', 'react', 'react-hooks', 'jsx-a11y', 'jest'],
   parserOptions: {
     ecmaVersion: 6,
     sourceType: 'module',
@@ -16,6 +16,7 @@ module.exports = {
   env: {
     browser: true,
     node: true,
+    jest: true,
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
