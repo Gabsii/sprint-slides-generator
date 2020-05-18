@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { useState, cloneElement } from 'react';
+import { useState, cloneElement, useEffect } from 'react';
+import useKeyPress from '@utils/useKeyPress';
 
 const Wrapper = styled.div`
   height: 100vh;
@@ -16,6 +17,7 @@ const Button = styled.button`
   top: 50%;
   right: 0;
   z-index: +1;
+  transform: translateY(-50%);
 
   background-color: transparent;
 
@@ -37,16 +39,26 @@ const Button = styled.button`
   &:hover {
     cursor: pointer;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    filter: opacity(0.5);
+  }
 `;
 
 const Presentation = ({ children }) => {
   const [activeSlide, setActiveSlide] = useState(0);
 
-  if (activeSlide >= children.length) {
-    setActiveSlide(children.length - 1);
-  } else if (activeSlide < 0) {
-    setActiveSlide(0);
-  }
+  const rightPressed = useKeyPress('ArrowRight');
+  const leftPressed = useKeyPress('ArrowLeft');
+
+  useEffect(() => {
+    if (rightPressed && activeSlide < children.length - 1) {
+      setActiveSlide(activeSlide + 1);
+    } else if (leftPressed && activeSlide !== 0) {
+      setActiveSlide(activeSlide - 1);
+    }
+  }, [rightPressed, leftPressed]);
 
   const teenager = children.map((child, index) =>
     cloneElement(child, {
@@ -56,14 +68,35 @@ const Presentation = ({ children }) => {
     }),
   );
 
+  // only renders the current slide
+  // const adults = teenager.filter(teen => {
+  //   return teen.props.isActive;
+  // });
+
   return (
     <Wrapper>
-      <Button position="left" onClick={() => setActiveSlide(activeSlide - 1)}>
-        -
+      <Button
+        position="left"
+        disabled={activeSlide === 0}
+        onClick={() => {
+          if (activeSlide !== 0) {
+            setActiveSlide(activeSlide - 1);
+          }
+        }}
+      >
+        {'<'}
       </Button>
       <div>{teenager}</div>
-      <Button position="right" onClick={() => setActiveSlide(activeSlide + 1)}>
-        +
+      <Button
+        position="right"
+        disabled={activeSlide === teenager.length - 1}
+        onClick={() => {
+          if (activeSlide < children.length) {
+            setActiveSlide(activeSlide + 1);
+          }
+        }}
+      >
+        {'>'}
       </Button>
     </Wrapper>
   );
@@ -84,4 +117,7 @@ Presentation.propTypes = {
  * - can increase/decrease active slide
  * - children have key set
  * - children have isActive set
+ * - buttons are disabled
+ * - can click button
+ * - can navigate button via arrow keys
  */

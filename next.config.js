@@ -7,6 +7,10 @@ module.exports = {
       __dirname,
       './components',
     );
+    config.resolve.alias['@utils'] = path.resolve(
+      __dirname,
+      './utils',
+    );
     return config;
   },
 };
