@@ -4,12 +4,15 @@ import Image from '@components/Presentation/Image';
 import { darken } from 'polished';
 
 const CardWrapper = styled.figure`
-  text-align: center;
+  min-height: 200px;
+  width: 150px;
 
+  text-align: center;
   color: ${({ theme }) => theme.colors.link || '#000000'};
+
   background-color: ${({ theme }) => theme.colors.card || 'rgba(0,0,0,0.7)'};
   padding: 20px;
-  margin: 0;
+  margin: 0 auto;
 `;
 
 const FigCaption = styled.figcaption`
@@ -19,7 +22,7 @@ const FigCaption = styled.figcaption`
 `;
 
 const Name = styled.div`
-  font-size: 1vmax;
+  font-size: 1.1vmax;
   color: ${({ theme }) => theme.colors.text};
 `;
 
@@ -28,7 +31,12 @@ const Job = styled.div`
   color: ${({ theme }) => darken(0.33, theme.colors.text)};
 `;
 
-const Card = ({ src, alt, name, job }) => (
+const Card = ({
+  src = 'https://www.atlassian.design/server/images/avatars/person-invalid-96px.png',
+  alt = 'User Avatar',
+  name = 'User',
+  job,
+}) => (
   <CardWrapper>
     <Image
       src={src}
@@ -46,9 +54,9 @@ const Card = ({ src, alt, name, job }) => (
 export default Card;
 
 Card.propTypes = {
-  src: PropTypes.string.required,
-  alt: PropTypes.string.required,
-  name: PropTypes.string.required,
+  src: PropTypes.string.isRequired,
+  alt: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
   job: PropTypes.string,
 };
 

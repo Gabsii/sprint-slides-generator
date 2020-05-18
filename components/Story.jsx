@@ -34,7 +34,7 @@ const StoryName = styled.span`
   padding: 10px 0;
 
   font-size: 24px;
-  font-size: 3.5vmax;
+  font-size: 3vmax;
 `;
 
 const StoryShortname = styled.span`

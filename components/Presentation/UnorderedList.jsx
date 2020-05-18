@@ -10,7 +10,7 @@ const ULWrapper = styled.ul`
 
 const LI = styled.li`
   font-size: 16px;
-  font-size: 2vmax;
+  font-size: 1.66vmax;
 `;
 
 const UnorderedList = ({ children, listStyle }) => {
