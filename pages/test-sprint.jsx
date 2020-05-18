@@ -28,7 +28,7 @@ const OverflowableItem = styled.div`
   max-width: 50%;
 `;
 
-const TestPresentation = () => (
+const TestSprint = () => (
   <Presentation>
     <Slide>
       <Text>Sprint 32</Text>
@@ -198,4 +198,4 @@ const TestPresentation = () => (
   </Presentation>
 );
 
-export default TestPresentation;
+export default TestSprint;
