@@ -15,7 +15,7 @@ const LoginForm = () => {
         method: 'POST',
         body: JSON.stringify({ username, password }),
       }).then(res => {
-        if (res.status === 200) {
+        if (res.ok) {
           return res.json();
         }
         // TODO: improve error messages
