@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useState, cloneElement, useEffect } from 'react';
-import useKeyPress from '@utils/useKeyPress';
+import useKeyPress from '@utils/hooks/useKeyPress';
 
 const Wrapper = styled.div`
   height: 100vh;

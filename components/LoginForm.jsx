@@ -1,43 +1,46 @@
-import base64 from 'base-64';
-import { useState } from 'react';
-// import Router from 'next/router';
-
-function login(username, password) {
-  console.log({ password, username });
-
-  const authToken = base64.encode(`${username}:${password}`);
-
-  // TODO: figure out CORS issues
-
-  fetch('https://jira.towa-digital.com/rest/api/2/myself', {
-    headers: {
-      Authentication: `Basic ${authToken}`,
-    },
-  })
-    .then(res => {
-      console.log(res);
-      return res.json();
-    })
-    .catch(e => e.statusCode);
-
-  // if (username.firstTime) {
-  //   Router.push('/boards');
-  // } else {
-  //   Router.push('/dashboard');
-  // }
-}
+import { useState, useEffect } from 'react';
+import useSWR from 'swr';
+import Router from 'next/router';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [shouldFetch, setShouldFetch] = useState(false);
+
+  const { data, error, isValidating } = useSWR(
+    shouldFetch ? '/api/login' : null,
+    url =>
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({ username, password }),
+      }).then(res => {
+        if (res.status === 200) {
+          return res.json();
+        }
+        // TODO: improve error messages
+        throw new Error(`HTTP Code ${res.status} - ${res.statusText}`);
+      }),
+  );
+
+  useEffect(() => {
+    setShouldFetch(false);
+  }, [error]);
+
+  if (isValidating) {
+    return <div>Loading...</div>;
+  }
+
+  if (data && !error) {
+    setShouldFetch(false);
+    Router.push('/first-time');
+    // console.log('routerpush');
+    // return <pre>{JSON.stringify(data, null, 2)}</pre>;
+  }
 
   // TODO: readd autocomplete before launch
+  // TODO: BEWARE: wrong data 3x goto jira page !message!
   return (
     <form autoComplete="off">
-      <div>
-        <label htmlFor="checkbox">Bitbucket Server</label>
-        <input type="checkbox" name="checkbox" />
-      </div>
       <div>
         <label htmlFor="username">Username</label>
         <input
@@ -56,9 +59,15 @@ const LoginForm = () => {
           onChange={e => setPassword(e.target.value)}
         />
       </div>
-      <button type="button" onClick={() => login(username, password)}>
+      <button
+        type="button"
+        onClick={() => {
+          setShouldFetch(true);
+        }}
+      >
         Login
       </button>
+      {error ? <div>{error.message}</div> : null}
     </form>
   );
 };
