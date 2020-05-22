@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import useSWR from 'swr';
 import Router from 'next/router';
+import Spinner from './Spinner';
 
 const LoginForm = () => {
   const [username, setUsername] = useState('');
@@ -20,21 +21,16 @@ const LoginForm = () => {
         // TODO: improve error messages
         throw new Error(`HTTP Code ${res.status} - ${res.statusText}`);
       }),
+    { shouldRetryOnError: false },
   );
 
-  useEffect(() => {
-    setShouldFetch(false);
-  }, [error]);
-
   if (isValidating) {
-    return <div>Loading...</div>;
+    // TODO: improve spinner
+    return <Spinner />;
   }
 
   if (data && !error) {
-    setShouldFetch(false);
     Router.push('/first-time');
-    // console.log('routerpush');
-    // return <pre>{JSON.stringify(data, null, 2)}</pre>;
   }
 
   // TODO: readd autocomplete before launch
@@ -47,7 +43,7 @@ const LoginForm = () => {
           type="text"
           id="username"
           name="username"
-          onChange={e => setUsername(e.target.value)}
+          onBlur={e => setUsername(e.target.value)}
         />
       </div>
       <div>
@@ -56,7 +52,7 @@ const LoginForm = () => {
           type="password"
           id="password"
           name="password"
-          onChange={e => setPassword(e.target.value)}
+          onBlur={e => setPassword(e.target.value)}
         />
       </div>
       <button
