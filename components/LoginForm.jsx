@@ -18,6 +18,7 @@ const LoginForm = () => {
         if (res.ok) {
           return res.json();
         }
+        setShouldFetch(false);
         // TODO: improve error messages
         throw new Error(`HTTP Code ${res.status} - ${res.statusText}`);
       }),

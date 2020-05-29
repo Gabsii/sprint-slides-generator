@@ -1,6 +1,7 @@
 import base64 from 'base-64';
+import withSession from '@utils/session';
 
-export default async (req, res) => {
+export default withSession(async (req, res) => {
   const { username, password } = JSON.parse(req.body);
 
   if (!username || !password) {
@@ -22,14 +23,20 @@ export default async (req, res) => {
   try {
     if (response.status === 200) {
       const data = await response.json();
+
+      req.session.set('user', data);
+      req.session.set('authToken', authToken);
+      await req.session.save();
+
       return res.status(200).send(data);
     } else {
       const error = await response.text();
-      console.log(error);
+      console.error(error);
+
       return res.status(response.status).send(error);
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
     return res.status(500).send(e);
   }
-};
+});
