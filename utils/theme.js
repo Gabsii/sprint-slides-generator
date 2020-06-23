@@ -27,7 +27,7 @@ const theme = {
     heading: '#ffffff',
     text: '#ffffff',
     link: '#ffb101',
-    background: '#000000',
+    background: '#efefef',
     card: 'rgba(255,255,255, 0.2)',
     slides: {
       background: '#262726',

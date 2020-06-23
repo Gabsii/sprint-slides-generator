@@ -2,11 +2,13 @@ import { useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import ProgressiveImage from 'react-progressive-image';
 
-import Layout from '@components/Layout';
+import AvatarLoader from '@components/AvatarLoader';
 import AvatarPlaceholder from '@components/AvatarPlaceholder';
+import Image from '@components/Presentation/Image';
+import Layout from '@components/Layout';
+import SprintOverview from '@components/SprintOverview';
+import { TokenContext } from '@utils/ctx/TokenContext';
 import withSession from '@utils/session';
-import { TokenContext } from '../utils/ctx/TokenContext';
-import Image from '../components/Presentation/Image';
 
 const Dashboard = ({ user, authToken }) => {
   const { token, setToken } = useContext(TokenContext);
@@ -29,19 +31,24 @@ const Dashboard = ({ user, authToken }) => {
             flexDirection: 'column',
           }}
         >
-          hello there {user.name}
+          {/* <p style={{ marginBottom: '4em' }}>Hello there, {user.name}</p>
           <ProgressiveImage
             src={`${user.avatarUrls['48x48']}&size=xxxlarge`}
             placeholder=""
           >
             {(src, loading) =>
               loading ? (
-                <AvatarPlaceholder />
+                <AvatarLoader>
+                  <AvatarPlaceholder />
+                </AvatarLoader>
               ) : (
-                <Image src={src} alt={user.name} rounded={true} />
+                <AvatarLoader>
+                  <Image src={src} alt={user.name} rounded={true} />
+                </AvatarLoader>
               )
             }
-          </ProgressiveImage>
+          </ProgressiveImage> */}
+          <SprintOverview></SprintOverview>
         </div>
       </Layout>
     </div>

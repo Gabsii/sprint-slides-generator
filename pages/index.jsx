@@ -5,7 +5,7 @@ import withSession from '@utils/session';
 const Home = () => (
   <div>
     <Layout title="Homepage">
-      <div style={{ height: '100vh' }}>
+      <div style={{ minHeight: '100vh' }}>
         <LoginForm />
       </div>
     </Layout>

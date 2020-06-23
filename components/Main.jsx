@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 const MainOuter = styled.main`
   width: 100%;
 
-  /* background-color: ${({ theme }) => theme.colors.background}; */
+  background-color: ${({ theme }) => theme.colors.background};
 `;
 
 const MainInner = styled.div`
