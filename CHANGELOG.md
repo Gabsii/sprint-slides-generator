@@ -11,3 +11,5 @@
 - Added Spinner and Avatar Loader as idle-elements
 - Added Breakpoints for responsive designs 
 - Added a basic dashboard 
+- Added Sprint Presentation Library with default company style
+- Added Image Fallback component
