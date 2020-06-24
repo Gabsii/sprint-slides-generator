@@ -131,6 +131,7 @@ const LoginForm = () => {
           type="text"
           id="username"
           name="username"
+          required
           onBlur={e => setUsername(e.target.value)}
         />
       </InputWrapper>
@@ -140,6 +141,7 @@ const LoginForm = () => {
           type="password"
           id="password"
           name="password"
+          required
           onBlur={e => setPassword(e.target.value)}
         />
       </InputWrapper>
