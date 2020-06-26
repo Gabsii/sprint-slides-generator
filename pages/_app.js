@@ -2,6 +2,7 @@ import App from 'next/app';
 import React from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import theme from '@utils/theme';
+import { TokenProvider } from '@utils/ctx/TokenContext';
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -22,8 +23,10 @@ export default class MyApp extends App {
 
     return (
       <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <Component {...pageProps} />
+        <TokenProvider>
+          <GlobalStyle />
+          <Component {...pageProps} />
+        </TokenProvider>
       </ThemeProvider>
     );
   }

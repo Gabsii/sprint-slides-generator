@@ -1,19 +1,30 @@
-import Head from 'next/head';
 import Layout from '@components/Layout';
 import LoginForm from '@components/LoginForm';
+import withSession from '@utils/session';
 
 const Home = () => (
   <div>
-    <Head>
-      <title>Create Next App</title>
-      <link rel="icon" href="/favicon.ico" />
-    </Head>
-    <Layout title="Index.js">
-      <div style={{ height: '100vh' }}>
+    <Layout title="Homepage">
+      <div style={{ minHeight: '100vh' }}>
         <LoginForm />
       </div>
     </Layout>
   </div>
 );
+
+export const getServerSideProps = withSession(async function({ req, res }) {
+  const authToken = req.session.get('authToken');
+
+  if (authToken === undefined) {
+    return { props: {} };
+  }
+
+  res.setHeader('Location', '/dashboard');
+  res.statusCode = 302;
+  res.end();
+  return {
+    props: { authToken: req.session.get('authToken') },
+  };
+});
 
 export default Home;
