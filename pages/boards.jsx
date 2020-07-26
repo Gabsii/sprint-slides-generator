@@ -37,7 +37,7 @@ const Boards = ({ boards, user, authToken, favourites }) => {
   const [search, setSearch] = useState('');
 
   const toggleFavourite = board => {
-    if (favouriteBoards.includes(board)) {
+    if (favouriteBoards.some(fav => fav.id === board.id)) {
       fetch(`/api/boards/${board.id}/favourite`, {
         method: 'DELETE',
         body: JSON.stringify({ user }),
