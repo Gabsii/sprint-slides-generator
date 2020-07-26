@@ -1,5 +1,17 @@
 # Changelog
 
+## [unreleased]
+
+### Breaking
+
+- you now need to run `knex migrate:latest` for the database connection
+
+### Added
+
+- Added boards overview
+- Added favourite boards
+- Added database migrations
+
 ## [v0.0.1]
 
 ### Added 
@@ -13,3 +25,6 @@
 - Added a basic dashboard 
 - Added Sprint Presentation Library with default company style
 - Added Image Fallback component
+
+[v0.0.1]: https://github.com/Gabsii/sprint-slides-generator/tree/v0.0.1
+[unreleased]: https://github.com/Gabsii/sprint-slides-generator/
