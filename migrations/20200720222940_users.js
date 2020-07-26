@@ -8,6 +8,8 @@ exports.up = function(knex) {
     table.string('full_name', 255).notNullable();
     table.string('avatar', 255).notNullable();
     table.string('email', 255).notNullable();
+
+    table.unique('email');
   });
 };
 
