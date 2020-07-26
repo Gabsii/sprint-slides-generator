@@ -57,3 +57,10 @@ export const removeFavourite = async (knex, dbBoard, dbUser) =>
       board_id: dbBoard.id,
     })
     .del();
+
+export const getAllFavouriteBoardsByUser = async (knex, dbUser) =>
+  await knex
+    .select()
+    .from('user_has_favourite_boards')
+    .innerJoin('boards', 'user_has_favourite_boards.board_id', '=', 'boards.id')
+    .whereRaw('user_has_favourite_boards.user_id = ?', dbUser.id);

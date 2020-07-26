@@ -31,8 +31,8 @@ const GridItem = styled.button`
   }
 `;
 
-const Boards = ({ boards, user }) => {
-  const [favouriteBoards, addFavouriteBoard] = useState([]);
+const Boards = ({ boards, user, favourites }) => {
+  const [favouriteBoards, addFavouriteBoard] = useState(favourites);
 
   const toggleFavourite = board => {
     if (favouriteBoards.includes(board)) {
@@ -59,12 +59,15 @@ const Boards = ({ boards, user }) => {
       {boards.map(board => (
         <GridItem
           key={board.id}
-          isFavourited={favouriteBoards.includes(board)}
+          isFavourited={favouriteBoards.some(fav => fav.id === board.id)}
           onClick={() => toggleFavourite(board)}
         >
           {board.name}
           <a
-            href={`https://jira.towa-digital.com/secure/RapidBoard.jspa?rapidView=${board.id}`}
+            href={
+              board.jira_url ||
+              `https://jira.towa-digital.com/secure/RapidBoard.jspa?rapidView=${board.id}`
+            }
             target="_blank"
           >
             (Jira)
@@ -88,15 +91,24 @@ export const getServerSideProps = withSession(async function({ req, res }) {
   }
 
   // TODO: move to a seperate function maybe
-  const response = await fetch(`http://${req.headers.host}/api/boards`, {
+  const boardsResponse = await fetch(`http://${req.headers.host}/api/boards`, {
     method: 'POST',
     body: JSON.stringify({ authToken }),
   });
 
-  let boards;
+  const favouritesResponse = await fetch(
+    `http://${req.headers.host}/api/boards/favourites`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ user }),
+    },
+  );
+
+  let boards, favourites;
 
   try {
-    boards = await response.json();
+    boards = await boardsResponse.json();
+    favourites = await favouritesResponse.json();
   } catch (error) {
     console.error(error);
     return {
@@ -112,7 +124,8 @@ export const getServerSideProps = withSession(async function({ req, res }) {
     props: {
       user: req.session.get('user'),
       authToken: req.session.get('authToken'),
-      boards: boards,
+      boards,
+      favourites,
     },
   };
 });
@@ -122,4 +135,5 @@ export default Boards;
 Boards.propTypes = {
   boards: PropTypes.array,
   user: PropTypes.array,
+  favourites: PropTypes.array,
 };

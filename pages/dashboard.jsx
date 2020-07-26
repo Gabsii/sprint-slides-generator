@@ -31,6 +31,7 @@ const Dashboard = ({ user, authToken }) => {
             flexDirection: 'column',
           }}
         >
+          <a href="/boards">Set favourite boards</a>
           {/* <p style={{ marginBottom: '4em' }}>Hello there, {user.name}</p>
           <ProgressiveImage
             src={`${user.avatarUrls['48x48']}&size=xxxlarge`}
