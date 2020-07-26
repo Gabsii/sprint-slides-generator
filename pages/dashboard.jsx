@@ -9,8 +9,9 @@ import Layout from '@components/Layout';
 import SprintOverview from '@components/SprintOverview';
 import { TokenContext } from '@utils/ctx/TokenContext';
 import withSession from '@utils/session';
+import FavouritesSlider from '@components/FavouritesSlider';
 
-const Dashboard = ({ user, authToken }) => {
+const Dashboard = ({ user, favourites, authToken }) => {
   const { token, setToken } = useContext(TokenContext);
 
   useEffect(() => {
@@ -49,6 +50,7 @@ const Dashboard = ({ user, authToken }) => {
               )
             }
           </ProgressiveImage> */}
+          {favourites && <FavouritesSlider favourites={favourites} />}
           <SprintOverview></SprintOverview>
         </div>
       </Layout>
@@ -67,10 +69,34 @@ export const getServerSideProps = withSession(async function({ req, res }) {
     return { props: {} };
   }
 
+  const favouritesResponse = await fetch(
+    `http://${req.headers.host}/api/boards/favourites`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ user }),
+    },
+  );
+
+  let favourites;
+
+  try {
+    favourites = await favouritesResponse.json();
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        user: req.session.get('user'),
+        authToken: req.session.get('authToken'),
+        error,
+      },
+    };
+  }
+
   return {
     props: {
       user: req.session.get('user'),
       authToken: req.session.get('authToken'),
+      favourites,
     },
   };
 });
@@ -80,4 +106,5 @@ export default Dashboard;
 Dashboard.propTypes = {
   user: PropTypes.object.isRequired,
   authToken: PropTypes.string.isRequired,
+  favourites: PropTypes.array,
 };

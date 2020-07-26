@@ -4,6 +4,9 @@ import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import theme from '@utils/theme';
 import { TokenProvider } from '@utils/ctx/TokenContext';
 
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 const GlobalStyle = createGlobalStyle`
   html,
   body {
