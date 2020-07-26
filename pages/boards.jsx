@@ -31,8 +31,10 @@ const GridItem = styled.button`
   }
 `;
 
-const Boards = ({ boards, user, favourites }) => {
+const Boards = ({ boards, user, authToken, favourites }) => {
   const [favouriteBoards, addFavouriteBoard] = useState(favourites);
+  const [projectBoards, setProjectBoards] = useState(null);
+  const [search, setSearch] = useState('');
 
   const toggleFavourite = board => {
     if (favouriteBoards.includes(board)) {
@@ -54,27 +56,76 @@ const Boards = ({ boards, user, favourites }) => {
     }
   };
 
+  const loadAll = async () => {
+    const res = await fetch(`api/boards`, {
+      method: 'POST',
+      body: JSON.stringify({ authToken, showMore: true, search }),
+    })
+      .then(res => res.json())
+      .catch(err => console.error(err));
+
+    const boardsResponse = res.filter(res => !res.name.includes('Team'));
+
+    setProjectBoards(boardsResponse);
+  };
+
   return (
-    <Grid>
-      {boards.map(board => (
-        <GridItem
-          key={board.id}
-          isFavourited={favouriteBoards.some(fav => fav.id === board.id)}
-          onClick={() => toggleFavourite(board)}
-        >
-          {board.name}
-          <a
-            href={
-              board.jira_url ||
-              `https://jira.towa-digital.com/secure/RapidBoard.jspa?rapidView=${board.id}`
-            }
-            target="_blank"
+    <>
+      <Grid>
+        {boards.map(board => (
+          <GridItem
+            key={board.id}
+            isFavourited={favouriteBoards.some(fav => fav.id === board.id)}
+            onClick={() => toggleFavourite(board)}
           >
-            (Jira)
-          </a>
-        </GridItem>
-      ))}
-    </Grid>
+            {board.name}
+            <a
+              href={
+                board.jira_url ||
+                `https://jira.towa-digital.com/secure/RapidBoard.jspa?rapidView=${board.id}`
+              }
+              target="_blank"
+            >
+              (Jira)
+            </a>
+          </GridItem>
+        ))}
+      </Grid>
+      <hr />
+      <h2>Need to see more?</h2>
+      <button onClick={() => loadAll()}>Show More</button>
+      {projectBoards && (
+        <input
+          type="text"
+          name="search"
+          id="search"
+          onChange={e => setSearch(e.target.value)}
+          onKeyDown={e => (e.key === 'Enter' ? loadAll() : null)}
+          onBlur={() => loadAll()}
+        />
+      )}
+      <Grid>
+        {projectBoards &&
+          projectBoards.map(board => (
+            <GridItem
+              key={board.id}
+              isFavourited={favouriteBoards.some(fav => fav.id === board.id)}
+              onClick={() => toggleFavourite(board)}
+            >
+              {board.name}
+              <a
+                href={
+                  board.jira_url ||
+                  `https://jira.towa-digital.com/secure/RapidBoard.jspa?rapidView=${board.id}`
+                }
+                target="_blank"
+              >
+                (Jira)
+              </a>
+            </GridItem>
+          ))}
+      </Grid>
+    </>
   );
 };
 
@@ -136,4 +187,5 @@ Boards.propTypes = {
   boards: PropTypes.array,
   user: PropTypes.array,
   favourites: PropTypes.array,
+  authToken: PropTypes.string,
 };

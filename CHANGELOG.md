@@ -9,8 +9,11 @@
 ### Added
 
 - Added boards overview
+  - one for the teams => loaded immediately 
+  - one for other projects => loaded on click
 - Added favourite boards
 - Added database migrations
+- Added dashboard
 
 ## [v0.0.1]
 
