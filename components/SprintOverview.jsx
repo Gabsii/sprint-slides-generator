@@ -6,7 +6,7 @@ import { format, isMatch } from 'date-fns';
 import { Table } from '@zeit-ui/react';
 import EditableCell from './EditableCell';
 import TableRow from './TableRow';
-import { ChevronDown, ChevronUp, ChevronUpDown } from '@zeit-ui/react-icons';
+import SortedIcon from './SortedIcon';
 
 const TR = styled.tr`
   text-align: center;
@@ -125,42 +125,30 @@ const SprintOverview = ({ sprints }) => {
     useSortBy,
   );
   return (
-    <>
-      <Table {...getTableProps()}>
-        <thead>
-          {headerGroups.map((headerGroup, i) => (
-            <TR key={i} {...headerGroup.getHeaderGroupProps()}>
-              {headerGroup.headers.map((column, j) => (
-                <TH
-                  key={j}
-                  {...column.getHeaderProps(column.getSortByToggleProps())}
-                >
-                  {column.render('Header')}
-                  <span>
-                    {column.isSorted ? (
-                      column.isSortedDesc ? (
-                        <ChevronDown size={12} />
-                      ) : (
-                        <ChevronUp size={12} />
-                      )
-                    ) : (
-                      <ChevronUpDown size={12} />
-                    )}
-                  </span>
-                </TH>
-              ))}
-              <TH></TH>
-            </TR>
-          ))}
-        </thead>
-        <tbody {...getTableBodyProps()}>
-          {rows.map((row, i) => {
-            prepareRow(row);
-            return <TableRow key={i} row={row}></TableRow>;
-          })}
-        </tbody>
-      </Table>
-    </>
+    <Table {...getTableProps()}>
+      <thead>
+        {headerGroups.map((headerGroup, i) => (
+          <TR key={i} {...headerGroup.getHeaderGroupProps()}>
+            {headerGroup.headers.map((column, j) => (
+              <TH
+                key={j}
+                {...column.getHeaderProps(column.getSortByToggleProps())}
+              >
+                {column.render('Header')}
+                <SortedIcon column={column} />
+              </TH>
+            ))}
+            <TH></TH>
+          </TR>
+        ))}
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row, i) => {
+          prepareRow(row);
+          return <TableRow key={i} row={row}></TableRow>;
+        })}
+      </tbody>
+    </Table>
   );
 };
 
