@@ -8,9 +8,7 @@ exports.up = function(knex) {
     table.string('boardId', 255).notNullable();
     table.date('startDate').notNullable();
     table.date('endDate').notNullable();
-    table.float('forecast').notNullable();
-    // TODO: ask conny for a better name
-    // Opted for a nullable value because this can be null on creation.
+    table.float('forecast');
     table.float('achievement');
   });
 };

@@ -11,7 +11,7 @@ import { TokenContext } from '@utils/ctx/TokenContext';
 import withSession from '@utils/session';
 import FavouritesSlider from '@components/FavouritesSlider';
 
-const Dashboard = ({ user, favourites, authToken }) => {
+const Dashboard = ({ user, favourites, activeSprints, authToken }) => {
   const { token, setToken } = useContext(TokenContext);
 
   useEffect(() => {
@@ -50,8 +50,8 @@ const Dashboard = ({ user, favourites, authToken }) => {
               )
             }
           </ProgressiveImage> */}
-          {favourites && <FavouritesSlider favourites={favourites} />}
-          <SprintOverview></SprintOverview>
+          {/* {!!favourites.length && <FavouritesSlider favourites={favourites} />} */}
+          <SprintOverview sprints={activeSprints}></SprintOverview>
         </div>
       </Layout>
     </div>
@@ -77,10 +77,32 @@ export const getServerSideProps = withSession(async function({ req, res }) {
     },
   );
 
-  let favourites;
+  let favourites, activeSprints;
 
+  // todo: simplify try catch for every response
   try {
     favourites = await favouritesResponse.json();
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        user: req.session.get('user'),
+        authToken: req.session.get('authToken'),
+        error,
+      },
+    };
+  }
+
+  const activeSprintsResponse = await fetch(
+    `http://${req.headers.host}/api/sprints/active`,
+    {
+      method: 'POST',
+      body: JSON.stringify({ favourites, authToken }),
+    },
+  );
+
+  try {
+    activeSprints = await activeSprintsResponse.json();
   } catch (error) {
     console.error(error);
     return {
@@ -97,6 +119,7 @@ export const getServerSideProps = withSession(async function({ req, res }) {
       user: req.session.get('user'),
       authToken: req.session.get('authToken'),
       favourites,
+      activeSprints,
     },
   };
 });
@@ -107,4 +130,5 @@ Dashboard.propTypes = {
   user: PropTypes.object.isRequired,
   authToken: PropTypes.string.isRequired,
   favourites: PropTypes.array,
+  activeSprints: PropTypes.array,
 };
