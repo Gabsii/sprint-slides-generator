@@ -1,3 +1,5 @@
+import { sub } from 'date-fns';
+
 export const findOrCreateBoard = async (knex, id, name) =>
   knex
     .transaction(trx =>
@@ -94,3 +96,6 @@ export const getAllFavouriteBoardsByUser = async (knex, dbUser) =>
     .from('user_has_favourite_boards')
     .innerJoin('boards', 'user_has_favourite_boards.board_id', '=', 'boards.id')
     .whereRaw('user_has_favourite_boards.user_id = ?', dbUser.id);
+
+export const allSprints = async knex =>
+  await knex('sprints').whereRaw('endDate > ?', sub(Date.now(), { days: 1 }));

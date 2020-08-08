@@ -10,7 +10,7 @@ const TR = styled.tr`
 
 const TD = styled.td`
   border-bottom: 1px solid gray;
-  padding: 1rem;
+  padding: 0.75rem;
   text-align: center;
 
   &:first-of-type {
