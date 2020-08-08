@@ -51,7 +51,7 @@ const EditableCell = ({
         onFocus={() => setFocused(true)}
       />
       {status === 'error' && (
-        <Tooltip text="such as 40.75, 30.0 or .5">
+        <Tooltip text="For example 40.75, 30.0 or 25">
           <Text small type={status}>
             Expected decimal number <br />
           </Text>
