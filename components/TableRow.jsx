@@ -57,7 +57,7 @@ const TableRow = ({ row }) => {
       {row.cells.map((cell, j) => (
         <TD key={j} {...cell.getCellProps()}>
           {cell.column.id === 'forecast'
-            ? cell.render('EditableCell', { inputRef, row: row.original })
+            ? cell.render('EditableCell', { inputRef })
             : cell.render('Cell')}
         </TD>
       ))}

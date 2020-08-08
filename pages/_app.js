@@ -6,6 +6,7 @@ import { TokenProvider } from '@utils/ctx/TokenContext';
 
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { ZeitProvider } from '@zeit-ui/react';
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -25,12 +26,14 @@ export default class MyApp extends App {
     const { Component, pageProps } = this.props;
 
     return (
-      <ThemeProvider theme={theme}>
-        <TokenProvider>
-          <GlobalStyle />
-          <Component {...pageProps} />
-        </TokenProvider>
-      </ThemeProvider>
+      <ZeitProvider>
+        <ThemeProvider theme={theme}>
+          <TokenProvider>
+            <GlobalStyle />
+            <Component {...pageProps} />
+          </TokenProvider>
+        </ThemeProvider>
+      </ZeitProvider>
     );
   }
 }

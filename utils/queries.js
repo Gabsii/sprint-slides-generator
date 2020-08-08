@@ -19,6 +19,36 @@ export const findOrCreateBoard = async (knex, id, name) =>
     )
     .then(res => res[0]);
 
+export const createOrUpdateSprint = async (knex, id, sprint) =>
+  knex.transaction(trx =>
+    trx('sprints')
+      .whereRaw('id = ?', id)
+      .then(res => {
+        if (res.length === 0) {
+          return trx('sprints').insert({
+            id: sprint.id,
+            name: sprint.name,
+            boardId: sprint.originBoardId,
+            startDate: new Date(sprint.startDate),
+            endDate: new Date(sprint.endDate),
+            forecast: sprint.forecast,
+            achievement: 0,
+          });
+        } else {
+          return trx('sprints')
+            .whereRaw('id = ?', id)
+            .update({
+              name: sprint.name,
+              boardId: sprint.originBoardId,
+              startDate: new Date(sprint.startDate),
+              endDate: new Date(sprint.endDate),
+              forecast: sprint.forecast,
+              achievement: 0,
+            });
+        }
+      }),
+  );
+
 export const findOrCreateUser = async (
   knex,
   { emailAddress, name, displayName, avatarUrls },

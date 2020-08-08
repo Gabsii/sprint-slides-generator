@@ -25,11 +25,16 @@ const handler = async (req, res) => {
     );
 
     // remove open sprints and duplicates
-    data = data.filter(
-      (sprint, index, array) =>
-        new Date(sprint.endDate) > sub(Date.now(), { days: 2 }) &&
-        array.findIndex(t => t.id === sprint.id) === index,
-    );
+    data = data
+      .filter(
+        (sprint, index, array) =>
+          new Date(sprint.endDate) > sub(Date.now(), { days: 2 }) &&
+          array.findIndex(t => t.id === sprint.id) === index,
+      )
+      .map(sprint => {
+        sprint.forecast = sprint.forecast || 0;
+        return sprint;
+      });
 
     return res.status(200).send(data);
   } catch (error) {

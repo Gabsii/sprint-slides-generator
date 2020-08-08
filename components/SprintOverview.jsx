@@ -2,11 +2,11 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useTable, useSortBy } from 'react-table';
 import { useMemo, useState } from 'react';
-import { format, isMatch } from 'date-fns';
-import { Table } from '@zeit-ui/react';
+import { Table, useToasts } from '@zeit-ui/react';
 import EditableCell from './EditableCell';
 import TableRow from './TableRow';
 import SortedIcon from './SortedIcon';
+import useColumns from '@utils/hooks/useColumns';
 
 const TR = styled.tr`
   text-align: center;
@@ -33,14 +33,24 @@ const TH = styled.th`
   }
 `;
 
-const addForecast = (original, activeSprints, setActiveSprints) => {
-  console.log({ original, activeSprints });
-  // fetch PUT to sprints/{id}
-  // append original as data
-  // create database entry in api route
-  // maybe pop up a notification
-
-  // setActiveSprints(activeSprints);
+const addForecast = (sprint, setToast) => {
+  fetch(`/api/sprints/${sprint.id}`, {
+    method: 'PUT',
+    body: JSON.stringify({ sprint }),
+  })
+    .then(() =>
+      setToast({
+        text: 'Successfully updated the Forecast!',
+        type: 'success',
+      }),
+    )
+    .catch(() =>
+      setToast({
+        text:
+          'Oh Oh! Something went wrong updating the Forecast. Contact the support!',
+        type: 'error',
+      }),
+    );
 };
 
 const generateSprint = () => {
@@ -51,57 +61,23 @@ const generateSprint = () => {
 
 const SprintOverview = ({ sprints }) => {
   const [activeSprints, setActiveSprints] = useState(sprints);
+  const [, setToast] = useToasts();
 
-  const defaultColumn = {
-    EditableCell,
-  };
+  const columns = useColumns();
 
-  const columns = useMemo(
-    () => [
-      {
-        Header: 'Sprint Name',
-        accessor: 'name',
-      },
-      {
-        Header: 'Start Date',
-        accessor: 'startDate',
-      },
-      {
-        Header: 'End Date',
-        accessor: 'endDate',
-      },
-      {
-        Header: 'Forecast',
-        accessor: 'forecast',
-      },
-    ],
-    [],
-  );
-
-  const data = useMemo(
-    () =>
-      activeSprints.map(sprint => {
-        sprint.startDate = !isMatch(sprint.startDate, 'dd/MM/yyyy')
-          ? format(new Date(sprint.startDate), 'dd/MM/yyyy')
-          : sprint.startDate;
-        sprint.endDate = !isMatch(sprint.endDate, 'dd/MM/yyyy')
-          ? format(new Date(sprint.endDate), 'dd/MM/yyyy')
-          : sprint.endDate;
-        sprint.forecast = sprint.forecast || 0;
-        return sprint;
-      }),
-    [activeSprints],
-  );
+  const data = useMemo(() => activeSprints, [activeSprints]);
 
   const updateMyData = (rowIndex, columnId, value) => {
     // We also turn on the flag to not reset the page
     setActiveSprints(old =>
       old.map((row, index) => {
         if (index === rowIndex) {
-          return {
+          const newRow = {
             ...old[rowIndex],
             [columnId]: value,
           };
+          addForecast(newRow, setToast);
+          return newRow;
         }
         return row;
       }),
@@ -118,7 +94,9 @@ const SprintOverview = ({ sprints }) => {
     {
       columns,
       data,
-      defaultColumn,
+      defaultColumn: {
+        EditableCell,
+      },
       initialState: { sortBy: [{ id: 'endDate', desc: false }] },
       updateMyData,
     },
