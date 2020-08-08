@@ -1,4 +1,4 @@
-import { Input } from '@zeit-ui/react';
+import { Input, Text, Tooltip } from '@zeit-ui/react';
 import { Check } from '@zeit-ui/react-icons';
 import PropTypes from 'prop-types';
 
@@ -12,17 +12,23 @@ const EditableCell = ({
   // We need to keep and update the state of the cell normally
   const [value, setValue] = React.useState(initialValue);
   const [isFocused, setFocused] = React.useState(false);
+  const [status, setStatus] = React.useState('default');
 
   const onChange = e => {
-    setValue(
-      isNaN(parseFloat(e.target.value)) ? '' : parseFloat(e.target.value),
-    );
+    if (isNaN(e.target.value)) {
+      setStatus('error');
+      return;
+    }
+    setValue(e.target.value);
+    setStatus('default');
   };
 
   // We'll only update the external data when the input is blurred
   const onBlur = () => {
     setFocused(false);
-    value > 0 && updateMyData(index, id, value);
+    value > 0 &&
+      parseFloat(value) !== initialValue &&
+      updateMyData(index, id, value);
   };
 
   // If the initialValue is changed external, sync it up with our state
@@ -31,23 +37,34 @@ const EditableCell = ({
   }, [initialValue]);
 
   return (
-    <Input
-      ref={inputRef}
-      width="100px"
-      iconClickable={isFocused}
-      iconRight={<Check color={isFocused ? 'green' : '#efefef'} />}
-      value={value}
-      onChange={onChange}
-      onBlur={onBlur}
-      onFocus={() => setFocused(true)}
-    />
+    <>
+      <Input
+        ref={inputRef}
+        width="100px"
+        status={status}
+        pattern="[+-]?([0-9]*[.])?[0-9]+"
+        iconClickable={isFocused}
+        iconRight={<Check color={isFocused ? 'green' : '#efefef'} />}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
+        onFocus={() => setFocused(true)}
+      />
+      {status === 'error' && (
+        <Tooltip text="such as 40.75, 30.0 or .5">
+          <Text small type={status}>
+            Expected decimal number <br />
+          </Text>
+        </Tooltip>
+      )}
+    </>
   );
 };
 
 export default EditableCell;
 
 EditableCell.propTypes = {
-  value: PropTypes.number,
+  value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   row: PropTypes.object,
   column: PropTypes.object,
   index: PropTypes.number,

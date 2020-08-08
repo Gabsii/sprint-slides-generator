@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import { useTable, useSortBy } from 'react-table';
 import { useMemo, useState } from 'react';
 import { Table, useToasts } from '@zeit-ui/react';
-import EditableCell from './EditableCell';
-import TableRow from './TableRow';
-import SortedIcon from './SortedIcon';
+import EditableCell from '@components/EditableCell';
+import TableRow from '@components/TableRow';
+import SortedIcon from '@components/SortedIcon';
 import useColumns from '@utils/hooks/useColumns';
 
 const TR = styled.tr`
