@@ -2,8 +2,13 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useTable, useSortBy } from 'react-table';
 import { useMemo, useState } from 'react';
-import { Table, useToasts } from '@zeit-ui/react';
+import { Table, useToasts, useTheme } from '@zeit-ui/react';
+import ProgressiveImage from 'react-progressive-image';
+
+import AvatarLoader from '@components/AvatarLoader';
+import AvatarPlaceholder from '@components/AvatarPlaceholder';
 import EditableCell from '@components/EditableCell';
+import Image from '@components/Presentation/Image';
 import TableRow from '@components/TableRow';
 import SortedIcon from '@components/SortedIcon';
 import useColumns from '@utils/hooks/useColumns';
@@ -13,24 +18,38 @@ const TR = styled.tr`
 `;
 
 const TH = styled.th`
-  background-color: lightgray;
-  padding: 1rem;
   font-weight: 300;
   text-transform: uppercase;
   font-size: 0.8rem;
 
+  padding: 1rem;
   border-bottom: 1px solid gray;
   border-top: 1px solid gray;
 
+  cursor: pointer;
+
   &:first-of-type {
     border-top-left-radius: 0.5rem;
+    border-bottom-left-radius: 0.5rem;
     border-left: 1px solid gray;
   }
 
   &:last-of-type {
     border-top-right-radius: 0.5rem;
+    border-bottom-right-radius: 0.5rem;
     border-right: 1px solid gray;
   }
+`;
+
+const Overlay = styled.div`
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.8);
+  z-index: 100;
 `;
 
 const addForecast = (sprint, setToast) => {
@@ -59,12 +78,11 @@ const generateSprint = () => {
   // reroute to sprint with ?editing=true set in URL
 };
 
-const SprintOverview = ({ sprints }) => {
+const SprintOverview = ({ sprints, isValidating, user }) => {
   const [activeSprints, setActiveSprints] = useState(sprints);
   const [, setToast] = useToasts();
-
+  const { palette } = useTheme();
   const columns = useColumns();
-
   const data = useMemo(() => activeSprints, [activeSprints]);
 
   const updateMyData = (rowIndex, columnId, value) => {
@@ -102,31 +120,63 @@ const SprintOverview = ({ sprints }) => {
     },
     useSortBy,
   );
+
   return (
-    <Table {...getTableProps()}>
-      <thead>
-        {headerGroups.map((headerGroup, i) => (
-          <TR key={i} {...headerGroup.getHeaderGroupProps()}>
-            {headerGroup.headers.map((column, j) => (
+    <>
+      {isValidating ? (
+        <Overlay>
+          <ProgressiveImage
+            src={`/api/users/${user.name}?size=xxlarge`}
+            placeholder=""
+          >
+            {(src, loading) =>
+              loading ? (
+                <AvatarLoader>
+                  <AvatarPlaceholder />
+                </AvatarLoader>
+              ) : (
+                <AvatarLoader>
+                  <Image src={src} alt={user.name} rounded={true} />
+                </AvatarLoader>
+              )
+            }
+          </ProgressiveImage>
+        </Overlay>
+      ) : null}
+      <Table {...getTableProps()} style={{ position: 'relative' }}>
+        <thead>
+          {headerGroups.map((headerGroup, i) => (
+            <TR key={i} {...headerGroup.getHeaderGroupProps()}>
+              {headerGroup.headers.map((column, j) => (
+                <TH
+                  key={j}
+                  {...column.getHeaderProps(column.getSortByToggleProps())}
+                  style={{
+                    backgroundColor: palette.accents_1,
+                    color: palette.accents_5,
+                  }}
+                >
+                  {column.render('Header')}
+                  <SortedIcon column={column} />
+                </TH>
+              ))}
               <TH
-                key={j}
-                {...column.getHeaderProps(column.getSortByToggleProps())}
-              >
-                {column.render('Header')}
-                <SortedIcon column={column} />
-              </TH>
-            ))}
-            <TH></TH>
-          </TR>
-        ))}
-      </thead>
-      <tbody {...getTableBodyProps()}>
-        {rows.map((row, i) => {
-          prepareRow(row);
-          return <TableRow key={i} row={row}></TableRow>;
-        })}
-      </tbody>
-    </Table>
+                style={{
+                  backgroundColor: palette.accents_1,
+                  color: palette.accents_5,
+                }}
+              />
+            </TR>
+          ))}
+        </thead>
+        <tbody {...getTableBodyProps()}>
+          {rows.map((row, i) => {
+            prepareRow(row);
+            return <TableRow key={i} row={row}></TableRow>;
+          })}
+        </tbody>
+      </Table>
+    </>
   );
 };
 
@@ -134,4 +184,6 @@ export default SprintOverview;
 
 SprintOverview.propTypes = {
   sprints: PropTypes.array,
+  isValidating: PropTypes.bool,
+  user: PropTypes.object,
 };

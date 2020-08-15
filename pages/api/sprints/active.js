@@ -1,6 +1,6 @@
 import { sub } from 'date-fns';
 import db from '@utils/db';
-import { allSprints } from '../../../utils/queries';
+import { allSprints } from '@utils/queries';
 
 const handler = async (req, res) => {
   const { favourites, authToken } = JSON.parse(req.body);

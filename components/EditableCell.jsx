@@ -1,4 +1,4 @@
-import { Input, Text, Tooltip } from '@zeit-ui/react';
+import { Input, Text, Tooltip, useTheme } from '@zeit-ui/react';
 import { Check } from '@zeit-ui/react-icons';
 import PropTypes from 'prop-types';
 
@@ -13,6 +13,8 @@ const EditableCell = ({
   const [value, setValue] = React.useState(initialValue);
   const [isFocused, setFocused] = React.useState(false);
   const [status, setStatus] = React.useState('default');
+
+  const { palette } = useTheme();
 
   const onChange = e => {
     if (isNaN(e.target.value)) {
@@ -44,7 +46,9 @@ const EditableCell = ({
         status={status}
         pattern="[+-]?([0-9]*[.])?[0-9]+"
         iconClickable={isFocused}
-        iconRight={<Check color={isFocused ? 'green' : '#efefef'} />}
+        iconRight={
+          <Check color={isFocused ? palette.success : palette.accents_1} />
+        }
         value={value}
         onChange={onChange}
         onBlur={onBlur}

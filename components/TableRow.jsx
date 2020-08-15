@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Button, Popover, useClickAway } from '@zeit-ui/react';
+import { Button, Popover, useClickAway, useTheme } from '@zeit-ui/react';
 import useFocus from '@utils/hooks/useFocus';
 import { useRef, useState } from 'react';
 
@@ -9,17 +9,9 @@ const TR = styled.tr`
 `;
 
 const TD = styled.td`
-  border-bottom: 1px solid gray;
-  padding: 0.75rem;
+  padding: 0.66rem;
   text-align: center;
-
-  &:first-of-type {
-    border-left: 1px solid gray;
-  }
-
-  &:last-of-type {
-    border-right: 1px solid gray;
-  }
+  font-size: 14px;
 `;
 
 const popoverContent = (original, setInputFocus, setVisible) => {
@@ -51,17 +43,22 @@ const TableRow = ({ row }) => {
   const [visible, setVisible] = useState(false);
   const [inputRef, setInputFocus] = useFocus();
   useClickAway(ref, () => setVisible(false));
+  const { palette } = useTheme();
 
   return (
     <TR {...row.getRowProps()}>
       {row.cells.map((cell, j) => (
-        <TD key={j} {...cell.getCellProps()}>
+        <TD
+          {...cell.getCellProps()}
+          key={j}
+          style={{ borderBottom: `1px solid ${palette.accents_2}` }}
+        >
           {cell.column.id === 'forecast'
             ? cell.render('EditableCell', { inputRef })
             : cell.render('Cell')}
         </TD>
       ))}
-      <TD>
+      <TD style={{ borderBottom: `1px solid ${palette.accents_2}` }}>
         <Popover
           content={popoverContent(row.original, setInputFocus, setVisible)}
           visible={visible}

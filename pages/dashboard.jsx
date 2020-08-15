@@ -1,24 +1,44 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
-import ProgressiveImage from 'react-progressive-image';
 
-import AvatarLoader from '@components/AvatarLoader';
-import AvatarPlaceholder from '@components/AvatarPlaceholder';
-import Image from '@components/Presentation/Image';
 import Layout from '@components/Layout';
 import SprintOverview from '@components/SprintOverview';
 import { TokenContext } from '@utils/ctx/TokenContext';
 import withSession from '@utils/session';
 import FavouritesSlider from '@components/FavouritesSlider';
+import useSWR from 'swr';
+import { Button, Row, Text, Link } from '@zeit-ui/react';
+import { RefreshCw } from '@zeit-ui/react-icons';
 
 const Dashboard = ({ user, favourites, activeSprints, authToken }) => {
   const { token, setToken } = useContext(TokenContext);
+  const [shouldFetch, setShouldFetch] = useState(false);
 
   useEffect(() => {
     if (token && authToken) {
       setToken(authToken);
     }
   }, [authToken]);
+
+  const retoggleFetch = () => {
+    setShouldFetch(false);
+    setTimeout(() => setShouldFetch(true), 10);
+  };
+
+  const { sprints, error, isValidating } = useSWR(
+    shouldFetch ? '/api/sprints/active' : null,
+    url =>
+      fetch(url, {
+        method: 'POST',
+        body: JSON.stringify({ favourites, authToken }),
+      }).then(res => {
+        if (res.ok) {
+          return res.json();
+        }
+        throw new Error(`HTTP Code ${res.status} - ${res.statusText}`);
+      }),
+    { shouldRetryOnError: false, dedupingInterval: 100 },
+  );
 
   return (
     <div>
@@ -32,26 +52,41 @@ const Dashboard = ({ user, favourites, activeSprints, authToken }) => {
             flexDirection: 'column',
           }}
         >
-          <a href="/boards">Set favourite boards</a>
-          {/* <p style={{ marginBottom: '4em' }}>Hello there, {user.name}</p>
-          <ProgressiveImage
-            src={`${user.avatarUrls['48x48']}&size=xxxlarge`}
-            placeholder=""
-          >
-            {(src, loading) =>
-              loading ? (
-                <AvatarLoader>
-                  <AvatarPlaceholder />
-                </AvatarLoader>
-              ) : (
-                <AvatarLoader>
-                  <Image src={src} alt={user.name} rounded={true} />
-                </AvatarLoader>
-              )
-            }
-          </ProgressiveImage> */}
+          <Row align="middle" justify="space-between" style={{ width: '100%' }}>
+            <Text h2>Active Sprints</Text>
+            <Button
+              auto
+              size="small"
+              iconRight={<RefreshCw />}
+              onClick={() =>
+                shouldFetch ? retoggleFetch() : setShouldFetch(true)
+              }
+            >
+              Refresh
+            </Button>
+          </Row>
+          {error && <span>oh no something went wrong {error.message}</span>}
           {/* {!!favourites.length && <FavouritesSlider favourites={favourites} />} */}
-          <SprintOverview sprints={activeSprints}></SprintOverview>
+
+          {sprints || activeSprints ? (
+            <SprintOverview
+              sprints={sprints || activeSprints}
+              user={user}
+              isValidating={isValidating}
+            />
+          ) : (
+            <>
+              <Text h3>Welcome!</Text>
+              <Text p style={{ textAlign: 'center' }}>
+                Looks like this is your first time here! <br />
+                To efficiently use the SprintSlidesGenerator you have to set
+                your favourite boards first!
+              </Text>
+              <Link color block href="/boards">
+                Click here to set your favourite boards
+              </Link>
+            </>
+          )}
         </div>
       </Layout>
     </div>
@@ -88,11 +123,12 @@ export const getServerSideProps = withSession(async function({ req, res }) {
       props: {
         user: req.session.get('user'),
         authToken: req.session.get('authToken'),
-        error,
+        error: 'Oh Oh! Something went wrong!',
       },
     };
   }
 
+  // todo: add HOC for authToken
   const activeSprintsResponse = await fetch(
     `http://${req.headers.host}/api/sprints/active`,
     {
@@ -109,7 +145,7 @@ export const getServerSideProps = withSession(async function({ req, res }) {
       props: {
         user: req.session.get('user'),
         authToken: req.session.get('authToken'),
-        error,
+        error: 'Oh Oh! Something went wrong!',
       },
     };
   }
