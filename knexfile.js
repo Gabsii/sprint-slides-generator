@@ -12,7 +12,6 @@ module.exports = {
   production: {
     client: 'mysql',
     connection: {
-      // TODO: add .env
       host: process.env.DATABASE_HOST,
       database: process.env.DATABASE_NAME,
       user: process.env.DATABASE_USER,

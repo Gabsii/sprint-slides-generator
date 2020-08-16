@@ -18,7 +18,6 @@ const UnorderedList = ({ children, listStyle }) => {
     return (
       <ULWrapper listStyle={listStyle}>
         {children.map((child, index) => (
-          // TODO check if li tag exists
           <LI key={`li-child-${index}`}>{child}</LI>
         ))}
       </ULWrapper>

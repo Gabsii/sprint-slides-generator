@@ -1,7 +1,7 @@
 import Layout from '@components/Layout';
 import LoginForm from '@components/LoginForm';
 import withSession from '@utils/session';
-import sessionData from '../utils/session/data';
+import sessionData from '@utils/session/data';
 
 const Home = () => (
   <div>

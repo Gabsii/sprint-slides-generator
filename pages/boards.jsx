@@ -3,8 +3,8 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import withSession from '@utils/session';
-import sessionData from '../utils/session/data';
-import api from '../utils/api';
+import sessionData from '@utils/session/data';
+import api from '@utils/api';
 
 const Grid = styled.div`
   display: grid;

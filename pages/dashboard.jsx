@@ -10,7 +10,7 @@ import FavouritesSlider from '@components/FavouritesSlider';
 import useSWR from 'swr';
 import { Button, Row, Text, Link, Col, Loading } from '@zeit-ui/react';
 import { RefreshCw } from '@zeit-ui/react-icons';
-import api from '../utils/api';
+import api from '@utils/api';
 
 const SprintOverview = dynamic(() => import('@components/SprintOverview'), {
   loading: () => <Loading />,
