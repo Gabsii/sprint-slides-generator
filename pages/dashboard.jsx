@@ -1,17 +1,22 @@
 import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
+import dynamic from 'next/dynamic';
 
 import Layout from '@components/Layout';
-import SprintOverview from '@components/SprintOverview';
 import { TokenContext } from '@utils/ctx/TokenContext';
 import withSession from '@utils/session';
 import sessionData from '@utils/session/data';
 import FavouritesSlider from '@components/FavouritesSlider';
 import useSWR from 'swr';
-import { Button, Row, Text, Link, Col } from '@zeit-ui/react';
+import { Button, Row, Text, Link, Col, Loading } from '@zeit-ui/react';
 import { RefreshCw } from '@zeit-ui/react-icons';
+import api from '../utils/api';
 
-const Dashboard = ({ user, favourites, activeSprints, authToken }) => {
+const SprintOverview = dynamic(() => import('@components/SprintOverview'), {
+  loading: () => <Loading />,
+});
+
+const Dashboard = ({ user, favourites, activeSprints, authToken, errors }) => {
   const { token, setToken } = useContext(TokenContext);
   const [shouldFetch, setShouldFetch] = useState(false);
 
@@ -98,56 +103,23 @@ const Dashboard = ({ user, favourites, activeSprints, authToken }) => {
 };
 
 export const getServerSideProps = withSession(async function({ req, res }) {
+  let errors = [];
   const user = sessionData(req, res, 'user');
   const authToken = sessionData(req, res, 'authToken');
-
   if (!user || !authToken) return { props: null };
 
-  const favouritesResponse = await fetch(
-    `http://${req.headers.host}/api/boards/favourites`,
-    {
-      method: 'POST',
-      body: JSON.stringify({ user }),
-    },
-  );
+  const [favourites, favouritesError] = await api('/boards/favourites', {
+    method: 'POST',
+    body: JSON.stringify({ user }),
+  });
+  favouritesError && errors.push(favouritesError);
 
-  let favourites, activeSprints;
+  const [activeSprints, activeSprintsError] = await api('/sprints/active', {
+    method: 'POST',
+    body: JSON.stringify({ favourites, authToken }),
+  });
 
-  // todo: simplify try catch for every response
-  try {
-    favourites = await favouritesResponse.json();
-  } catch (error) {
-    console.error(error);
-    return {
-      props: {
-        user: req.session.get('user'),
-        authToken: req.session.get('authToken'),
-        error: 'Oh Oh! Something went wrong!',
-      },
-    };
-  }
-
-  // todo: add HOC for authToken
-  const activeSprintsResponse = await fetch(
-    `http://${req.headers.host}/api/sprints/active`,
-    {
-      method: 'POST',
-      body: JSON.stringify({ favourites, authToken }),
-    },
-  );
-
-  try {
-    activeSprints = await activeSprintsResponse.json();
-  } catch (error) {
-    console.error(error);
-    return {
-      props: {
-        user: req.session.get('user'),
-        authToken: req.session.get('authToken'),
-        error: 'Oh Oh! Something went wrong!',
-      },
-    };
-  }
+  activeSprintsError && errors.push(activeSprintsError);
 
   return {
     props: {
@@ -155,6 +127,7 @@ export const getServerSideProps = withSession(async function({ req, res }) {
       authToken: req.session.get('authToken'),
       favourites,
       activeSprints,
+      errors,
     },
   };
 });
@@ -166,4 +139,5 @@ Dashboard.propTypes = {
   authToken: PropTypes.string.isRequired,
   favourites: PropTypes.array,
   activeSprints: PropTypes.array,
+  errors: PropTypes.array,
 };

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import withSession from '@utils/session';
 import sessionData from '../utils/session/data';
+import api from '../utils/api';
 
 const Grid = styled.div`
   display: grid;
@@ -32,7 +33,7 @@ const GridItem = styled.button`
   }
 `;
 
-const Boards = ({ boards, user, authToken, favourites }) => {
+const Boards = ({ boards, user, authToken, favourites, errors }) => {
   const [favouriteBoards, addFavouriteBoard] = useState(favourites);
   const [projectBoards, setProjectBoards] = useState(null);
   const [search, setSearch] = useState('');
@@ -131,40 +132,23 @@ const Boards = ({ boards, user, authToken, favourites }) => {
 };
 
 export const getServerSideProps = withSession(async function({ req, res }) {
+  let errors = [];
   const user = sessionData(req, res, 'user');
   const authToken = sessionData(req, res, 'authToken');
 
   if (!user || !authToken) return { props: null };
 
-  // TODO: move to a seperate function maybe
-  const boardsResponse = await fetch(`http://${req.headers.host}/api/boards`, {
+  const [boards, boardsError] = await api('/boards', {
     method: 'POST',
     body: JSON.stringify({ authToken }),
   });
+  boardsError && errors.push(boardsError);
 
-  const favouritesResponse = await fetch(
-    `http://${req.headers.host}/api/boards/favourites`,
-    {
-      method: 'POST',
-      body: JSON.stringify({ user }),
-    },
-  );
-
-  let boards, favourites;
-
-  try {
-    boards = await boardsResponse.json();
-    favourites = await favouritesResponse.json();
-  } catch (error) {
-    console.error(error);
-    return {
-      props: {
-        user: req.session.get('user'),
-        authToken: req.session.get('authToken'),
-        error,
-      },
-    };
-  }
+  const [favourites, favouritesError] = await api('/boards/favourites', {
+    method: 'POST',
+    body: JSON.stringify({ user }),
+  });
+  favouritesError && errors.push(favouritesError);
 
   return {
     props: {
@@ -172,6 +156,7 @@ export const getServerSideProps = withSession(async function({ req, res }) {
       authToken: req.session.get('authToken'),
       boards,
       favourites,
+      errors,
     },
   };
 });
@@ -183,4 +168,5 @@ Boards.propTypes = {
   user: PropTypes.array,
   favourites: PropTypes.array,
   authToken: PropTypes.string,
+  errors: PropTypes.array,
 };
