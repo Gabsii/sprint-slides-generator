@@ -3,9 +3,7 @@ import { withIronSession } from 'next-iron-session';
 
 export default function withSession(handler) {
   return withIronSession(handler, {
-    // TODO: use .env file
-    // password: process.env.SECRET_COOKIE_PASSWORD,
-    password: '6gRui8ZMaMva4qnsfbUMLi9HumX7nUoL91aBr7AG',
+    password: process.env.SECRET_COOKIE_PASSWORD,
     cookieName: 'SESSION_ID',
     cookieOptions: {
       // the next line allows to use the session in non-https environements like
