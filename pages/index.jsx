@@ -1,6 +1,7 @@
 import Layout from '@components/Layout';
 import LoginForm from '@components/LoginForm';
 import withSession from '@utils/session';
+import sessionData from '../utils/session/data';
 
 const Home = () => (
   <div>
@@ -13,17 +14,11 @@ const Home = () => (
 );
 
 export const getServerSideProps = withSession(async function({ req, res }) {
-  const authToken = req.session.get('authToken');
+  const authToken = sessionData(req, res, 'authToken');
+  if (!authToken) return { props: null };
 
-  if (authToken === undefined) {
-    return { props: {} };
-  }
-
-  res.setHeader('Location', '/dashboard');
-  res.statusCode = 302;
-  res.end();
   return {
-    props: { authToken: req.session.get('authToken') },
+    props: { authToken },
   };
 });
 

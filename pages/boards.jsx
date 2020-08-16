@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 
 import withSession from '@utils/session';
+import sessionData from '../utils/session/data';
 
 const Grid = styled.div`
   display: grid;
@@ -130,16 +131,10 @@ const Boards = ({ boards, user, authToken, favourites }) => {
 };
 
 export const getServerSideProps = withSession(async function({ req, res }) {
-  const user = req.session.get('user');
-  const authToken = req.session.get('authToken');
+  const user = sessionData(req, res, 'user');
+  const authToken = sessionData(req, res, 'authToken');
 
-  // TODO: move this to an HOC
-  if (user === undefined || authToken === undefined) {
-    res.setHeader('location', '/');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
+  if (!user || !authToken) return { props: null };
 
   // TODO: move to a seperate function maybe
   const boardsResponse = await fetch(`http://${req.headers.host}/api/boards`, {

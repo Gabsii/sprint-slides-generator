@@ -5,9 +5,10 @@ import Layout from '@components/Layout';
 import SprintOverview from '@components/SprintOverview';
 import { TokenContext } from '@utils/ctx/TokenContext';
 import withSession from '@utils/session';
+import sessionData from '@utils/session/data';
 import FavouritesSlider from '@components/FavouritesSlider';
 import useSWR from 'swr';
-import { Button, Row, Text, Link } from '@zeit-ui/react';
+import { Button, Row, Text, Link, Col } from '@zeit-ui/react';
 import { RefreshCw } from '@zeit-ui/react-icons';
 
 const Dashboard = ({ user, favourites, activeSprints, authToken }) => {
@@ -41,68 +42,66 @@ const Dashboard = ({ user, favourites, activeSprints, authToken }) => {
   );
 
   return (
-    <div>
-      <Layout title="Dashboard" displayHeader={false} displayFooter={false}>
-        <div
-          style={{
-            height: '100vh',
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            flexDirection: 'column',
-          }}
-        >
-          <Row align="middle" justify="space-between" style={{ width: '100%' }}>
-            <Text h2>Active Sprints</Text>
-            <Button
-              auto
-              size="small"
-              iconRight={<RefreshCw />}
-              onClick={() =>
-                shouldFetch ? retoggleFetch() : setShouldFetch(true)
-              }
-            >
-              Refresh
-            </Button>
+    <Layout title="Dashboard" displayHeader={false} displayFooter={false}>
+      <div
+        style={{
+          height: '100vh',
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          flexDirection: 'column',
+        }}
+      >
+        <Row align="middle" justify="space-between" style={{ width: '100%' }}>
+          <Text h2>Active Sprints</Text>
+          <Button
+            auto
+            size="small"
+            iconRight={<RefreshCw />}
+            onClick={() =>
+              shouldFetch ? retoggleFetch() : setShouldFetch(true)
+            }
+          >
+            Refresh
+          </Button>
+        </Row>
+        {error && (
+          <Row>
+            <Text span>oh no something went wrong {error.message}</Text>
           </Row>
-          {error && <span>oh no something went wrong {error.message}</span>}
-          {/* {!!favourites.length && <FavouritesSlider favourites={favourites} />} */}
-
-          {sprints || activeSprints ? (
+        )}
+        {/* {!!favourites.length && <FavouritesSlider favourites={favourites} />} */}
+        {sprints || activeSprints ? (
+          <Row style={{ width: '100%' }}>
             <SprintOverview
               sprints={sprints || activeSprints}
               user={user}
               isValidating={isValidating}
             />
-          ) : (
-            <>
-              <Text h3>Welcome!</Text>
-              <Text p style={{ textAlign: 'center' }}>
-                Looks like this is your first time here! <br />
-                To efficiently use the SprintSlidesGenerator you have to set
-                your favourite boards first!
-              </Text>
-              <Link color block href="/boards">
-                Click here to set your favourite boards
-              </Link>
-            </>
-          )}
-        </div>
-      </Layout>
-    </div>
+          </Row>
+        ) : (
+          <Col align="middle">
+            <Text h3>Welcome!</Text>
+            <Text p style={{ textAlign: 'center' }}>
+              Looks like this is your first time here! <br />
+              To efficiently use the SprintSlidesGenerator you have to set your
+              favourite boards first!
+            </Text>
+            <Link color block href="/boards">
+              Click here to set your favourite boards
+            </Link>
+          </Col>
+        )}
+      </div>
+    </Layout>
   );
 };
 
 export const getServerSideProps = withSession(async function({ req, res }) {
-  const user = req.session.get('user');
-  const authToken = req.session.get('authToken');
+  const user = sessionData(req, res, 'user');
+  const authToken = sessionData(req, res, 'authToken');
 
-  if (user === undefined || authToken === undefined) {
-    res.setHeader('location', '/');
-    res.statusCode = 302;
-    res.end();
-    return { props: {} };
-  }
+  if (!user || !authToken) return { props: null };
 
   const favouritesResponse = await fetch(
     `http://${req.headers.host}/api/boards/favourites`,
