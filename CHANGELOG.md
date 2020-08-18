@@ -5,6 +5,7 @@
 ### Breaking
 
 - you now need to run `knex migrate:latest` for the database connection
+- database connections, api base urls, etc. are now being handled by an `.env` file
 
 ### Added
 
@@ -14,6 +15,13 @@
 - Added favourite boards
 - Added database migrations
 - Added dashboard
+- Added toasts for global messages
+- Added @zeit-ui/react for easier and more aesthetic styling
+
+### Updated
+
+- Improved the Spinner/Loading animations
+- Improved Authorization Flows and API abstractions
 
 ## [v0.0.1]
 
