@@ -1,4 +1,3 @@
-/* eslint-disable react/prop-types */
 import { useMemo } from 'react';
 import { format } from 'date-fns';
 import { Text } from '@zeit-ui/react';
@@ -19,23 +18,23 @@ const useColumns = () =>
   useMemo(
     () => [
       {
-        Header: ({ column }) => <Header column={column} text="Sprint Name" />,
+        Header: data => <Header column={data.column} text="Sprint Name" />,
         accessor: 'name',
       },
       {
-        Header: ({ column }) => <Header column={column} text="Start Date" />,
+        Header: data => <Header column={data.column} text="Start Date" />,
         id: 'startDate',
         accessor: originalRow =>
           format(new Date(originalRow.startDate), 'dd-MM-yyyy'),
       },
       {
-        Header: ({ column }) => <Header column={column} text="End Date" />,
+        Header: data => <Header column={data.column} text="End Date" />,
         id: 'endDate',
         accessor: originalRow =>
           format(new Date(originalRow.endDate), 'dd-MM-yyyy'),
       },
       {
-        Header: ({ column }) => <Header column={column} text="Forecast" />,
+        Header: data => <Header column={data.column} text="Forecast" />,
         accessor: 'forecast',
       },
     ],
