@@ -3,6 +3,7 @@ const api = async (apiUrl, ...params) => {
   let error;
   let data;
   if (apiUrl.startsWith('/')) {
+    console.log(process.env);
     url = `${process.env.APP_URL}/api${apiUrl}`;
   }
   const apiResponse = await fetch(url, ...params);
