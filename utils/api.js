@@ -3,7 +3,9 @@ const api = async (apiUrl, ...params) => {
   let error;
   let data;
   if (apiUrl.startsWith('/')) {
-    url = `${process.env.APP_URL}/api${apiUrl}`;
+    url = `${
+      process.env.APP_URL ? process.env.APP_URL : process.env.VERCEL_URL
+    }/api${apiUrl}`;
     console.log(url);
   }
   const apiResponse = await fetch(url, ...params);
