@@ -4,7 +4,9 @@ const api = async (apiUrl, ...params) => {
   let data;
   if (apiUrl.startsWith('/')) {
     url = `${
-      process.env.APP_URL !== '' ? process.env.APP_URL : process.env.VERCEL_URL
+      process.env.APP_URL !== '' || process.env.APP_URL !== undefined
+        ? process.env.APP_URL
+        : process.env.VERCEL_URL
     }/api${apiUrl}`;
     console.log(url);
   }
