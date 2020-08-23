@@ -16,9 +16,11 @@ module.exports = {
   env: {
     browser: true,
     node: true,
+    es6: true,
   },
   rules: {
     'react/react-in-jsx-scope': 'off',
+    'react/display-name': 'off',
     'prettier/prettier': ['error'],
     'arrow-body-style': [2, 'as-needed'],
     'class-methods-use-this': 0,

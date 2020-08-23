@@ -1,5 +1,28 @@
 # Changelog
 
+## [unreleased]
+
+### Breaking
+
+- you now need to run `knex migrate:latest` for the database connection
+- database connections, api base urls, etc. are now being handled by an `.env` file
+
+### Added
+
+- Added boards overview
+  - one for the teams => loaded immediately 
+  - one for other projects => loaded on click
+- Added favourite boards
+- Added database migrations
+- Added dashboard
+- Added toasts for global messages
+- Added @zeit-ui/react for easier and more aesthetic styling
+
+### Updated
+
+- Improved the Spinner/Loading animations
+- Improved Authorization Flows and API abstractions
+
 ## [v0.0.1]
 
 ### Added 
@@ -13,3 +36,6 @@
 - Added a basic dashboard 
 - Added Sprint Presentation Library with default company style
 - Added Image Fallback component
+
+[v0.0.1]: https://github.com/Gabsii/sprint-slides-generator/tree/v0.0.1
+[unreleased]: https://github.com/Gabsii/sprint-slides-generator/

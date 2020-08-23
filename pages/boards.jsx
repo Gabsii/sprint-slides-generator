@@ -1,349 +1,188 @@
 import { useState } from 'react';
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
+import {
+  Page,
+  Grid,
+  Divider,
+  Text,
+  Card,
+  Link,
+  Button,
+  Input,
+  Spacer,
+} from '@zeit-ui/react';
+import { RefreshCw } from '@zeit-ui/react-icons';
 
-const boards = {
-  maxResults: 50,
-  startAt: 50,
-  isLast: false,
-  values: [
-    {
-      id: 262,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/262',
-      name: 'Unifinanz',
-      type: 'scrum',
-    },
-    {
-      id: 268,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/268',
-      name: 'SCRUM Board',
-      type: 'scrum',
-    },
-    {
-      id: 270,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/270',
-      name: 'Entwickler Wochenplanung',
-      type: 'scrum',
-    },
-    {
-      id: 272,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/272',
-      name: 'Stadtwerke Wörgl (STWW)',
-      type: 'scrum',
-    },
-    {
-      id: 274,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/274',
-      name: 'Inet Logistics',
-      type: 'scrum',
-    },
-    {
-      id: 282,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/282',
-      name: 'Gränicher & Sagmeister',
-      type: 'scrum',
-    },
-    {
-      id: 284,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/284',
-      name: 'Jena MICE',
-      type: 'scrum',
-    },
-    {
-      id: 285,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/285',
-      name: 'Stabiq',
-      type: 'scrum',
-    },
-    {
-      id: 287,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/287',
-      name: 'Burgwald und Petersboden',
-      type: 'scrum',
-    },
-    {
-      id: 305,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/305',
-      name: 'BTV Garantieservice Scrum',
-      type: 'scrum',
-    },
-    {
-      id: 309,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/309',
-      name: 'BTV Kontoeröffnung',
-      type: 'scrum',
-    },
-    {
-      id: 314,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/314',
-      name: 'Feratel Plugin Buchungsprozess (Vollintegration)',
-      type: 'scrum',
-    },
-    {
-      id: 315,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/315',
-      name: 'Übergabe Marko & Tech Roadmap',
-      type: 'scrum',
-    },
-    {
-      id: 319,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/319',
-      name: 'AK Digital Campus',
-      type: 'scrum',
-    },
-    {
-      id: 320,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/320',
-      name: 'TOWA Library',
-      type: 'scrum',
-    },
-    {
-      id: 323,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/323',
-      name: 'CLC - Corporate Learning & Change',
-      type: 'scrum',
-    },
-    {
-      id: 328,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/328',
-      name: 'Team Y - Scrum Wochenplanung',
-      type: 'scrum',
-    },
-    {
-      id: 331,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/331',
-      name: 'Seidl',
-      type: 'scrum',
-    },
-    {
-      id: 335,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/335',
-      name: 'Vips',
-      type: 'scrum',
-    },
-    {
-      id: 341,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/341',
-      name: 'Testprojekt 1',
-      type: 'scrum',
-    },
-    {
-      id: 352,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/352',
-      name: 'floMobil',
-      type: 'scrum',
-    },
-    {
-      id: 353,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/353',
-      name: 'Test BEN',
-      type: 'scrum',
-    },
-    {
-      id: 363,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/363',
-      name: 'Team-Y - Sprints',
-      type: 'scrum',
-    },
-    {
-      id: 364,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/364',
-      name: 'BTV Bankier 2.0',
-      type: 'scrum',
-    },
-    {
-      id: 371,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/371',
-      name: 'Confluence und Jira Neugestaltung',
-      type: 'scrum',
-    },
-    {
-      id: 372,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/372',
-      name: 'Sagemax_alt',
-      type: 'scrum',
-    },
-    {
-      id: 373,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/373',
-      name: 'Thomas Pegram',
-      type: 'scrum',
-    },
-    {
-      id: 374,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/374',
-      name: 'Hirschmann Automotive',
-      type: 'scrum',
-    },
-    {
-      id: 375,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/375',
-      name: 'CBT Scrum',
-      type: 'scrum',
-    },
-    {
-      id: 376,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/376',
-      name: 'freicom.towa.digital - Bereitstellung Landingpage',
-      type: 'scrum',
-    },
-    {
-      id: 385,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/385',
-      name: 'Dachvisionen',
-      type: 'scrum',
-    },
-    {
-      id: 386,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/386',
-      name: 'BASWA',
-      type: 'scrum',
-    },
-    {
-      id: 389,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/389',
-      name: 'Sigma Bank Relaunch',
-      type: 'scrum',
-    },
-    {
-      id: 390,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/390',
-      name: 'Dachvisionen Landingpage',
-      type: 'scrum',
-    },
-    {
-      id: 392,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/392',
-      name: 'ASI',
-      type: 'scrum',
-    },
-    {
-      id: 393,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/393',
-      name: 'Haberkorn',
-      type: 'scrum',
-    },
-    {
-      id: 394,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/394',
-      name: 'HAGEN Testprojekt',
-      type: 'scrum',
-    },
-    {
-      id: 399,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/399',
-      name: 'BTV | Unifinanz',
-      type: 'scrum',
-    },
-    {
-      id: 400,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/400',
-      name: 'Typo Media Mäser',
-      type: 'scrum',
-    },
-    {
-      id: 401,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/401',
-      name: 'Kopie von Lech Zürs Tourismus',
-      type: 'scrum',
-    },
-    {
-      id: 402,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/402',
-      name: 'IMA Schelling Landingpage',
-      type: 'scrum',
-    },
-    {
-      id: 403,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/403',
-      name: 'W&L Asset Management AG',
-      type: 'scrum',
-    },
-    {
-      id: 404,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/404',
-      name: 'Team-X Sprint Backlog',
-      type: 'scrum',
-    },
-    {
-      id: 405,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/405',
-      name: 'Cosmofunding Vontobel Backend',
-      type: 'scrum',
-    },
-    {
-      id: 408,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/408',
-      name: 'Ecosio',
-      type: 'scrum',
-    },
-    {
-      id: 409,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/409',
-      name: 'Team Z',
-      type: 'scrum',
-    },
-    {
-      id: 412,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/412',
-      name: 'Creative-Template',
-      type: 'scrum',
-    },
-    {
-      id: 413,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/413',
-      name: 'Kopie von Creative-Template',
-      type: 'scrum',
-    },
-    {
-      id: 417,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/417',
-      name: 'Clemens Overview',
-      type: 'scrum',
-    },
-    {
-      id: 418,
-      self: 'https://jira.towa-digital.com/rest/agile/1.0/board/418',
-      name: 'Team-W Sprint Backlog',
-      type: 'scrum',
-    },
-  ],
-};
+import withSession from '@utils/session';
+import sessionData from '@utils/session/data';
+import api from '@utils/api';
 
-const Grid = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  grid-gap: 15px;
-
-  padding: 15px;
+const HoverableGrid = styled(Grid)`
+  &:hover {
+    cursor: pointer;
+  }
 `;
 
-const GridItem = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
+const GridItem = ({ board, favouriteBoards, toggleFavourite }) => (
+  <HoverableGrid xs={8}>
+    <Card
+      shadow
+      hoverable
+      type={
+        favouriteBoards.some(fav => fav.id === board.id) ? 'success' : 'default'
+      }
+      onClick={() => toggleFavourite(board)}
+      style={{ width: '100%', height: '150px' }}
+    >
+      <Card.Content style={{ height: '66%' }}>
+        <Text size="1.25em">{board.name}</Text>
+      </Card.Content>
+      <Card.Footer style={{ height: '33%' }}>
+        <Link
+          href={
+            board.jira_url ||
+            `https://jira.towa-digital.com/secure/RapidBoard.jspa?rapidView=${board.id}`
+          }
+          target="_blank"
+          color={!favouriteBoards.some(fav => fav.id === board.id)}
+          icon
+        >
+          Link to Jira
+        </Link>
+      </Card.Footer>
+    </Card>
+  </HoverableGrid>
+);
 
-  padding: 20px 40px;
-  height: 100px;
+const Boards = ({ boards, user, authToken, favourites, errors }) => {
+  const [favouriteBoards, addFavouriteBoard] = useState(favourites);
+  const [projectBoards, setProjectBoards] = useState(null);
+  const [search, setSearch] = useState('');
 
-  background-color: ${({ theme }) => theme.colors.navBackground};
-`;
+  const toggleFavourite = board => {
+    if (favouriteBoards.some(fav => fav.id === board.id)) {
+      fetch(`/api/boards/${board.id}/favourite`, {
+        method: 'DELETE',
+        body: JSON.stringify({ user }),
+      });
+      const boards = favouriteBoards.filter(
+        favBoard => favBoard.id !== board.id,
+      );
+      addFavouriteBoard(boards);
+    } else {
+      fetch(`/api/boards/${board.id}/favourite`, {
+        method: 'PUT',
+        body: JSON.stringify({ user, name: board.name }),
+      });
 
-const Boards = () => {
-  const [favouriteBoards, addFavouriteBoard] = useState([]);
+      addFavouriteBoard([...favouriteBoards, board]);
+    }
+  };
+
+  const loadAll = async () => {
+    const res = await fetch(`api/boards`, {
+      method: 'POST',
+      body: JSON.stringify({ authToken, showMore: true, search }),
+    })
+      .then(res => res.json())
+      .catch(err => console.error(err));
+
+    const boardsResponse = res.filter(res => !res.name.includes('Team'));
+
+    setProjectBoards(boardsResponse);
+  };
 
   return (
-    <Grid>
-      {boards.values.map(board => (
-        <GridItem
-          key={board.id}
-          onClick={() => addFavouriteBoard([...favouriteBoards, board])}
-        >
-          {board.name}
-        </GridItem>
-      ))}
-    </Grid>
+    <Page>
+      <Page.Content>
+        <Grid.Container gap={2}>
+          {boards.map(board => (
+            <GridItem
+              key={board.id}
+              board={board}
+              favouriteBoards={favouriteBoards}
+              toggleFavourite={toggleFavourite}
+            />
+          ))}
+        </Grid.Container>
+        <Divider />
+        <Text h2>Need to see more?</Text>
+        <Button auto onClick={() => loadAll()} icon={<RefreshCw />}>
+          Show All
+        </Button>
+        {projectBoards && (
+          <Input
+            type="text"
+            name="search"
+            id="search"
+            onChange={e => setSearch(e.target.value)}
+            onKeyDown={e => (e.key === 'Enter' ? loadAll() : null)}
+            onBlur={() => loadAll()}
+            onClearClick={() => loadAll()}
+            placeholder="Search for a Jira board"
+            clearable
+          ></Input>
+        )}
+        <Spacer y={2} />
+        <Grid.Container gap={2}>
+          {projectBoards &&
+            projectBoards.map(board => (
+              <GridItem
+                key={board.id}
+                board={board}
+                favouriteBoards={favouriteBoards}
+                toggleFavourite={toggleFavourite}
+              />
+            ))}
+        </Grid.Container>
+      </Page.Content>
+    </Page>
   );
 };
 
+export const getServerSideProps = withSession(async function({ req, res }) {
+  let errors = [];
+  const user = sessionData(req, res, 'user');
+  const authToken = sessionData(req, res, 'authToken');
+
+  if (!user || !authToken) return { props: null };
+
+  const [boards, boardsError] = await api('/boards', {
+    method: 'POST',
+    body: JSON.stringify({ authToken }),
+  });
+  boardsError && errors.push(boardsError);
+
+  const [favourites, favouritesError] = await api('/boards/favourites', {
+    method: 'POST',
+    body: JSON.stringify({ user }),
+  });
+  favouritesError && errors.push(favouritesError);
+
+  return {
+    props: {
+      user: req.session.get('user'),
+      authToken: req.session.get('authToken'),
+      boards,
+      favourites,
+      errors,
+    },
+  };
+});
+
 export default Boards;
+
+GridItem.propTypes = {
+  board: PropTypes.object,
+  favouriteBoards: PropTypes.array,
+  toggleFavourite: PropTypes.func,
+};
+
+Boards.propTypes = {
+  boards: PropTypes.array,
+  user: PropTypes.object,
+  favourites: PropTypes.array,
+  authToken: PropTypes.string,
+  errors: PropTypes.array,
+};

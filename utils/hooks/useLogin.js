@@ -18,7 +18,6 @@ export const useLogin = (username, password, shouldFetch) => {
           return res.json();
         }
         setRefetch(false);
-        // TODO: improve error messages
         throw new Error(`HTTP Code ${res.status} - ${res.statusText}`);
       }),
     { shouldRetryOnError: false },

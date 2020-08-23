@@ -146,7 +146,7 @@ const LoginForm = () => {
         />
       </InputWrapper>
       <Button
-        type="button"
+        type="submit"
         role="button"
         disabled={isValidating}
         onClick={() => {
