@@ -1,5 +1,7 @@
 // Update with your config settings.
 
+console.log(process.env);
+
 module.exports = {
   development: {
     client: 'mysql',
