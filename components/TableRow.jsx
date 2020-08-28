@@ -3,6 +3,8 @@ import styled from 'styled-components';
 import { Button, Popover, useClickAway, useTheme } from '@zeit-ui/react';
 import useFocus from '@utils/hooks/useFocus';
 import { useRef, useState } from 'react';
+import slugify from 'slugify';
+import Link from 'next/link';
 
 const TR = styled.tr`
   text-align: center;
@@ -19,6 +21,7 @@ const popoverContent = (original, setInputFocus, setVisible) => {
     setVisible(false);
     setInputFocus(true);
   };
+
   return (
     <>
       <Popover.Item title>
@@ -26,7 +29,20 @@ const popoverContent = (original, setInputFocus, setVisible) => {
       </Popover.Item>
       <Popover.Item>
         <Button disabled={original.forecast === 0}>
-          Generate Sprint Slides
+          {original.forecast === 0 ? (
+            'Generate Sprint Slides'
+          ) : (
+            <Link
+              href="/sprint/[slug]"
+              as={`/sprint/${slugify(original.name, {
+                lower: true,
+                locale: 'de',
+                remove: /[*+~.()'"!:@]/g,
+              })}`}
+            >
+              <a>Generate Sprint Slides</a>
+            </Link>
+          )}
         </Button>
       </Popover.Item>
       <Popover.Item>

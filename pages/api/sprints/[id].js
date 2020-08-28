@@ -10,7 +10,6 @@ const handler = async (req, res) => {
 
   if (req.method === 'PUT') {
     try {
-      console.log(sprint);
       await createOrUpdateSprint(knex, id, sprint);
       return res.status(200).end();
     } catch (error) {

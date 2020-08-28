@@ -72,12 +72,6 @@ const addForecast = (sprint, setToast) => {
     );
 };
 
-const generateSprint = () => {
-  // send data to api POST sprints/{id}
-  // create sprint and send data back
-  // reroute to sprint with ?editing=true set in URL
-};
-
 const SprintOverview = ({ sprints, isValidating, user }) => {
   const [activeSprints, setActiveSprints] = useState(sprints);
   const [, setToast] = useToasts();
