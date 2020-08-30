@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 import Router from 'next/router';
 import styled from 'styled-components';
@@ -111,11 +111,15 @@ const LoginForm = () => {
     { shouldRetryOnError: false },
   );
 
+  useEffect(() => {
+    // Prefetch the dashboard page as the user will go there after the login
+    Router.prefetch('/dashboard');
+  }, []);
+
   if (data && !error) {
     Router.push('/dashboard');
   }
 
-  // TODO: readd autocomplete before launch
   // TODO: BEWARE: wrong data 3x goto jira page !message!
   return (
     <Form autoComplete="off">
