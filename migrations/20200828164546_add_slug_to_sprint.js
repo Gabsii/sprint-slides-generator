@@ -1,6 +1,6 @@
 exports.up = function(knex) {
   return knex.schema.table('sprints', function(table) {
-    table.string('slug');
+    table.string('slug').notNullable();
   });
 };
 

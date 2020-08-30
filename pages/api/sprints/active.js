@@ -1,10 +1,12 @@
 import { sub } from 'date-fns';
 import db from '@utils/db';
 import { allSprints } from '@utils/queries';
+import slugify from 'slugify';
 
 const handler = async (req, res) => {
   const { favourites, authToken } = JSON.parse(req.body);
   const knex = req.db;
+
   let apiData = [];
   let dbData = [];
 
@@ -40,6 +42,13 @@ const handler = async (req, res) => {
       )
       .map(sprint => {
         sprint.forecast = sprint.forecast || 0;
+        sprint.slug =
+          sprint.slug ||
+          slugify(sprint.name, {
+            lower: true,
+            locale: 'de',
+            remove: /[*+~.()'"!:@]/g,
+          });
         return sprint;
       })
       .filter(
