@@ -8,7 +8,7 @@ const handler = async (req, res) => {
   } = req;
   const knex = req.db;
 
-  if (req.method === 'PUT') {
+  if (req.method === 'PATCH') {
     try {
       await createOrUpdateSprint(knex, id, sprint);
       return res.status(200).end();
