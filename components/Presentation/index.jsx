@@ -73,9 +73,10 @@ const Presentation = ({ children }) => {
   //   return teen.props.isActive;
   // });
 
+  // TODO remove buttons and add onclick listener for MOUSECLICK, ENTER
   return (
     <Wrapper>
-      <Button
+      {/* <Button
         position="left"
         disabled={activeSlide === 0}
         onClick={() => {
@@ -85,9 +86,9 @@ const Presentation = ({ children }) => {
         }}
       >
         {'<'}
-      </Button>
-      <div>{teenager}</div>
-      <Button
+      </Button> */}
+      {teenager}
+      {/* <Button
         position="right"
         disabled={activeSlide === teenager.length - 1}
         onClick={() => {
@@ -97,7 +98,7 @@ const Presentation = ({ children }) => {
         }}
       >
         {'>'}
-      </Button>
+      </Button> */}
     </Wrapper>
   );
 };
