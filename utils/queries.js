@@ -1,4 +1,5 @@
 import { sub } from 'date-fns';
+import slugify from 'slugify';
 
 export const findOrCreateBoard = async (knex, id, name) =>
   knex
@@ -35,6 +36,13 @@ export const createOrUpdateSprint = async (knex, id, sprint) =>
             endDate: new Date(sprint.endDate),
             forecast: sprint.forecast,
             achievement: 0,
+            slug:
+              sprint.slug ||
+              slugify(sprint.name, {
+                lower: true,
+                locale: 'de',
+                remove: /[*+~.()'"!:@]/g,
+              }),
           });
         } else {
           return trx('sprints')
@@ -46,6 +54,13 @@ export const createOrUpdateSprint = async (knex, id, sprint) =>
               endDate: new Date(sprint.endDate),
               forecast: sprint.forecast,
               achievement: 0,
+              slug:
+                sprint.slug ||
+                slugify(sprint.name, {
+                  lower: true,
+                  locale: 'de',
+                  remove: /[*+~.()'"!:@]/g,
+                }),
             });
         }
       }),
@@ -99,3 +114,6 @@ export const getAllFavouriteBoardsByUser = async (knex, dbUser) =>
 
 export const allSprints = async knex =>
   await knex('sprints').whereRaw('endDate > ?', sub(Date.now(), { days: 1 }));
+
+export const getSprintBySlug = async (knex, slug) =>
+  await knex('sprints').whereRaw('slug = ?', slug);
