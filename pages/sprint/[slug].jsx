@@ -1,3 +1,4 @@
+import { useMemo } from 'react';
 import PropTypes from 'prop-types';
 
 import withSession from '@utils/session';
@@ -9,25 +10,54 @@ import api from '@utils/api';
 import Presentation from '@components/Presentation';
 import IntroSlide from '@components/Presentation/SlideTypes/IntroSlide';
 import Overview from '@components/Presentation/SlideTypes/Overview';
+import Bugs from '@components/Presentation/SlideTypes/Bugs';
+import CompletedStorypoints from '@components/Presentation/SlideTypes/CompletedStorypoints';
+// ? unused for now import HighlightsImpediments from '@components/Presentation/SlideTypes/HighlightsImpediments';
 
-const Sprint = ({ user, currentSprint, data, error }) => (
+const Sprint = ({ user, currentSprint, data, error }) => {
+  // TODO if error show modal
   // TODO if no user in session display error modal
   // console.log(user);
   // if (user) {
   //   return <div>Sorry, you&apos;re not logged in...</div>;
   // }
-  // TODO use memo for bugs, stories and others
-  <Presentation>
-    <IntroSlide
-      name={currentSprint.name}
-      team={''}
-      startDate={currentSprint.startDate}
-      endDate={currentSprint.endDate}
-      presenterName={user.displayName || user.name}
-    />
-    <Overview stories={data.stories} />
-  </Presentation>
-);
+  const stories = useMemo(() => data.stories, [data]);
+  const bugs = useMemo(() => data.bugs, [data]);
+  const others = useMemo(() => data.others, [data]);
+
+  const completedStories = Object.values(stories).reduce(
+    (acc, curr) => (acc += curr.length),
+    0,
+  );
+  const completedPoints = Object.values(stories).reduce(
+    (acc, curr) =>
+      (acc += curr.reduce(
+        (newAcc, story) => (newAcc += story.fields.customfield_10008),
+        0,
+      )),
+    0,
+  );
+
+  return (
+    <Presentation>
+      <IntroSlide
+        name={currentSprint.name}
+        team={''}
+        startDate={currentSprint.startDate}
+        endDate={currentSprint.endDate}
+        presenterName={user.displayName || user.name}
+      />
+      <Overview stories={stories} />
+      {/* <HighlightsImpediments /> */}
+      <Bugs bugs={bugs} />
+      <CompletedStorypoints
+        completed={completedPoints}
+        forecast={currentSprint.forecast}
+        completedTickets={completedStories + bugs.length + others.length}
+      />
+    </Presentation>
+  );
+};
 
 const getSessionData = withSession(async (req, res) => ({
   user: sessionData(req, res, 'user', false),

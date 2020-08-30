@@ -68,39 +68,7 @@ const Presentation = ({ children }) => {
     }),
   );
 
-  // only renders the current slide
-  // const adults = teenager.filter(teen => {
-  //   return teen.props.isActive;
-  // });
-
-  // TODO remove buttons and add onclick listener for MOUSECLICK, ENTER
-  return (
-    <Wrapper>
-      {/* <Button
-        position="left"
-        disabled={activeSlide === 0}
-        onClick={() => {
-          if (activeSlide !== 0) {
-            setActiveSlide(activeSlide - 1);
-          }
-        }}
-      >
-        {'<'}
-      </Button> */}
-      {teenager}
-      {/* <Button
-        position="right"
-        disabled={activeSlide === teenager.length - 1}
-        onClick={() => {
-          if (activeSlide < children.length) {
-            setActiveSlide(activeSlide + 1);
-          }
-        }}
-      >
-        {'>'}
-      </Button> */}
-    </Wrapper>
-  );
+  return teenager.filter(teen => teen.props.isActive);
 };
 
 export default Presentation;
