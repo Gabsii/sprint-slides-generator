@@ -116,4 +116,16 @@ export const allSprints = async knex =>
   await knex('sprints').whereRaw('endDate > ?', sub(Date.now(), { days: 1 }));
 
 export const getSprintBySlug = async (knex, slug) =>
-  await knex('sprints').whereRaw('slug = ?', slug);
+  await knex
+    .select(
+      'sprints.id',
+      'sprints.name as sprintName',
+      'sprints.id',
+      'sprints.startDate',
+      'sprints.endDate',
+      'sprints.forecast',
+      'boards.name as boardName',
+    )
+    .from('sprints')
+    .innerJoin('boards', 'boards.id', 'sprints.boardId')
+    .whereRaw('sprints.slug = ?', slug);

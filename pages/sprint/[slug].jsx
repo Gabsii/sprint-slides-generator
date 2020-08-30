@@ -16,11 +16,8 @@ import CompletedStorypoints from '@components/Presentation/SlideTypes/CompletedS
 
 const Sprint = ({ user, currentSprint, data, error }) => {
   // TODO if error show modal
-  // TODO if no user in session display error modal
-  // console.log(user);
-  // if (user) {
-  //   return <div>Sorry, you&apos;re not logged in...</div>;
-  // }
+  // TODO if no user (unauthenticated) in session display error modal
+
   const stories = useMemo(() => data.stories, [data]);
   const bugs = useMemo(() => data.bugs, [data]);
   const others = useMemo(() => data.others, [data]);
@@ -41,8 +38,8 @@ const Sprint = ({ user, currentSprint, data, error }) => {
   return (
     <Presentation>
       <IntroSlide
-        name={currentSprint.name}
-        team={''}
+        name={currentSprint.sprintName}
+        team={currentSprint.boardName}
         startDate={currentSprint.startDate}
         endDate={currentSprint.endDate}
         presenterName={user.displayName || user.name}

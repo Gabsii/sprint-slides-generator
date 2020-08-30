@@ -28,6 +28,6 @@ const Bugs = ({ bugs, isActive }) => (
 export default Bugs;
 
 Bugs.propTypes = {
-  bugs: PropTypes.object,
+  bugs: PropTypes.array,
   isActive: PropTypes.bool,
 };
