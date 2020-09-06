@@ -6,7 +6,7 @@ import Grid from '@components/Presentation/Grid';
 import Story from '@components/Story';
 
 const StoryHeading = styled.h1`
-  position: relative;
+  position: absolute;
   top: 50px;
 
   font-size: 48px;
@@ -14,10 +14,23 @@ const StoryHeading = styled.h1`
   color: white;
 `;
 
+const StoryGrid = styled.div`
+  position: absolute;
+  top: 125px;
+  color: #ffffff;
+  width: 90%;
+  max-height: 90%;
+  margin: 2rem;
+  display: grid;
+  grid-template-columns: ${({ columns }) => `repeat(${columns}, 1fr)`};
+  gap: 10px;
+  overflow: hidden;
+`;
+
 const StoriesSlide = ({ heading, isActive, stories }) => (
   <Slide isActive={isActive}>
     <StoryHeading type="h4">{heading}</StoryHeading>
-    <Grid columns={stories.length === 2 ? 2 : 1} width="90%">
+    <StoryGrid columns={stories.length === 2 ? 2 : 1} width="90%">
       {stories.map((story, index) => (
         <Story
           key={`Story-${heading}-${index}`}
@@ -26,7 +39,7 @@ const StoriesSlide = ({ heading, isActive, stories }) => (
           hasBorder={index % 2 === 1}
         />
       ))}
-    </Grid>
+    </StoryGrid>
   </Slide>
 );
 export default StoriesSlide;

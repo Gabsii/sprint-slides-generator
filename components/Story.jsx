@@ -25,7 +25,7 @@ const Main = styled.article`
     hasBorder && `3px solid ${theme.colors.story.general}`};
   padding: 0 50px;
 
-  position: absolute;
+  /* position: absolute; */
   top: 150px;
 `;
 
@@ -113,7 +113,7 @@ const Stage = styled.a`
 const MarkdownParser = styled(ReactMarkdown)`
   overflow: hidden;
   display: -webkit-box;
-  -webkit-line-clamp: 12;
+  -webkit-line-clamp: 10;
   -webkit-box-orient: vertical;
 
   ul {
