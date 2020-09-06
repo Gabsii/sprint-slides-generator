@@ -8,15 +8,48 @@ import { getSprintBySlug } from '@utils/queries';
 import api from '@utils/api';
 
 import Presentation from '@components/Presentation';
-import IntroSlide from '@components/Presentation/SlideTypes/IntroSlide';
-import Overview from '@components/Presentation/SlideTypes/Overview';
-import Bugs from '@components/Presentation/SlideTypes/Bugs';
-import CompletedStorypoints from '@components/Presentation/SlideTypes/CompletedStorypoints';
+import IntroSlide from '@components/SlideTypes/IntroSlide';
+import Overview from '@components/SlideTypes/Overview';
+import Bugs from '@components/SlideTypes/Bugs';
+import CompletedStorypoints from '@components/SlideTypes/CompletedStorypoints';
+import StoriesSlide from '@components/SlideTypes/StoriesSlide';
+
 // ? unused for now import HighlightsImpediments from '@components/Presentation/SlideTypes/HighlightsImpediments';
+
+const createStories = stories =>
+  Object.entries(stories)
+    .map(([projectName, stories]) => {
+      let temp = [];
+
+      const mappedStories = stories
+        .map((story, index) => {
+          if (index % 2 === 0) {
+            let twoStories = temp.concat(story);
+            temp = [];
+            return twoStories;
+          }
+          temp.push(story);
+        })
+        .filter(stories => stories);
+
+      return mappedStories.map((stories, index) => (
+        <StoriesSlide
+          key={`StoryMapper-${projectName}-${index}`}
+          heading={
+            mappedStories.length > 1
+              ? `${projectName} ${index + 1}/${mappedStories.length}`
+              : projectName
+          }
+          stories={stories}
+        />
+      ));
+    })
+    .flat();
 
 const Sprint = ({ user, currentSprint, data, error }) => {
   // TODO if error show modal
   // TODO if no user (unauthenticated) in session display error modal
+  // TODO screen for no stories finished
 
   const stories = useMemo(() => data.stories, [data]);
   const bugs = useMemo(() => data.bugs, [data]);
@@ -46,6 +79,7 @@ const Sprint = ({ user, currentSprint, data, error }) => {
       />
       <Overview stories={stories} />
       {/* <HighlightsImpediments /> */}
+      {createStories(stories)}
       <Bugs bugs={bugs} />
       <CompletedStorypoints
         completed={completedPoints}
