@@ -4,11 +4,13 @@ import PropTypes from 'prop-types';
 const GridWrapper = styled.div`
   color: ${({ theme }) => theme.colors.text || '#000000'};
   width: ${({ width }) => (width ? width : 'auto')};
+  max-height: 90%;
   margin: 2rem;
 
   display: grid;
   grid-template-columns: ${({ columns }) => `repeat(${columns}, 1fr);`};
   gap: 10px;
+  overflow: hidden;
 `;
 
 const Grid = ({ children, columns = 3, width }) => (

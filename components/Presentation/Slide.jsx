@@ -12,6 +12,10 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 25px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 const Slide = ({ children, isActive }) => {

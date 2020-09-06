@@ -1,72 +1,36 @@
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import { useState, cloneElement, useEffect } from 'react';
+import { useState, createElement, cloneElement, useEffect } from 'react';
 import useKeyPress from '@utils/hooks/useKeyPress';
-
-const Wrapper = styled.div`
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-`;
-
-const Button = styled.button`
-  /* height: 100%; */
-  /* width: 50%; */
-
-  position: absolute;
-  top: 50%;
-  right: 0;
-  z-index: +1;
-  transform: translateY(-50%);
-
-  background-color: transparent;
-
-  padding: 0 2rem;
-  border: none;
-  outline: none;
-
-  font-size: 3rem;
-  font-weight: bold;
-  text-align: right;
-
-  color: ${({ theme }) => theme.colors.text};
-
-  &:first-of-type {
-    left: 0;
-    text-align: left;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    filter: opacity(0.5);
-  }
-`;
 
 const Presentation = ({ children }) => {
   const [activeSlide, setActiveSlide] = useState(0);
 
-  const rightPressed = useKeyPress('ArrowRight');
-  const leftPressed = useKeyPress('ArrowLeft');
+  const arrowRight = useKeyPress('ArrowRight');
+  const arrowLeft = useKeyPress('ArrowLeft');
+  const space = useKeyPress('Space');
+  const enter = useKeyPress('Enter');
+  const backspace = useKeyPress('Backspace');
+
+  const rightPressed = arrowRight || space || enter;
+  const leftPressed = arrowLeft || backspace;
 
   useEffect(() => {
-    if (rightPressed && activeSlide < children.length - 1) {
+    if (rightPressed && activeSlide < children.flat().length - 1) {
       setActiveSlide(activeSlide + 1);
     } else if (leftPressed && activeSlide !== 0) {
       setActiveSlide(activeSlide - 1);
     }
   }, [rightPressed, leftPressed]);
 
-  const teenager = children.map((child, index) =>
+  const teenager = children.flat().map((child, index) =>
     cloneElement(child, {
       id: `slide-${index}`,
       key: `slide-${index}`,
       isActive: activeSlide === index,
     }),
   );
+
+  // TODO maybe include router updates
 
   return teenager.filter(teen => teen.props.isActive);
 };
