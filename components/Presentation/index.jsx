@@ -1,9 +1,11 @@
 import PropTypes from 'prop-types';
-import { useState, createElement, cloneElement, useEffect } from 'react';
+import { useState, cloneElement, useEffect } from 'react';
 import useKeyPress from '@utils/hooks/useKeyPress';
 
 const Presentation = ({ children }) => {
   const [activeSlide, setActiveSlide] = useState(0);
+
+  const slides = children.flat().filter(child => child);
 
   const arrowRight = useKeyPress('ArrowRight');
   const arrowLeft = useKeyPress('ArrowLeft');
@@ -15,14 +17,14 @@ const Presentation = ({ children }) => {
   const leftPressed = arrowLeft || backspace;
 
   useEffect(() => {
-    if (rightPressed && activeSlide < children.flat().length - 1) {
+    if (rightPressed && activeSlide < slides.flat().length - 1) {
       setActiveSlide(activeSlide + 1);
     } else if (leftPressed && activeSlide !== 0) {
       setActiveSlide(activeSlide - 1);
     }
   }, [rightPressed, leftPressed]);
 
-  const teenager = children.flat().map((child, index) =>
+  const teenager = slides.map((child, index) =>
     cloneElement(child, {
       id: `slide-${index}`,
       key: `slide-${index}`,

@@ -111,6 +111,8 @@ const Stage = styled.a`
 `;
 
 const MarkdownParser = styled(ReactMarkdown)`
+  max-width: 100%;
+
   overflow: hidden;
   display: -webkit-box;
   -webkit-line-clamp: 10;

@@ -30,7 +30,15 @@ const createStories = stories =>
           }
           temp.push(story);
         })
-        .filter(stories => stories);
+        .filter(stories => stories)
+        .sort((first, second) => {
+          if (first.length < second.length) {
+            return 1;
+          } else if (first.length > second.length) {
+            return -1;
+          }
+          return 0;
+        });
 
       return mappedStories.map((stories, index) => (
         <StoriesSlide
@@ -80,7 +88,7 @@ const Sprint = ({ user, currentSprint, data, error }) => {
       <Overview stories={stories} />
       {/* <HighlightsImpediments /> */}
       {createStories(stories)}
-      <Bugs bugs={bugs} />
+      {bugs.length > 0 && <Bugs bugs={bugs} />}
       <CompletedStorypoints
         completed={completedPoints}
         forecast={currentSprint.forecast}
