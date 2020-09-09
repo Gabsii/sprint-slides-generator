@@ -130,7 +130,7 @@ const LoginForm = () => {
       }}
       autoComplete="off"
     >
-      {isValidating && !error ? (
+      {(isValidating && !error) || data ? (
         <SpinnerWrapper>
           <Spinner />
         </SpinnerWrapper>
