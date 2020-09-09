@@ -20,7 +20,9 @@ const CompletedStorypoints = ({
     </span>
     <Text>Completed Storypoints vs. Commitment</Text>
     <Heading type="h3" display="inline-block" dark={true}>
-      {`${completedTickets} Tickets completed`}
+      {`${completedTickets} ${
+        completedTickets.length === 1 ? 'Ticket' : 'Tickets'
+      } completed`}
     </Heading>
   </Slide>
 );
