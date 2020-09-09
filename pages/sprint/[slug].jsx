@@ -67,14 +67,18 @@ const Sprint = ({ user, currentSprint, data, error }) => {
     (acc, curr) => (acc += curr.length),
     0,
   );
-  const completedPoints = Object.values(stories).reduce(
-    (acc, curr) =>
-      (acc += curr.reduce(
-        (newAcc, story) => (newAcc += story.fields.customfield_10008),
-        0,
-      )),
-    0,
-  );
+
+  const completedPoints =
+    Object.values(stories).reduce(
+      (acc, curr) =>
+        (acc += curr.reduce(
+          (newAcc, story) => (newAcc += story.fields.customfield_10008),
+          0,
+        )),
+      0,
+    ) +
+    bugs.reduce((acc, bug) => (acc += bug.fields.customfield_10008), 0) +
+    others.reduce((acc, other) => (acc += other.fields.customfield_10008), 0);
 
   return (
     <Presentation>

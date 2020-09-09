@@ -157,7 +157,7 @@ const Story = ({ assignee, story, hasBorder }) => {
             }
           </ProgressiveImage>
         ) : (
-          <AvatarPlaceholder />
+          <AvatarPlaceholder size="102px" hasBorder={true} />
         )}
         <FlexColumn>
           <StoryName>{story.fields.summary}</StoryName>
