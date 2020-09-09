@@ -122,7 +122,14 @@ const LoginForm = () => {
 
   // TODO: BEWARE: wrong data 3x goto jira page !message!
   return (
-    <Form autoComplete="off">
+    <Form
+      onSubmit={() => {
+        if (password && username) {
+          setShouldFetch(true);
+        }
+      }}
+      autoComplete="off"
+    >
       {isValidating && !error ? (
         <SpinnerWrapper>
           <Spinner />
@@ -136,7 +143,7 @@ const LoginForm = () => {
           id="username"
           name="username"
           required
-          onBlur={e => setUsername(e.target.value)}
+          onChange={e => setUsername(e.target.value)}
         />
       </InputWrapper>
       <InputWrapper>
@@ -146,7 +153,7 @@ const LoginForm = () => {
           id="password"
           name="password"
           required
-          onBlur={e => setPassword(e.target.value)}
+          onChange={e => setPassword(e.target.value)}
         />
       </InputWrapper>
       <Button
