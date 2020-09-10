@@ -26,11 +26,15 @@ const CompletedStorypoints = ({
         completedTickets.length === 1 ? 'Ticket' : 'Tickets'
       } completed`}
     </Heading>
-    <Heading type="h4" display="inline-block" dark={true}>
-      {`${ticketsInReview} ${
-        ticketsInReview.length === 1 ? 'Ticket' : 'Tickets'
-      } in Review --> ${pointsInReview} Points in Review`}
-    </Heading>
+    {ticketsInReview.length > 0 ? (
+      <Heading type="h4" display="inline-block" dark={true}>
+        {`${ticketsInReview} ${
+          ticketsInReview.length === 1 ? 'Ticket' : 'Tickets'
+        } in Review --> ${pointsInReview} Points in Review`}
+      </Heading>
+    ) : (
+      <></>
+    )}
   </Slide>
 );
 
