@@ -1,11 +1,19 @@
 import PropTypes from 'prop-types';
 import { useState, cloneElement, useEffect } from 'react';
 import useKeyPress from '@utils/hooks/useKeyPress';
+import { useRouter } from 'next/router';
 
 const Presentation = ({ children }) => {
-  const [activeSlide, setActiveSlide] = useState(0);
-
+  const router = useRouter();
   const slides = children.flat().filter(child => child);
+
+  const presetSlideNo = parseInt(router.query.slide)
+    ? router.query.slide < slides.flat().length - 1
+      ? parseInt(router.query.slide)
+      : slides.flat().length - 1
+    : 0;
+
+  const [activeSlide, setActiveSlide] = useState(presetSlideNo);
 
   const arrowRight = useKeyPress('ArrowRight');
   const arrowLeft = useKeyPress('ArrowLeft');
@@ -22,6 +30,13 @@ const Presentation = ({ children }) => {
     } else if (leftPressed && activeSlide !== 0) {
       setActiveSlide(activeSlide - 1);
     }
+    if (activeSlide !== 0) {
+      router.push(
+        `?slide=${activeSlide}`,
+        `${router.query.slug}?slide=${activeSlide}`,
+        { shallow: true },
+      );
+    }
   }, [rightPressed, leftPressed]);
 
   const teenager = slides.map((child, index) =>
@@ -31,8 +46,6 @@ const Presentation = ({ children }) => {
       isActive: activeSlide === index,
     }),
   );
-
-  // TODO maybe include router updates
 
   return teenager.filter(teen => teen.props.isActive);
 };
@@ -53,6 +66,4 @@ Presentation.propTypes = {
  * - children have key set
  * - children have isActive set
  * - buttons are disabled
- * - can click button
- * - can navigate button via arrow keys
  */
