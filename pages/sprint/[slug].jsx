@@ -94,7 +94,7 @@ const Sprint = ({ user, currentSprint, data, error }) => {
         endDate={currentSprint.endDate}
         presenterName={user.displayName || user.name}
       />
-      <Overview stories={stories} />
+      {stories.length > 0 && <Overview stories={stories} />}
       {/* <HighlightsImpediments /> */}
       {createStories(stories)}
       {bugs.length > 0 && <Bugs bugs={bugs} />}
