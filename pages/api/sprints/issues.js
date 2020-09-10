@@ -55,13 +55,21 @@ const handler = async (req, res) => {
 
   const others = issues.filter(
     issue =>
-      issue.fields.issuetype.name !== 'Story' &&
-      issue.fields.issuetype.name !== 'Sub-task' &&
-      issue.fields.issuetype.name !== 'Bug' &&
+      (issue.fields.issuetype.name !== 'Story' ||
+        issue.fields.issuetype.name !== 'Sub-task' ||
+        issue.fields.issuetype.name !== 'Bug') &&
       issue.fields.status.name === 'Closed',
   );
 
-  return res.status(200).send({ stories, bugs, others });
+  const inReview = issues.filter(
+    issue =>
+      (issue.fields.issuetype.name === 'Story' ||
+        issue.fields.issuetype.name === 'Bug' ||
+        issue.fields.issuetype.name === 'Change Request') &&
+      issue.fields.status.name === 'In Review',
+  );
+
+  return res.status(200).send({ stories, bugs, others, inReview });
 };
 
 export default db()(handler);

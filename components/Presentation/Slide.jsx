@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 const Wrapper = styled.div`
   height: 100vh;
+  max-height: 100vh;
   width: 100%;
 
   display: ${({ isActive }) => (isActive ? 'flex' : 'none')};
@@ -16,6 +17,7 @@ const Wrapper = styled.div`
   position: absolute;
   top: 0;
   left: 0;
+  overflow: hidden;
 `;
 
 const Slide = ({ children, isActive }) => {

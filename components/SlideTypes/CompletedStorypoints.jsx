@@ -7,6 +7,8 @@ const CompletedStorypoints = ({
   completed,
   forecast,
   completedTickets,
+  ticketsInReview,
+  pointsInReview,
   isActive,
 }) => (
   <Slide isActive={isActive}>
@@ -19,10 +21,15 @@ const CompletedStorypoints = ({
       </Heading>
     </span>
     <Text>Completed Storypoints vs. Commitment</Text>
-    <Heading type="h3" display="inline-block" dark={true}>
+    <Heading type="h4" display="inline-block" dark={true}>
       {`${completedTickets} ${
         completedTickets.length === 1 ? 'Ticket' : 'Tickets'
       } completed`}
+    </Heading>
+    <Heading type="h4" display="inline-block" dark={true}>
+      {`${ticketsInReview} ${
+        ticketsInReview.length === 1 ? 'Ticket' : 'Tickets'
+      } in Review --> ${pointsInReview} Points in Review`}
     </Heading>
   </Slide>
 );
@@ -33,5 +40,7 @@ CompletedStorypoints.propTypes = {
   completed: PropTypes.number,
   forecast: PropTypes.number,
   completedTickets: PropTypes.number,
+  ticketsInReview: PropTypes.number,
+  pointsInReview: PropTypes.number,
   isActive: PropTypes.bool,
 };

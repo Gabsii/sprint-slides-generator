@@ -76,9 +76,19 @@ const Sprint = ({ user, currentSprint, data, error }) => {
           0,
         )),
       0,
-    ) +
-    bugs.reduce((acc, bug) => (acc += bug.fields.customfield_10008), 0) +
-    others.reduce((acc, other) => (acc += other.fields.customfield_10008), 0);
+    ) ||
+    0 + bugs.reduce((acc, bug) => (acc += bug.fields.customfield_10008), 0) ||
+    0 +
+      others.reduce(
+        (acc, other) => (acc += other.fields.customfield_10008),
+        0,
+      ) ||
+    0;
+
+  const pointsInReview = data.inReview.reduce(
+    (acc, ticket) => (acc += ticket.fields.customfield_10008),
+    0,
+  );
 
   return (
     <Presentation>
@@ -97,6 +107,8 @@ const Sprint = ({ user, currentSprint, data, error }) => {
         completed={completedPoints}
         forecast={currentSprint.forecast}
         completedTickets={completedStories + bugs.length + others.length}
+        ticketsInReview={data.inReview.length}
+        pointsInReview={pointsInReview}
       />
     </Presentation>
   );
@@ -113,7 +125,6 @@ const handler = async (req, res, query) => {
   const { user, authToken } = await getSessionData(req, res);
 
   const currentSprint = JSON.parse(
-    // todo: innerjoin boards table on id
     JSON.stringify(await getSprintBySlug(knex, query.slug)),
   )[0];
 
