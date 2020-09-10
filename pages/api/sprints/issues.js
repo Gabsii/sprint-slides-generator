@@ -55,9 +55,9 @@ const handler = async (req, res) => {
 
   const others = issues.filter(
     issue =>
-      (issue.fields.issuetype.name !== 'Story' ||
-        issue.fields.issuetype.name !== 'Sub-task' ||
-        issue.fields.issuetype.name !== 'Bug') &&
+      issue.fields.issuetype.name !== 'Story' &&
+      issue.fields.issuetype.name !== 'Sub-task' &&
+      issue.fields.issuetype.name !== 'Bug' &&
       issue.fields.status.name === 'Closed',
   );
 
