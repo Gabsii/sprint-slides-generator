@@ -76,14 +76,9 @@ const Sprint = ({ user, currentSprint, data, error }) => {
           0,
         )),
       0,
-    ) ||
-    0 + bugs.reduce((acc, bug) => (acc += bug.fields.customfield_10008), 0) ||
-    0 +
-      others.reduce(
-        (acc, other) => (acc += other.fields.customfield_10008),
-        0,
-      ) ||
-    0;
+    ) +
+    bugs.reduce((acc, bug) => (acc += bug.fields.customfield_10008), 0) +
+    others.reduce((acc, other) => (acc += other.fields.customfield_10008), 0);
 
   const pointsInReview = data.inReview.reduce(
     (acc, ticket) => (acc += ticket.fields.customfield_10008),
@@ -127,6 +122,13 @@ const handler = async (req, res, query) => {
   const currentSprint = JSON.parse(
     JSON.stringify(await getSprintBySlug(knex, query.slug)),
   )[0];
+
+  if (!currentSprint) {
+    res.statusCode = 302;
+    res.setHeader('Location', '/404');
+    res.end();
+    return { props: {} };
+  }
 
   const [data, dataError] = await api(`/sprints/issues`, {
     method: 'POST',
