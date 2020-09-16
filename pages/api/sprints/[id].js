@@ -19,7 +19,7 @@ const handler = async (req, res) => {
   } else if (req.method === 'PATCH') {
     try {
       await addSprintData(knex, id, sprint);
-      return res.status(200).end();
+      return res.status(200).send('OK');
     } catch (error) {
       console.error(error);
       return res.status(500).send(error);

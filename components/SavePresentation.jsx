@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import { useModal, Modal, Button } from '@zeit-ui/react';
+import { useModal, Modal, Button, Text } from '@zeit-ui/react';
 import { Save } from '@zeit-ui/react-icons';
 
 import { SprintDataContext } from '@utils/ctx/SprintDataContext';
@@ -11,26 +11,24 @@ const SavePresentation = () => {
     SprintDataContext,
   );
 
-  const savePresentation = async () => {
-    const achievement = completedStoryPoints(
-      tasks.stories,
-      tasks.bugs,
-      tasks.others,
-    );
+  const savePresentation = () => {
+    const { stories, bugs, others } = tasks;
+    const achievement = completedStoryPoints(stories, bugs, others);
 
-    const [, savedError] = await fetch(`/api/sprints/${currentSprint.id}`, {
+    // todo toasts
+    fetch(`/api/sprints/${currentSprint.id}`, {
       method: 'PATCH',
       body: JSON.stringify({
         sprint: { data: { tasks, user, assignees }, achievement },
       }),
+    }).then(res => {
+      if (res.ok) {
+        // show good toast
+        setVisible(false);
+      } else {
+        // show bad toast
+      }
     });
-
-    // todo modals
-    if (savedError) {
-      // show bad modal
-    } else {
-      // show good modal
-    }
   };
 
   return (
@@ -52,7 +50,10 @@ const SavePresentation = () => {
         <Modal.Title>Do you really want to save the presentation?</Modal.Title>
         <Modal.Content>
           If you want to save the presentation as is you will be saved as its
-          presenter and you won&apos;t be able to change it anymore.
+          presenter.
+          <Text type="error">
+            <Text b>Warning:</Text> you won&apos;t be able to change it anymore.
+          </Text>
         </Modal.Content>
         <Modal.Action passive onClick={() => setVisible(false)}>
           Cancel

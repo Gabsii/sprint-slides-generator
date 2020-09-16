@@ -7,6 +7,7 @@ import db from '@utils/db';
 import { getSprintBySlug } from '@utils/queries';
 import api from '@utils/api';
 import { SprintDataProvider } from '@utils/ctx/SprintDataContext';
+import Head from 'next/head';
 
 import Presentation from '@components/Presentation';
 import IntroSlide from '@components/SlideTypes/IntroSlide';
@@ -65,6 +66,7 @@ const Sprint = ({ user, currentSprint, data }) => {
 
   const memoUser = useMemo(() => user, [user]);
   const memoCurrentSprint = useMemo(() => currentSprint, [currentSprint]);
+  const assignees = useMemo(() => data.assignees, [data]);
   const stories = useMemo(() => data.stories, [data]);
   const bugs = useMemo(() => data.bugs, [data]);
   const others = useMemo(() => data.others, [data]);
@@ -85,8 +87,11 @@ const Sprint = ({ user, currentSprint, data }) => {
       user={memoUser}
       tasks={data}
       currentSprint={memoCurrentSprint}
-      assignees={data.assignees}
+      assignees={assignees}
     >
+      <Head>
+        <title>{memoCurrentSprint.sprintName} | SprintGenerator</title>
+      </Head>
       <Presentation isSaved={!!memoCurrentSprint.isSaved}>
         <IntroSlide
           name={memoCurrentSprint.sprintName}
