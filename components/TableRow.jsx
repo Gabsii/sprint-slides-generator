@@ -6,8 +6,7 @@ import { useContext, useRef, useState } from 'react';
 import slugify from 'slugify';
 import Link from 'next/link';
 
-import Spinner, { FullSpinnerWrapper } from '@components/Spinner';
-import { DashboardLoaderContext } from '../utils/ctx/DashboardLoaderContext';
+import { DashboardLoaderContext } from '@utils/ctx/DashboardLoaderContext';
 
 const TR = styled.tr`
   text-align: center;

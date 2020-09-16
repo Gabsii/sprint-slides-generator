@@ -20,7 +20,7 @@ import {
   storiesDone,
   completedStoryPoints,
   pointsNeedReview,
-} from '../../utils/sprintMetrics';
+} from '../@utils/sprintMetrics';
 // ? unused for now import HighlightsImpediments from '@components/Presentation/SlideTypes/HighlightsImpediments';
 
 const createStories = stories =>

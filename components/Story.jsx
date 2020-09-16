@@ -4,7 +4,7 @@ import ProgressiveImage from 'react-progressive-image';
 import ReactMarkdown from 'react-markdown';
 
 import AvatarPlaceholder from '@components/AvatarPlaceholder';
-import markdownDefaults from '../utils/markdownDefaults';
+import markdownDefaults from '@utils/markdownDefaults';
 
 const Avatar = styled.img`
   height: 96px;
