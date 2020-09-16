@@ -37,6 +37,7 @@ const PopoverContent = ({ original, setInputFocus, setVisible }) => {
           onClick={e => {
             e.preventDefault;
             setSpinner(true);
+            setTimeout(() => setSpinner(false), 2000);
           }}
         >
           {original.forecast === 0 ? (
