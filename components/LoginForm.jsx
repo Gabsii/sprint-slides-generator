@@ -99,7 +99,10 @@ const LoginForm = () => {
     url =>
       fetch(url, {
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({
+          username: username.trim(),
+          password: password.trim(),
+        }),
       }).then(res => {
         if (res.ok) {
           return res.json();
