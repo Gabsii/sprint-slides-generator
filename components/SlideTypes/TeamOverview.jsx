@@ -1,16 +1,35 @@
 import PropTypes from 'prop-types';
 
 import Slide from '@components/Presentation/Slide';
-import Heading from '@components/Presentation/Heading';
 import Card from '@components/Card';
 import SavePresentation from '../SavePresentation';
+import styled from 'styled-components';
+
+const StoryHeading = styled.h1`
+  position: absolute;
+  top: 50px;
+
+  font-size: 48px;
+  font-size: 4vmax;
+  text-align: center;
+  color: white;
+`;
+
+const Grid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+`;
 
 const TeamOverview = ({ assignees, isActive, isSaved }) => (
   <Slide isActive={isActive}>
-    <Heading type="h6" textAlign="left">
+    <StoryHeading
+      type="h6"
+      textAlign="left"
+      style={{ position: 'absolute', top: '50px' }}
+    >
       Team
-    </Heading>
-    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(5, 1fr)' }}>
+    </StoryHeading>
+    <Grid>
       {assignees.map(assignee => (
         <Card
           key={`Team-${assignee.name}`}
@@ -19,7 +38,7 @@ const TeamOverview = ({ assignees, isActive, isSaved }) => (
           src={`/api/users/${assignee.name}?size=xxlarge`}
         />
       ))}
-    </div>
+    </Grid>
     {!isSaved && <SavePresentation />}
   </Slide>
 );
