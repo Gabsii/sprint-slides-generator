@@ -1,15 +1,18 @@
-import Layout from '@components/Layout';
-import LoginForm from '@components/LoginForm';
+import Head from 'next/head';
+import { Page } from '@zeit-ui/react';
+
 import withSession from '@utils/session';
+import LoginForm from '@components/LoginForm';
 
 const Home = () => (
-  <div>
-    <Layout title="Homepage">
-      <div style={{ minHeight: '100vh' }}>
-        <LoginForm />
-      </div>
-    </Layout>
-  </div>
+  <Page>
+    <Head>
+      <title>Homepage | SprintGenerator</title>
+    </Head>
+    <Page.Content>
+      <LoginForm />
+    </Page.Content>
+  </Page>
 );
 
 export const getServerSideProps = withSession(async function({ req, res }) {

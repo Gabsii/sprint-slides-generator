@@ -1,15 +1,20 @@
-import Layout from '@components/Layout';
-import withSession from '@utils/session';
+import { Page } from '@zeit-ui/react';
+import Head from 'next/head';
 import { Router } from 'next/router';
+
+import withSession from '@utils/session';
 
 const Logout = () => {
   Router.replace('/');
   return (
-    <div>
-      <Layout title="Homepage">
+    <Page>
+      <Head>
+        <title>Logout | SprintGenerator</title>
+      </Head>
+      <Page.Content>
         <div style={{ minHeight: '100vh' }}>Bye Bye</div>
-      </Layout>
-    </div>
+      </Page.Content>
+    </Page>
   );
 };
 

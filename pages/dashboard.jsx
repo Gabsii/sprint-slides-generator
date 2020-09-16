@@ -1,14 +1,14 @@
 import { useContext, useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 
-import Layout from '@components/Layout';
 import Spinner, { FullSpinnerWrapper } from '@components/Spinner';
 import { TokenContext } from '@utils/ctx/TokenContext';
 import withSession from '@utils/session';
 import sessionData from '@utils/session/data';
 import useSWR from 'swr';
-import { Button, Row, Text, Link, Col, Loading } from '@zeit-ui/react';
+import { Button, Row, Text, Link, Col, Loading, Page } from '@zeit-ui/react';
 import { RefreshCw } from '@zeit-ui/react-icons';
 import api from '@utils/api';
 import { DashboardLoaderProvider } from '@utils/ctx/DashboardLoaderContext';
@@ -49,16 +49,11 @@ const Dashboard = ({ user, favourites, activeSprints, authToken, errors }) => {
   );
 
   return (
-    <Layout title="Dashboard" displayHeader={false} displayFooter={false}>
-      <div
-        style={{
-          height: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          flexDirection: 'column',
-        }}
-      >
+    <Page>
+      <Head>
+        <title>Dashboard | SprintGenerator</title>
+      </Head>
+      <Page.Content>
         <DashboardLoaderProvider setSpinner={setSpinner}>
           {spinner && (
             <FullSpinnerWrapper>
@@ -106,8 +101,8 @@ const Dashboard = ({ user, favourites, activeSprints, authToken, errors }) => {
             </Col>
           )}
         </DashboardLoaderProvider>
-      </div>
-    </Layout>
+      </Page.Content>
+    </Page>
   );
 };
 
