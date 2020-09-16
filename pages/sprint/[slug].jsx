@@ -1,26 +1,51 @@
 import { useMemo } from 'react';
 import PropTypes from 'prop-types';
-
-import withSession from '@utils/session';
-import sessionData from '@utils/session/data';
-import db from '@utils/db';
-import { getSprintBySlug } from '@utils/queries';
-import api from '@utils/api';
-import { SprintDataProvider } from '@utils/ctx/SprintDataContext';
+import dynamic from 'next/dynamic';
 import Head from 'next/head';
 
-import Presentation from '@components/Presentation';
-import IntroSlide from '@components/SlideTypes/IntroSlide';
-import Overview from '@components/SlideTypes/Overview';
-import TeamOverview from '@components/SlideTypes/TeamOverview';
-import Bugs from '@components/SlideTypes/Bugs';
-import CompletedStorypoints from '@components/SlideTypes/CompletedStorypoints';
-import StoriesSlide from '@components/SlideTypes/StoriesSlide';
+import api from '@utils/api';
+import db from '@utils/db';
+import { getSprintBySlug } from '@utils/queries';
+import { SprintDataProvider } from '@utils/ctx/SprintDataContext';
+import withSession from '@utils/session';
+import sessionData from '@utils/session/data';
 import {
   storiesDone,
   completedStoryPoints,
   pointsNeedReview,
-} from '../@utils/sprintMetrics';
+} from '@utils/sprintMetrics';
+import Spinner, { FullSpinnerWrapper } from '@components/Spinner';
+
+const loading = {
+  loading: () => (
+    <FullSpinnerWrapper dark>
+      <Spinner dark />
+    </FullSpinnerWrapper>
+  ),
+};
+
+const Presentation = dynamic(() => import('@components/Presentation'), loading);
+const IntroSlide = dynamic(
+  () => import('@components/SlideTypes/IntroSlide'),
+  loading,
+);
+const Overview = dynamic(
+  () => import('@components/SlideTypes/Overview'),
+  loading,
+);
+const TeamOverview = dynamic(
+  () => import('@components/SlideTypes/TeamOverview'),
+  loading,
+);
+const Bugs = dynamic(() => import('@components/SlideTypes/Bugs'), loading);
+const CompletedStorypoints = dynamic(
+  () => import('@components/SlideTypes/CompletedStorypoints'),
+  loading,
+);
+const StoriesSlide = dynamic(
+  () => import('@components/SlideTypes/StoriesSlide'),
+  loading,
+);
 // ? unused for now import HighlightsImpediments from '@components/Presentation/SlideTypes/HighlightsImpediments';
 
 const createStories = stories =>
@@ -100,7 +125,7 @@ const Sprint = ({ user, currentSprint, data }) => {
           endDate={memoCurrentSprint.endDate}
           presenterName={memoUser.displayName || memoUser.name}
         />
-        <TeamOverview assignees={data.assignees} />
+        {assignees && <TeamOverview assignees={assignees} />}
         {stories !== {} && <Overview stories={stories} />}
         {/* <HighlightsImpediments /> */}
         {createStories(stories)}
