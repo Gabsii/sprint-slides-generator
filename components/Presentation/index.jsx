@@ -21,9 +21,12 @@ const Presentation = ({ children, isSaved }) => {
   const space = useKeyPress('Space');
   const enter = useKeyPress('Enter');
   const backspace = useKeyPress('Backspace');
+  const f = useKeyPress('f');
+  const escape = useKeyPress('Escape');
 
   const rightPressed = arrowRight || space || enter;
   const leftPressed = arrowLeft || backspace;
+  const fullScreenPressed = f;
 
   useEffect(() => {
     if (rightPressed && activeSlide < slides.flat().length - 1) {
@@ -48,6 +51,18 @@ const Presentation = ({ children, isSaved }) => {
       );
     }
   }, [rightPressed, leftPressed]);
+
+  useEffect(() => {
+    if (
+      document.fullscreenEnabled &&
+      !document.fullscreenElement &&
+      fullScreenPressed
+    ) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen && escape) {
+      document.exitFullscreen();
+    }
+  }, [fullScreenPressed, escape]);
 
   const teenager = slides.map((child, index) =>
     cloneElement(child, {
