@@ -7,14 +7,13 @@ import {
   OverflowableItem,
 } from '@components/Presentation/Overflowable';
 import Text from '@components/Presentation/Text';
-import SavePresentation from '../SavePresentation';
+import SavePresentation from '@components/SavePresentation';
 import UnorderedList from '@components/Presentation/UnorderedList';
 
-// TODO: fix CSS column overflow issue with too many stories
-const Overview = ({ stories, isActive, isSaved }) => (
+const Overview = ({ stories, completedStories, isActive, isSaved }) => (
   <Slide isActive={isActive}>
     <Heading type="h6" textAlign="left">
-      Overview
+      {`Overview - ${completedStories} Issues`}
       {/* //TODO reduce to story count */}
     </Heading>
     <Overflowable>
@@ -51,6 +50,7 @@ export default Overview;
 
 Overview.propTypes = {
   stories: PropTypes.object,
+  completedStories: PropTypes.number,
   isActive: PropTypes.bool,
   isSaved: PropTypes.bool,
 };

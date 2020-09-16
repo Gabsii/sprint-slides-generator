@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 import Slide from '@components/Presentation/Slide';
 import Story from '@components/Story';
-import SavePresentation from '../SavePresentation';
+import SavePresentation from '@components/SavePresentation';
 
 const StoryHeading = styled.h1`
   position: absolute;

@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import Slide from '@components/Presentation/Slide';
 import Card from '@components/Card';
-import SavePresentation from '../SavePresentation';
+import SavePresentation from '@components/SavePresentation';
 import styled from 'styled-components';
 
 const StoryHeading = styled.h1`

@@ -4,7 +4,7 @@ import Slide from '@components/Presentation/Slide';
 import Heading from '@components/Presentation/Heading';
 import { Overflowable } from '@components/Presentation/Overflowable';
 import UnorderedList from '@components/Presentation/UnorderedList';
-import SavePresentation from '../SavePresentation';
+import SavePresentation from '@components/SavePresentation';
 
 const Bugs = ({ bugs, isActive, isSaved }) => (
   <Slide isActive={isActive}>

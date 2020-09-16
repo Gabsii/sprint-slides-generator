@@ -87,8 +87,6 @@ const createStories = stories =>
     .flat();
 
 const Sprint = ({ user, currentSprint, data }) => {
-  // TODO assignee/team overview
-
   const memoUser = useMemo(() => user, [user]);
   const memoCurrentSprint = useMemo(() => currentSprint, [currentSprint]);
   const assignees = useMemo(() => data.assignees, [data]);
@@ -126,7 +124,9 @@ const Sprint = ({ user, currentSprint, data }) => {
           presenterName={memoUser.displayName || memoUser.name}
         />
         {assignees && <TeamOverview assignees={assignees} />}
-        {stories !== {} && <Overview stories={stories} />}
+        {stories !== {} && (
+          <Overview stories={stories} completedStories={completedStories} />
+        )}
         {/* <HighlightsImpediments /> */}
         {createStories(stories)}
         {bugs.length > 0 && <Bugs bugs={bugs} />}

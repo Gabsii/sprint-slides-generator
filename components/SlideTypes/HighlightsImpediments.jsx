@@ -3,7 +3,7 @@ import Heading from '@components/Presentation/Heading';
 import Grid from '@components/Presentation/Grid';
 import Box from '@components/Presentation/Box';
 import Text from '@components/Presentation/Text';
-import SavePresentation from '../SavePresentation';
+import SavePresentation from '@components/SavePresentation';
 
 // ? TODO make editable
 

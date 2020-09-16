@@ -5,7 +5,7 @@ import Slide from '@components/Presentation/Slide';
 import Text from '@components/Presentation/Text';
 import Heading from '@components/Presentation/Heading';
 import Background from '@components/Presentation/Background';
-import SavePresentation from '../SavePresentation';
+import SavePresentation from '@components/SavePresentation';
 
 const IntroSlide = ({
   name,

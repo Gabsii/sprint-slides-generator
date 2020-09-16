@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import Slide from '@components/Presentation/Slide';
 import Heading from '@components/Presentation/Heading';
 import Text from '@components/Presentation/Text';
-import SavePresentation from '../SavePresentation';
+import SavePresentation from '@components/SavePresentation';
 
 const CompletedStorypoints = ({
   completed,
