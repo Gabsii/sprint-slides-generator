@@ -1,6 +1,33 @@
 # Changelog
 
-## [unreleased]
+## [v0.0.3]
+
+### Breaking
+
+- sprints now have a slug property there are some sprints without a slug atm run the seeder using `knex seed:run`
+
+### Added
+
+- Sprints can now be generated
+- Better performance by adding prefetching
+- Slide Types to unify the way some slides are managed
+- Presentation component holds more responsibility now (Slide Navigation, Route Navigation, Fullscreen)
+- Added Markdown Parser for story descriptions
+- Added an extra route to load profile pictures from Jira
+
+### Updated
+
+- updated presentation library stuff
+  - dark mode for spinners
+  - bug with overflowable -> line clamping (probably needs a better fix)
+- Optimized images
+- Updated packages to latest version
+
+### Fixed
+
+- Fixed a critical bug where passwords were exposed in the URL params
+
+## [v0.0.2]
 
 ### Breaking
 

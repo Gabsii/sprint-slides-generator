@@ -1,7 +1,9 @@
 import styled, { keyframes } from 'styled-components';
+import PropTypes from 'prop-types';
 
 const pulseSize = '96px';
 const pulseColor = '#18466E';
+const pulseColorDark = '#E7B991';
 const pulseDuration = '2s';
 
 const pulse = keyframes`
@@ -35,7 +37,7 @@ const Circle = styled.div`
   top: 50%;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
-  border: 1px solid ${pulseColor};
+  border: 1px solid ${({ dark }) => (dark ? pulseColorDark : pulseColor)};
   border-radius: 50%;
   opacity: 0;
   will-change: opacity;
@@ -49,11 +51,39 @@ const Circle = styled.div`
   }
 `;
 
-const Spinner = () => (
+export const SpinnerWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const FullSpinnerWrapper = styled.div`
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: ${({ dark }) =>
+    dark ? 'rgba(0, 0, 0, 0.8)' : 'rgba(255, 255, 255, 0.8)'};
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+`;
+
+const Spinner = ({ dark }) => (
   <LoadingPulse>
-    <Circle />
-    <Circle />
+    <Circle dark={dark} />
+    <Circle dark={dark} />
   </LoadingPulse>
 );
+
+Spinner.propTypes = {
+  dark: PropTypes.bool,
+};
 
 export default Spinner;

@@ -18,6 +18,9 @@ export const getServerSideProps = withSession(async function({ req, res }) {
 
   res.writeHead(302, { Location: '/' });
   res.end();
+  return {
+    props: {},
+  };
 });
 
 export default Logout;

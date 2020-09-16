@@ -1,20 +1,10 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import useSWR from 'swr';
 import Router from 'next/router';
 import styled from 'styled-components';
 
-import Spinner from '@components/Spinner';
+import Spinner, { SpinnerWrapper } from '@components/Spinner';
 import Button from '@components/Atoms/Button';
-
-const SpinnerWrapper = styled.div`
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 const Form = styled.form`
   display: flex;
@@ -99,7 +89,10 @@ const LoginForm = () => {
     url =>
       fetch(url, {
         method: 'POST',
-        body: JSON.stringify({ username, password }),
+        body: JSON.stringify({
+          username: username.trim(),
+          password: password.trim(),
+        }),
       }).then(res => {
         if (res.ok) {
           return res.json();
@@ -111,15 +104,27 @@ const LoginForm = () => {
     { shouldRetryOnError: false },
   );
 
+  useEffect(() => {
+    // Prefetch the dashboard page as the user will go there after the login
+    Router.prefetch('/dashboard');
+  }, []);
+
   if (data && !error) {
     Router.push('/dashboard');
   }
 
-  // TODO: readd autocomplete before launch
   // TODO: BEWARE: wrong data 3x goto jira page !message!
   return (
-    <Form autoComplete="off">
-      {isValidating && !error ? (
+    <Form
+      onSubmit={e => {
+        e.preventDefault();
+        if (password && username) {
+          setShouldFetch(true);
+        }
+      }}
+      autoComplete="off"
+    >
+      {(isValidating && !error) || data ? (
         <SpinnerWrapper>
           <Spinner />
         </SpinnerWrapper>
@@ -132,7 +137,8 @@ const LoginForm = () => {
           id="username"
           name="username"
           required
-          onBlur={e => setUsername(e.target.value)}
+          placeholder="Jira Username"
+          onChange={e => setUsername(e.target.value)}
         />
       </InputWrapper>
       <InputWrapper>
@@ -142,19 +148,11 @@ const LoginForm = () => {
           id="password"
           name="password"
           required
-          onBlur={e => setPassword(e.target.value)}
+          placeholder="Jira Password"
+          onChange={e => setPassword(e.target.value)}
         />
       </InputWrapper>
-      <Button
-        type="submit"
-        role="button"
-        disabled={isValidating}
-        onClick={() => {
-          if (password && username) {
-            setShouldFetch(true);
-          }
-        }}
-      >
+      <Button type="submit" role="button" disabled={isValidating}>
         login
       </Button>
       {error ? <div>{error.message}</div> : null}

@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 const Wrapper = styled.div`
   height: 100vh;
+  max-height: 100vh;
   width: 100%;
 
   display: ${({ isActive }) => (isActive ? 'flex' : 'none')};
@@ -12,6 +13,11 @@ const Wrapper = styled.div`
   justify-content: center;
   align-items: center;
   padding: 25px;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  overflow: hidden;
 `;
 
 const Slide = ({ children, isActive }) => {
@@ -20,7 +26,7 @@ const Slide = ({ children, isActive }) => {
 
   if (children.length > 1) {
     hasBackground = children
-      .map(child => child.type.name)
+      .map(child => child && child.type && child.type.name)
       .includes('Background');
   } else {
     hasBackground = children.type.name === 'Background';
@@ -41,6 +47,7 @@ Slide.propTypes = {
     PropTypes.node,
   ]),
   isActive: PropTypes.bool,
+  isSaved: PropTypes.bool,
 };
 
 /** Unit Tests:

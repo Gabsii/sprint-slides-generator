@@ -1,5 +1,10 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import ProgressiveImage from 'react-progressive-image';
+import ReactMarkdown from 'react-markdown';
+
+import AvatarPlaceholder from '@components/AvatarPlaceholder';
+import markdownDefaults from '@utils/markdownDefaults';
 
 const Avatar = styled.img`
   height: 96px;
@@ -13,11 +18,15 @@ const Avatar = styled.img`
 const Main = styled.article`
   display: flex;
   width: 100%;
+  max-height: 100%;
   flex-direction: column;
-  border-left: ${({ hasBorder, theme }) =>
-    hasBorder ? `3px solid ${theme.colors.story.general}` : ''};
 
+  border-left: ${({ hasBorder, theme }) =>
+    hasBorder && `3px solid ${theme.colors.story.general}`};
   padding: 0 50px;
+
+  /* position: absolute; */
+  top: 150px;
 `;
 
 const Flex = styled.div`
@@ -28,18 +37,18 @@ const Flex = styled.div`
 
 const FlexColumn = styled(Flex)`
   flex-direction: column;
+  margin-left: 2em;
 `;
 
 const StoryName = styled.span`
   padding: 10px 0;
 
-  font-size: 24px;
-  font-size: 3vmax;
+  font-size: 26px;
 `;
 
 const StoryShortname = styled.span`
   width: 180px;
-  height: 30px;
+  min-height: 30px;
   background-color: ${({ theme }) =>
     theme.colors.story.shortname || 'lightgray'};
   color: black;
@@ -48,7 +57,7 @@ const StoryShortname = styled.span`
   align-items: center;
   justify-content: center;
 
-  font-size: 20px;
+  font-size: 18px;
   font-weight: bold;
   text-align: center;
 `;
@@ -65,7 +74,7 @@ const StoryPoints = styled.span`
   align-items: center;
   justify-content: center;
 
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
 `;
 
@@ -101,8 +110,18 @@ const Stage = styled.a`
   text-align: center;
 `;
 
-// TODO: shorten description
-// TODO: description from MD to HTML
+const MarkdownParser = styled(ReactMarkdown)`
+  max-width: 100%;
+
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 10;
+  -webkit-box-orient: vertical;
+
+  ul {
+    color: #989998;
+  }
+`;
 
 /**
  * story: {
@@ -112,25 +131,48 @@ const Stage = styled.a`
  * }
  */
 
-const Story = ({ assignee, description, story, hasBorder }) => {
+const Story = ({ assignee, story, hasBorder }) => {
   // TODO: filter link from description, otherwise remove field
-  const link = 'https://gabsii.com';
+  const link = null;
   return (
     <Main hasBorder={hasBorder}>
       <Flex>
-        <Avatar
-          alt={assignee.name}
-          src={`${assignee.avatarUrls['48x48']}&size=xxlarge`}
-        />
+        {assignee ? (
+          <ProgressiveImage
+            src={`/api/users/${assignee.name}?size=xxlarge`}
+            placeholder=""
+          >
+            {(src, loading) =>
+              loading ? (
+                <AvatarPlaceholder size="102px" hasBorder={true} />
+              ) : (
+                <Avatar
+                  src={src}
+                  alt={assignee.name}
+                  text={assignee.name.split(' ')[0]}
+                  size="large"
+                  style={{ minWidth: '96px', margin: 0 }}
+                />
+              )
+            }
+          </ProgressiveImage>
+        ) : (
+          <AvatarPlaceholder size="102px" hasBorder={true} />
+        )}
         <FlexColumn>
-          <StoryName>{story.name}</StoryName>
+          <StoryName>{story.fields.summary}</StoryName>
           <Flex>
-            <StoryShortname>{story.shortName}</StoryShortname>
-            <StoryPoints>{story.points}</StoryPoints>
+            <StoryShortname>{story.key}</StoryShortname>
+            <StoryPoints>{story.fields.customfield_10008}</StoryPoints>
           </Flex>
         </FlexColumn>
       </Flex>
-      <Description>{description}</Description>
+      <Description>
+        <MarkdownParser
+          source={story.fields.description}
+          renderers={markdownDefaults}
+        />
+      </Description>
       {link ? (
         <Stage href={link} target="_blank">
           Stage

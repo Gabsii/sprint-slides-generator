@@ -1,4 +1,5 @@
 import { sub } from 'date-fns';
+import slugify from 'slugify';
 
 export const findOrCreateBoard = async (knex, id, name) =>
   knex
@@ -35,6 +36,13 @@ export const createOrUpdateSprint = async (knex, id, sprint) =>
             endDate: new Date(sprint.endDate),
             forecast: sprint.forecast,
             achievement: 0,
+            slug:
+              sprint.slug ||
+              slugify(sprint.name, {
+                lower: true,
+                locale: 'de',
+                remove: /[*+~.()'"!:@]/g,
+              }),
           });
         } else {
           return trx('sprints')
@@ -46,6 +54,13 @@ export const createOrUpdateSprint = async (knex, id, sprint) =>
               endDate: new Date(sprint.endDate),
               forecast: sprint.forecast,
               achievement: 0,
+              slug:
+                sprint.slug ||
+                slugify(sprint.name, {
+                  lower: true,
+                  locale: 'de',
+                  remove: /[*+~.()'"!:@]/g,
+                }),
             });
         }
       }),
@@ -99,3 +114,30 @@ export const getAllFavouriteBoardsByUser = async (knex, dbUser) =>
 
 export const allSprints = async knex =>
   await knex('sprints').whereRaw('endDate > ?', sub(Date.now(), { days: 1 }));
+
+export const getSprintBySlug = async (knex, slug) =>
+  await knex
+    .select(
+      'sprints.id',
+      'sprints.name as sprintName',
+      'sprints.id',
+      'sprints.startDate',
+      'sprints.endDate',
+      'sprints.forecast',
+      'sprints.achievement',
+      'sprints.isSaved',
+      'sprints.data',
+      'boards.name as boardName',
+    )
+    .from('sprints')
+    .innerJoin('boards', 'boards.id', 'sprints.boardId')
+    .whereRaw('sprints.slug = ?', slug);
+
+export const addSprintData = async (knex, id, sprint) =>
+  await knex('sprints')
+    .whereRaw('id = ?', id)
+    .update({
+      isSaved: true,
+      data: JSON.stringify(sprint.data),
+      achievement: sprint.achievement,
+    });

@@ -1,105 +1,79 @@
-import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import { useState, cloneElement, useEffect } from 'react';
+import { useRouter } from 'next/router';
+
 import useKeyPress from '@utils/hooks/useKeyPress';
 
-const Wrapper = styled.div`
-  height: 100vh;
-  width: 100%;
-  overflow: hidden;
-`;
+const Presentation = ({ children, isSaved }) => {
+  const router = useRouter();
+  const slides = children.flat().filter(child => child);
 
-const Button = styled.button`
-  /* height: 100%; */
-  /* width: 50%; */
+  const presetSlideNo = parseInt(router.query.slide)
+    ? router.query.slide < slides.flat().length - 1
+      ? parseInt(router.query.slide)
+      : slides.flat().length - 1
+    : 0;
 
-  position: absolute;
-  top: 50%;
-  right: 0;
-  z-index: +1;
-  transform: translateY(-50%);
+  const [activeSlide, setActiveSlide] = useState(presetSlideNo);
 
-  background-color: transparent;
+  const arrowRight = useKeyPress('ArrowRight');
+  const arrowLeft = useKeyPress('ArrowLeft');
+  const space = useKeyPress('Space');
+  const enter = useKeyPress('Enter');
+  const backspace = useKeyPress('Backspace');
+  const f = useKeyPress('f');
+  const escape = useKeyPress('Escape');
 
-  padding: 0 2rem;
-  border: none;
-  outline: none;
-
-  font-size: 3rem;
-  font-weight: bold;
-  text-align: right;
-
-  color: ${({ theme }) => theme.colors.text};
-
-  &:first-of-type {
-    left: 0;
-    text-align: left;
-  }
-
-  &:hover {
-    cursor: pointer;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-    filter: opacity(0.5);
-  }
-`;
-
-const Presentation = ({ children }) => {
-  const [activeSlide, setActiveSlide] = useState(0);
-
-  const rightPressed = useKeyPress('ArrowRight');
-  const leftPressed = useKeyPress('ArrowLeft');
+  const rightPressed = arrowRight || space || enter;
+  const leftPressed = arrowLeft || backspace;
+  const fullScreenPressed = f;
 
   useEffect(() => {
-    if (rightPressed && activeSlide < children.length - 1) {
+    if (rightPressed && activeSlide < slides.flat().length - 1) {
       setActiveSlide(activeSlide + 1);
     } else if (leftPressed && activeSlide !== 0) {
       setActiveSlide(activeSlide - 1);
     }
+    if (activeSlide !== 0) {
+      router.prefetch(`${router.query.slug}?slide=${activeSlide + 1}`);
+      router.prefetch(`${router.query.slug}?slide=${activeSlide - 1}`);
+      router.push(
+        `?slide=${activeSlide}`,
+        `${router.query.slug}?slide=${activeSlide}`,
+        { shallow: true },
+      );
+    } else if (router.asPath.includes('?')) {
+      router.prefetch(`${router.query.slug}?slide=${activeSlide + 1}`);
+      router.push(
+        `?slide=${activeSlide}`,
+        `${router.query.slug}?slide=${activeSlide}`,
+        { shallow: true },
+      );
+    }
   }, [rightPressed, leftPressed]);
 
-  const teenager = children.map((child, index) =>
+  useEffect(() => {
+    if (
+      document.fullscreenEnabled &&
+      !document.fullscreenElement &&
+      fullScreenPressed
+    ) {
+      document.documentElement.requestFullscreen();
+    } else if (document.exitFullscreen && escape) {
+      document.exitFullscreen();
+    }
+  }, [fullScreenPressed, escape]);
+
+  const teenager = slides.map((child, index) =>
     cloneElement(child, {
       id: `slide-${index}`,
       key: `slide-${index}`,
       isActive: activeSlide === index,
+      isSaved,
     }),
   );
 
-  // only renders the current slide
-  // const adults = teenager.filter(teen => {
-  //   return teen.props.isActive;
-  // });
-
-  return (
-    <Wrapper>
-      <Button
-        position="left"
-        disabled={activeSlide === 0}
-        onClick={() => {
-          if (activeSlide !== 0) {
-            setActiveSlide(activeSlide - 1);
-          }
-        }}
-      >
-        {'<'}
-      </Button>
-      <div>{teenager}</div>
-      <Button
-        position="right"
-        disabled={activeSlide === teenager.length - 1}
-        onClick={() => {
-          if (activeSlide < children.length) {
-            setActiveSlide(activeSlide + 1);
-          }
-        }}
-      >
-        {'>'}
-      </Button>
-    </Wrapper>
-  );
+  return teenager.filter(teen => teen.props.isActive);
 };
 
 export default Presentation;
@@ -109,6 +83,7 @@ Presentation.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+  isSaved: PropTypes.bool,
 };
 
 /** Unit Tests:
@@ -118,6 +93,4 @@ Presentation.propTypes = {
  * - children have key set
  * - children have isActive set
  * - buttons are disabled
- * - can click button
- * - can navigate button via arrow keys
  */

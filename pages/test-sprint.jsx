@@ -39,10 +39,7 @@ const TestSprint = () => (
         <br />
         Presented by Lukas Gabsi
       </Text>
-      <Background
-        src="https://images.unsplash.com/photo-1570786097801-b8b9531ed5cb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9"
-        alt="dayoum a bee"
-      />
+      <Background src="/sprint-final-background.png" alt="dayoum a bee" />
     </Slide>
     <Slide>
       <Heading type="h6" textAlign="left">

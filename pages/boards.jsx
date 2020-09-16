@@ -13,6 +13,7 @@ import {
   Spacer,
 } from '@zeit-ui/react';
 import { RefreshCw } from '@zeit-ui/react-icons';
+import Head from 'next/head';
 
 import withSession from '@utils/session';
 import sessionData from '@utils/session/data';
@@ -95,6 +96,9 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
 
   return (
     <Page>
+      <Head>
+        <title>Boards | SprintGenerator</title>
+      </Head>
       <Page.Content>
         <Grid.Container gap={2}>
           {boards.map(board => (

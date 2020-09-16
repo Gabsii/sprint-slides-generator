@@ -1,7 +1,8 @@
-const sessionData = (req, res, key) => {
+const sessionData = (req, res, key, redirect = true) => {
   const data = req.session.get(key);
 
-  if (!data) {
+  if (!data && redirect) {
+    // todo add something to display a "401 unauthenticated" message/toast after redirect
     res.setHeader('location', '/');
     res.statusCode = 302;
     res.end();
@@ -10,7 +11,7 @@ const sessionData = (req, res, key) => {
     return;
   }
 
-  return data;
+  return data || {};
 };
 
 export default sessionData;

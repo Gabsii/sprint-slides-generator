@@ -18,7 +18,7 @@ const LayoutWrapper = styled.div`
 const Layout = ({ children, title, displayHeader, displayFooter }) => (
   <LayoutWrapper>
     <Head>
-      <title>{`${title} - SprintGenerator`}</title>
+      <title>{`${title} | SprintGenerator`}</title>
       <meta charSet="utf-8" />
       <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>

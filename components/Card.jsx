@@ -1,7 +1,9 @@
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
-import Image from '@components/Presentation/Image';
+import ProgressiveImage from 'react-progressive-image';
 import { darken } from 'polished';
+
+import AvatarPlaceholder from '@components/AvatarPlaceholder';
 
 const CardWrapper = styled.figure`
   min-height: 200px;
@@ -12,7 +14,17 @@ const CardWrapper = styled.figure`
 
   background-color: ${({ theme }) => theme.colors.card || 'rgba(0,0,0,0.7)'};
   padding: 20px;
-  margin: 0 auto;
+  margin: 10px;
+`;
+
+const Avatar = styled.img`
+  height: 96px;
+
+  box-sizing: content-box;
+  box-shadow: 0 0 40px 0 rgba(0, 0, 0, 0.45);
+
+  border-radius: 100%;
+  margin-right: 25px;
 `;
 
 const FigCaption = styled.figcaption`
@@ -22,12 +34,15 @@ const FigCaption = styled.figcaption`
 `;
 
 const Name = styled.div`
-  font-size: 1.1vmax;
+  font-size: 0.75em;
   color: ${({ theme }) => theme.colors.text};
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  word-spacing: 300px;
 `;
 
 const Job = styled.div`
-  font-size: 0.825vmax;
+  font-size: 0.5em;
   color: ${({ theme }) => darken(0.33, theme.colors.text)};
 `;
 
@@ -38,12 +53,21 @@ const Card = ({
   job,
 }) => (
   <CardWrapper>
-    <Image
-      src={src}
-      alt={alt}
-      rounded={true}
-      style={{ border: `1px solid ${darken(0.5, '#ffffff')}` }}
-    />
+    <ProgressiveImage src={src} placeholder="">
+      {(src, loading) =>
+        loading ? (
+          <AvatarPlaceholder size="102px" />
+        ) : (
+          <Avatar
+            src={src}
+            alt={alt}
+            text={name}
+            size="large"
+            style={{ minWidth: '96px', margin: 0 }}
+          />
+        )
+      }
+    </ProgressiveImage>
     <FigCaption>
       <Name>{name}</Name>
       <Job>{job}</Job>
