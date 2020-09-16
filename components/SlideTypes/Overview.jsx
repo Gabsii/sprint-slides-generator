@@ -14,7 +14,6 @@ const Overview = ({ stories, completedStories, isActive, isSaved }) => (
   <Slide isActive={isActive}>
     <Heading type="h6" textAlign="left">
       {`Overview - ${completedStories} Issues`}
-      {/* //TODO reduce to story count */}
     </Heading>
     <Overflowable>
       {Object.entries(stories)
