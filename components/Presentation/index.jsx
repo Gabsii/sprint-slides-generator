@@ -32,12 +32,15 @@ const Presentation = ({ children, isSaved }) => {
       setActiveSlide(activeSlide - 1);
     }
     if (activeSlide !== 0) {
+      router.prefetch(`${router.query.slug}?slide=${activeSlide + 1}`);
+      router.prefetch(`${router.query.slug}?slide=${activeSlide - 1}`);
       router.push(
         `?slide=${activeSlide}`,
         `${router.query.slug}?slide=${activeSlide}`,
         { shallow: true },
       );
     } else if (router.asPath.includes('?')) {
+      router.prefetch(`${router.query.slug}?slide=${activeSlide + 1}`);
       router.push(
         `?slide=${activeSlide}`,
         `${router.query.slug}?slide=${activeSlide}`,
