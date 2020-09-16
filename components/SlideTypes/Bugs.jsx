@@ -7,8 +7,9 @@ import {
   OverflowableItem,
 } from '@components/Presentation/Overflowable';
 import UnorderedList from '@components/Presentation/UnorderedList';
+import SavePresentation from '../SavePresentation';
 
-const Bugs = ({ bugs, isActive }) => (
+const Bugs = ({ bugs, isActive, isSaved }) => (
   <Slide isActive={isActive}>
     <Heading type="h6" textAlign="left">
       Bugs
@@ -22,6 +23,7 @@ const Bugs = ({ bugs, isActive }) => (
         </UnorderedList>
       </OverflowableItem>
     </Overflowable>
+    {!isSaved && <SavePresentation />}
   </Slide>
 );
 
@@ -30,4 +32,5 @@ export default Bugs;
 Bugs.propTypes = {
   bugs: PropTypes.array,
   isActive: PropTypes.bool,
+  isSaved: PropTypes.bool,
 };

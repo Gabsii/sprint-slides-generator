@@ -6,7 +6,6 @@ import Layout from '@components/Layout';
 import { TokenContext } from '@utils/ctx/TokenContext';
 import withSession from '@utils/session';
 import sessionData from '@utils/session/data';
-import FavouritesSlider from '@components/FavouritesSlider';
 import useSWR from 'swr';
 import { Button, Row, Text, Link, Col, Loading } from '@zeit-ui/react';
 import { RefreshCw } from '@zeit-ui/react-icons';

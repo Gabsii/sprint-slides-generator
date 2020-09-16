@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
+import { format } from 'date-fns';
 
 import Slide from '@components/Presentation/Slide';
 import Text from '@components/Presentation/Text';
 import Heading from '@components/Presentation/Heading';
 import Background from '@components/Presentation/Background';
-import { format } from 'date-fns';
+import SavePresentation from '../SavePresentation';
 
 const IntroSlide = ({
   name,
@@ -13,6 +14,7 @@ const IntroSlide = ({
   endDate,
   presenterName,
   isActive,
+  isSaved,
 }) => (
   <Slide isActive={isActive}>
     <Text>{name}</Text>
@@ -27,6 +29,7 @@ const IntroSlide = ({
       Presented by {presenterName}
     </Text>
     <Background src="/sprint-final-background.png" alt="dayoum a bee" />
+    {!isSaved && <SavePresentation />}
   </Slide>
 );
 export default IntroSlide;
@@ -38,4 +41,5 @@ IntroSlide.propTypes = {
   endDate: PropTypes.string,
   presenterName: PropTypes.string,
   isActive: PropTypes.bool,
+  isSaved: PropTypes.bool,
 };

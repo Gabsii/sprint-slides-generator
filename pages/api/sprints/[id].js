@@ -1,5 +1,5 @@
 import db from '@utils/db';
-import { createOrUpdateSprint } from '@utils/queries';
+import { createOrUpdateSprint, addSprintData } from '@utils/queries';
 
 const handler = async (req, res) => {
   const { sprint } = JSON.parse(req.body);
@@ -8,9 +8,17 @@ const handler = async (req, res) => {
   } = req;
   const knex = req.db;
 
-  if (req.method === 'PATCH') {
+  if (req.method === 'PUT') {
     try {
       await createOrUpdateSprint(knex, id, sprint);
+      return res.status(200).end();
+    } catch (error) {
+      console.error(error);
+      return res.status(500).send(error);
+    }
+  } else if (req.method === 'PATCH') {
+    try {
+      await addSprintData(knex, id, sprint);
       return res.status(200).end();
     } catch (error) {
       console.error(error);

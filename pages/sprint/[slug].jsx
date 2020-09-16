@@ -6,6 +6,7 @@ import sessionData from '@utils/session/data';
 import db from '@utils/db';
 import { getSprintBySlug } from '@utils/queries';
 import api from '@utils/api';
+import { SprintDataProvider } from '@utils/ctx/SprintDataContext';
 
 import Presentation from '@components/Presentation';
 import IntroSlide from '@components/SlideTypes/IntroSlide';
@@ -13,7 +14,11 @@ import Overview from '@components/SlideTypes/Overview';
 import Bugs from '@components/SlideTypes/Bugs';
 import CompletedStorypoints from '@components/SlideTypes/CompletedStorypoints';
 import StoriesSlide from '@components/SlideTypes/StoriesSlide';
-
+import {
+  storiesDone,
+  completedStoryPoints,
+  pointsNeedReview,
+} from '../../utils/sprintMetrics';
 // ? unused for now import HighlightsImpediments from '@components/Presentation/SlideTypes/HighlightsImpediments';
 
 const createStories = stories =>
@@ -58,54 +63,52 @@ const Sprint = ({ user, currentSprint, data, error }) => {
   // TODO if error show modal
   // TODO if no user (unauthenticated) in session display error modal
   // TODO screen for no stories finished
+  // TODO assignee/team overview
 
+  const memoUser = useMemo(() => user, [user]);
+  const memoCurrentSprint = useMemo(() => currentSprint, [currentSprint]);
   const stories = useMemo(() => data.stories, [data]);
   const bugs = useMemo(() => data.bugs, [data]);
   const others = useMemo(() => data.others, [data]);
 
-  const completedStories = Object.values(stories).reduce(
-    (acc, curr) => (acc += curr.length),
-    0,
-  );
+  const completedStories = storiesDone(stories);
 
-  const completedPoints =
-    Object.values(stories).reduce(
-      (acc, curr) =>
-        (acc += curr.reduce(
-          (newAcc, story) => (newAcc += story.fields.customfield_10008),
-          0,
-        )),
-      0,
-    ) +
-    bugs.reduce((acc, bug) => (acc += bug.fields.customfield_10008), 0) +
-    others.reduce((acc, other) => (acc += other.fields.customfield_10008), 0);
+  if (completedStories === 0) {
+    // todo improve this
+    return <div>no stories done</div>;
+  }
 
-  const pointsInReview = data.inReview.reduce(
-    (acc, ticket) => (acc += ticket.fields.customfield_10008),
-    0,
-  );
+  const completedPoints = completedStoryPoints(stories, bugs, others);
+
+  const pointsInReview = pointsNeedReview(data);
 
   return (
-    <Presentation>
-      <IntroSlide
-        name={currentSprint.sprintName}
-        team={currentSprint.boardName}
-        startDate={currentSprint.startDate}
-        endDate={currentSprint.endDate}
-        presenterName={user.displayName || user.name}
-      />
-      {stories.length > 0 && <Overview stories={stories} />}
-      {/* <HighlightsImpediments /> */}
-      {createStories(stories)}
-      {bugs.length > 0 && <Bugs bugs={bugs} />}
-      <CompletedStorypoints
-        completed={completedPoints}
-        forecast={currentSprint.forecast}
-        completedTickets={completedStories + bugs.length + others.length}
-        ticketsInReview={data.inReview.length}
-        pointsInReview={pointsInReview}
-      />
-    </Presentation>
+    <SprintDataProvider
+      user={memoUser}
+      tasks={data}
+      currentSprint={memoCurrentSprint}
+    >
+      <Presentation isSaved={!!memoCurrentSprint.isSaved}>
+        <IntroSlide
+          name={memoCurrentSprint.sprintName}
+          team={memoCurrentSprint.boardName}
+          startDate={memoCurrentSprint.startDate}
+          endDate={memoCurrentSprint.endDate}
+          presenterName={memoUser.displayName || memoUser.name}
+        />
+        {stories !== {} && <Overview stories={stories} />}
+        {/* <HighlightsImpediments /> */}
+        {createStories(stories)}
+        {bugs.length > 0 && <Bugs bugs={bugs} />}
+        <CompletedStorypoints
+          completed={memoCurrentSprint.achievement || completedPoints}
+          forecast={memoCurrentSprint.forecast}
+          completedTickets={completedStories + bugs.length + others.length}
+          ticketsInReview={data.inReview.length}
+          pointsInReview={pointsInReview}
+        />
+      </Presentation>
+    </SprintDataProvider>
   );
 };
 
@@ -115,6 +118,7 @@ const getSessionData = withSession(async (req, res) => ({
 }));
 
 const handler = async (req, res, query) => {
+  let data;
   let errors = [];
   const knex = req.db;
   const { user, authToken } = await getSessionData(req, res);
@@ -130,11 +134,22 @@ const handler = async (req, res, query) => {
     return { props: {} };
   }
 
-  const [data, dataError] = await api(`/sprints/issues`, {
-    method: 'POST',
-    body: JSON.stringify({ id: currentSprint.id, authToken }),
-  });
-  dataError && errors.push(dataError);
+  if (!currentSprint.isSaved) {
+    const [issues, issuesError] = await api(`/sprints/issues`, {
+      method: 'POST',
+      body: JSON.stringify({ id: currentSprint.id, authToken }),
+    });
+    issuesError && errors.push(issuesError);
+    data = issues;
+  } else {
+    let jsonData = JSON.parse(currentSprint.data);
+    data = {
+      stories: jsonData.tasks.stories,
+      bugs: jsonData.tasks.bugs,
+      others: jsonData.tasks.others,
+      inReview: jsonData.tasks.inReview,
+    };
+  }
 
   return {
     props: {

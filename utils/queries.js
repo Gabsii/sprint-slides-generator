@@ -124,8 +124,20 @@ export const getSprintBySlug = async (knex, slug) =>
       'sprints.startDate',
       'sprints.endDate',
       'sprints.forecast',
+      'sprints.achievement',
+      'sprints.isSaved',
+      'sprints.data',
       'boards.name as boardName',
     )
     .from('sprints')
     .innerJoin('boards', 'boards.id', 'sprints.boardId')
     .whereRaw('sprints.slug = ?', slug);
+
+export const addSprintData = async (knex, id, sprint) =>
+  await knex('sprints')
+    .whereRaw('id = ?', id)
+    .update({
+      isSaved: true,
+      data: JSON.stringify(sprint.data),
+      achievement: sprint.achievement,
+    });

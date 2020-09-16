@@ -26,7 +26,7 @@ const Slide = ({ children, isActive }) => {
 
   if (children.length > 1) {
     hasBackground = children
-      .map(child => child.type.name)
+      .map(child => child && child.type && child.type.name)
       .includes('Background');
   } else {
     hasBackground = children.type.name === 'Background';
@@ -47,6 +47,7 @@ Slide.propTypes = {
     PropTypes.node,
   ]),
   isActive: PropTypes.bool,
+  isSaved: PropTypes.bool,
 };
 
 /** Unit Tests:

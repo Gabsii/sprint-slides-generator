@@ -3,10 +3,11 @@ import Heading from '@components/Presentation/Heading';
 import Grid from '@components/Presentation/Grid';
 import Box from '@components/Presentation/Box';
 import Text from '@components/Presentation/Text';
+import SavePresentation from '../SavePresentation';
 
 // ? TODO make editable
 
-const HighlightsImpediments = () => {
+const HighlightsImpediments = ({ isSaved }) => {
   <Slide>
     <Heading type="h6" textAlign="left">
       Highlights & Impediments
@@ -26,6 +27,7 @@ const HighlightsImpediments = () => {
         <Text>Käse</Text>
       </Box>
     </Grid>
+    {!isSaved && <SavePresentation />}
   </Slide>;
 };
 

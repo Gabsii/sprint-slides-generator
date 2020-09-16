@@ -1,5 +1,46 @@
 import db from '@utils/db';
 
+const removeUnusedIssueFields = issues =>
+  issues.map(issue => {
+    if (issue) {
+      delete issue.expand;
+      delete issue.self;
+
+      if (issue.fields) {
+        if (issue.fields.assignee) {
+          delete issue.fields.assignee.active;
+          delete issue.fields.assignee.self;
+          delete issue.fields.assignee.timeZone;
+        }
+
+        if (issue.fields.issuetype) {
+          delete issue.fields.issuetype.avatarId;
+          delete issue.fields.issuetype.description;
+          delete issue.fields.issuetype.iconUrl;
+          delete issue.fields.issuetype.id;
+          delete issue.fields.issuetype.self;
+          delete issue.fields.issuetype.subtask;
+        }
+
+        if (issue.fields.project) {
+          delete issue.fields.project.avatarUrls;
+          delete issue.fields.project.id;
+          delete issue.fields.project.projectTypeKey;
+          delete issue.fields.project.self;
+        }
+
+        if (issue.fields.status) {
+          delete issue.fields.status.description;
+          delete issue.fields.status.iconUrl;
+          delete issue.fields.status.id;
+          delete issue.fields.status.self;
+          delete issue.fields.status.statusCategory;
+        }
+      }
+    }
+    return issue;
+  });
+
 const handler = async (req, res) => {
   const { id, authToken } = JSON.parse(req.body);
   let isLast = false;
@@ -24,6 +65,9 @@ const handler = async (req, res) => {
     console.error(error);
     return res.status(500).send(error);
   }
+
+  // remove unnecessary data
+  issues = removeUnusedIssueFields(issues);
 
   const filteredStories = issues.filter(
     issue =>

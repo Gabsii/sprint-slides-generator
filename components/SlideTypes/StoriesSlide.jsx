@@ -2,8 +2,8 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
 import Slide from '@components/Presentation/Slide';
-import Grid from '@components/Presentation/Grid';
 import Story from '@components/Story';
+import SavePresentation from '../SavePresentation';
 
 const StoryHeading = styled.h1`
   position: absolute;
@@ -27,7 +27,7 @@ const StoryGrid = styled.div`
   overflow: hidden;
 `;
 
-const StoriesSlide = ({ heading, isActive, stories }) => (
+const StoriesSlide = ({ heading, isActive, stories, isSaved }) => (
   <Slide isActive={isActive}>
     <StoryHeading type="h4">{heading}</StoryHeading>
     <StoryGrid columns={stories.length === 2 ? 2 : 1} width="90%">
@@ -40,6 +40,7 @@ const StoriesSlide = ({ heading, isActive, stories }) => (
         />
       ))}
     </StoryGrid>
+    {!isSaved && <SavePresentation />}
   </Slide>
 );
 export default StoriesSlide;
@@ -47,5 +48,6 @@ export default StoriesSlide;
 StoriesSlide.propTypes = {
   heading: PropTypes.string,
   isActive: PropTypes.bool,
+  isSaved: PropTypes.bool,
   stories: PropTypes.array,
 };

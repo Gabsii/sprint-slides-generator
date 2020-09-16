@@ -2,6 +2,7 @@ import PropTypes from 'prop-types';
 import Slide from '@components/Presentation/Slide';
 import Heading from '@components/Presentation/Heading';
 import Text from '@components/Presentation/Text';
+import SavePresentation from '../SavePresentation';
 
 const CompletedStorypoints = ({
   completed,
@@ -10,6 +11,7 @@ const CompletedStorypoints = ({
   ticketsInReview,
   pointsInReview,
   isActive,
+  isSaved,
 }) => (
   <Slide isActive={isActive}>
     <span>
@@ -35,6 +37,7 @@ const CompletedStorypoints = ({
     ) : (
       <></>
     )}
+    {!isSaved && <SavePresentation />}
   </Slide>
 );
 
@@ -47,4 +50,5 @@ CompletedStorypoints.propTypes = {
   ticketsInReview: PropTypes.number,
   pointsInReview: PropTypes.number,
   isActive: PropTypes.bool,
+  isSaved: PropTypes.bool,
 };

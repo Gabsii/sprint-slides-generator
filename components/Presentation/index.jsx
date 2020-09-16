@@ -1,9 +1,10 @@
 import PropTypes from 'prop-types';
 import { useState, cloneElement, useEffect } from 'react';
-import useKeyPress from '@utils/hooks/useKeyPress';
 import { useRouter } from 'next/router';
 
-const Presentation = ({ children }) => {
+import useKeyPress from '@utils/hooks/useKeyPress';
+
+const Presentation = ({ children, isSaved }) => {
   const router = useRouter();
   const slides = children.flat().filter(child => child);
 
@@ -36,6 +37,10 @@ const Presentation = ({ children }) => {
         `${router.query.slug}?slide=${activeSlide}`,
         { shallow: true },
       );
+    } else if (router.asPath.includes('?')) {
+      router.push(`${router.query.slug}`, `${router.query.slug}`, {
+        shallow: true,
+      });
     }
   }, [rightPressed, leftPressed]);
 
@@ -44,6 +49,7 @@ const Presentation = ({ children }) => {
       id: `slide-${index}`,
       key: `slide-${index}`,
       isActive: activeSlide === index,
+      isSaved,
     }),
   );
 
@@ -57,6 +63,7 @@ Presentation.propTypes = {
     PropTypes.arrayOf(PropTypes.node),
     PropTypes.node,
   ]),
+  isSaved: PropTypes.bool,
 };
 
 /** Unit Tests:

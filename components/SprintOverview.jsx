@@ -54,7 +54,7 @@ const Overlay = styled.div`
 
 const addForecast = (sprint, setToast) => {
   fetch(`/api/sprints/${sprint.id}`, {
-    method: 'PATCH',
+    method: 'PUT',
     body: JSON.stringify({ sprint }),
   })
     .then(() =>
