@@ -50,7 +50,7 @@ const PopoverContent = ({ original, setInputFocus, setVisible }) => {
                 remove: /[*+~.()'"!:@]/g,
               })}`}
             >
-              <a>Generate Sprint Slides</a>
+              <a target="_blank">Generate Sprint Slides</a>
             </Link>
           )}
         </Button>
