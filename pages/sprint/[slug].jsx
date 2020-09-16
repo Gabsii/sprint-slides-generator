@@ -62,7 +62,6 @@ const createStories = stories =>
 const Sprint = ({ user, currentSprint, data, error }) => {
   // TODO if error show modal
   // TODO if no user (unauthenticated) in session display error modal
-  // TODO screen for no stories finished
   // TODO assignee/team overview
 
   const memoUser = useMemo(() => user, [user]);
@@ -130,6 +129,13 @@ const handler = async (req, res, query) => {
   if (!currentSprint) {
     res.statusCode = 302;
     res.setHeader('Location', '/404');
+    res.end();
+    return { props: {} };
+  }
+
+  if (!user.name && !currentSprint.isSaved) {
+    res.statusCode = 302;
+    res.setHeader('Location', '/');
     res.end();
     return { props: {} };
   }
