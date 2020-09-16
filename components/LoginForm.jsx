@@ -123,7 +123,8 @@ const LoginForm = () => {
   // TODO: BEWARE: wrong data 3x goto jira page !message!
   return (
     <Form
-      onSubmit={() => {
+      onSubmit={e => {
+        e.preventDefault();
         if (password && username) {
           setShouldFetch(true);
         }
@@ -143,6 +144,7 @@ const LoginForm = () => {
           id="username"
           name="username"
           required
+          placeholder="Jira Username"
           onChange={e => setUsername(e.target.value)}
         />
       </InputWrapper>
@@ -153,19 +155,11 @@ const LoginForm = () => {
           id="password"
           name="password"
           required
+          placeholder="Jira Password"
           onChange={e => setPassword(e.target.value)}
         />
       </InputWrapper>
-      <Button
-        type="submit"
-        role="button"
-        disabled={isValidating}
-        onClick={() => {
-          if (password && username) {
-            setShouldFetch(true);
-          }
-        }}
-      >
+      <Button type="submit" role="button" disabled={isValidating}>
         login
       </Button>
       {error ? <div>{error.message}</div> : null}
