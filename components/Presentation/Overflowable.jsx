@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 
-// TODO fix overflowable behaviour
 export const Overflowable = styled.div`
   width: 80%;
   height: 100%;
@@ -13,6 +12,7 @@ export const Overflowable = styled.div`
   align-content: flex-start;
 `;
 
+// TODO: find better fix than multiline ellipsis
 export const OverflowableItem = styled.div`
   min-width: 33%;
   max-width: 50%;
