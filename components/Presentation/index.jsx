@@ -38,9 +38,11 @@ const Presentation = ({ children, isSaved }) => {
         { shallow: true },
       );
     } else if (router.asPath.includes('?')) {
-      router.push(`${router.query.slug}`, `${router.query.slug}`, {
-        shallow: true,
-      });
+      router.push(
+        `?slide=${activeSlide}`,
+        `${router.query.slug}?slide=${activeSlide}`,
+        { shallow: true },
+      );
     }
   }, [rightPressed, leftPressed]);
 
