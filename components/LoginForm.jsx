@@ -3,18 +3,8 @@ import useSWR from 'swr';
 import Router from 'next/router';
 import styled from 'styled-components';
 
-import Spinner from '@components/Spinner';
+import Spinner, { SpinnerWrapper } from '@components/Spinner';
 import Button from '@components/Atoms/Button';
-
-const SpinnerWrapper = styled.div`
-  height: 100%;
-  width: 100%;
-  position: absolute;
-  background-color: rgba(255, 255, 255, 0.8);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-`;
 
 const Form = styled.form`
   display: flex;

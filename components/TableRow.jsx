@@ -2,9 +2,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button, Popover, useClickAway, useTheme } from '@zeit-ui/react';
 import useFocus from '@utils/hooks/useFocus';
-import { useRef, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import slugify from 'slugify';
 import Link from 'next/link';
+
+import Spinner, { FullSpinnerWrapper } from '@components/Spinner';
+import { DashboardLoaderContext } from '../utils/ctx/DashboardLoaderContext';
 
 const TR = styled.tr`
   text-align: center;
@@ -16,11 +19,13 @@ const TD = styled.td`
   font-size: 14px;
 `;
 
-const popoverContent = (original, setInputFocus, setVisible) => {
+const PopoverContent = ({ original, setInputFocus, setVisible }) => {
   const forecastButton = () => {
     setVisible(false);
     setInputFocus(true);
   };
+
+  const { setSpinner } = useContext(DashboardLoaderContext);
 
   return (
     <>
@@ -28,7 +33,13 @@ const popoverContent = (original, setInputFocus, setVisible) => {
         <span>Actions</span>
       </Popover.Item>
       <Popover.Item>
-        <Button disabled={original.forecast === 0}>
+        <Button
+          disabled={original.forecast === 0}
+          onClick={e => {
+            e.preventDefault;
+            setSpinner(true);
+          }}
+        >
           {original.forecast === 0 ? (
             'Generate Sprint Slides'
           ) : (
@@ -76,7 +87,13 @@ const TableRow = ({ row }) => {
       ))}
       <TD style={{ borderBottom: `1px solid ${palette.accents_2}` }}>
         <Popover
-          content={popoverContent(row.original, setInputFocus, setVisible)}
+          content={
+            <PopoverContent
+              original={row.original}
+              setInputFocus={setInputFocus}
+              setVisible={setVisible}
+            />
+          }
           visible={visible}
           onVisibleChange={next => {
             setVisible(next);
@@ -95,4 +112,10 @@ export default TableRow;
 
 TableRow.propTypes = {
   row: PropTypes.object,
+};
+
+PopoverContent.propTypes = {
+  original: PropTypes.object,
+  setInputFocus: PropTypes.func,
+  setVisible: PropTypes.func,
 };

@@ -49,6 +49,29 @@ const Circle = styled.div`
   }
 `;
 
+export const SpinnerWrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+export const FullSpinnerWrapper = styled.div`
+  height: 100vh;
+  width: 100vw;
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+`;
+
 const Spinner = () => (
   <LoadingPulse>
     <Circle />
