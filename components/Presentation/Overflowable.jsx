@@ -16,4 +16,9 @@ export const Overflowable = styled.div`
 export const OverflowableItem = styled.div`
   min-width: 33%;
   max-width: 50%;
+
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 14;
+  -webkit-box-orient: vertical;
 `;

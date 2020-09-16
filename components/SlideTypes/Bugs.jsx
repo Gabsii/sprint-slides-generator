@@ -12,16 +12,14 @@ import SavePresentation from '../SavePresentation';
 const Bugs = ({ bugs, isActive, isSaved }) => (
   <Slide isActive={isActive}>
     <Heading type="h6" textAlign="left">
-      Bugs
+      {bugs.length + 1} Bugs
     </Heading>
     <Overflowable>
-      <OverflowableItem>
-        <UnorderedList listStyle="square">
-          {bugs.map(bug => (
-            <p key={`Bug-${bug.key}`}>{`${bug.key}: ${bug.fields.summary}`}</p>
-          ))}
-        </UnorderedList>
-      </OverflowableItem>
+      <UnorderedList listStyle="square">
+        {bugs.map(bug => (
+          <p key={`Bug-${bug.key}`}>{`${bug.key}: ${bug.fields.summary}`}</p>
+        ))}
+      </UnorderedList>
     </Overflowable>
     {!isSaved && <SavePresentation />}
   </Slide>
