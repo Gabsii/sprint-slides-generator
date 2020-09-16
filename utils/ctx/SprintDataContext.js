@@ -8,12 +8,14 @@ export const SprintDataProvider = ({
   user,
   currentSprint,
   tasks,
+  assignees,
 }) => (
   <SprintDataContext.Provider
     value={{
       user,
       currentSprint,
       tasks,
+      assignees,
     }}
   >
     {children}
@@ -25,4 +27,5 @@ SprintDataProvider.propTypes = {
   user: PropTypes.object,
   currentSprint: PropTypes.object,
   tasks: PropTypes.object,
+  assignees: PropTypes.array,
 };

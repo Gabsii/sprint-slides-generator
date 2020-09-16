@@ -18,21 +18,30 @@ const Overview = ({ stories, isActive, isSaved }) => (
       {/* //TODO reduce to story count */}
     </Heading>
     <Overflowable>
-      {Object.entries(stories).map(([projectName, stories]) => (
-        <OverflowableItem key={projectName}>
-          <Text textAlign="left">{projectName}</Text>
-          <UnorderedList
-            style={{ display: 'flex', flexFlow: 'column wrap' }}
-            listStyle="square"
-          >
-            {stories.map(story => (
-              <p style={{ margin: 0 }} key={`Overview-${story.key}`}>
-                {story.fields.summary}
-              </p>
-            ))}
-          </UnorderedList>
-        </OverflowableItem>
-      ))}
+      {Object.entries(stories)
+        .sort(([, first], [, second]) => {
+          if (first.length < second.length) {
+            return 1;
+          } else if (first.length > second.length) {
+            return -1;
+          }
+          return 0;
+        })
+        .map(([projectName, stories]) => (
+          <OverflowableItem key={projectName}>
+            <Text textAlign="left">{projectName}</Text>
+            <UnorderedList
+              style={{ display: 'flex', flexFlow: 'column wrap' }}
+              listStyle="square"
+            >
+              {stories.map(story => (
+                <p style={{ margin: 0 }} key={`Overview-${story.key}`}>
+                  {story.fields.summary}
+                </p>
+              ))}
+            </UnorderedList>
+          </OverflowableItem>
+        ))}
     </Overflowable>
     {!isSaved && <SavePresentation />}
   </Slide>

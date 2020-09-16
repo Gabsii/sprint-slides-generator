@@ -2,10 +2,7 @@ import PropTypes from 'prop-types';
 
 import Slide from '@components/Presentation/Slide';
 import Heading from '@components/Presentation/Heading';
-import {
-  Overflowable,
-  OverflowableItem,
-} from '@components/Presentation/Overflowable';
+import { Overflowable } from '@components/Presentation/Overflowable';
 import UnorderedList from '@components/Presentation/UnorderedList';
 import SavePresentation from '../SavePresentation';
 

@@ -11,6 +11,7 @@ import { SprintDataProvider } from '@utils/ctx/SprintDataContext';
 import Presentation from '@components/Presentation';
 import IntroSlide from '@components/SlideTypes/IntroSlide';
 import Overview from '@components/SlideTypes/Overview';
+import TeamOverview from '@components/SlideTypes/TeamOverview';
 import Bugs from '@components/SlideTypes/Bugs';
 import CompletedStorypoints from '@components/SlideTypes/CompletedStorypoints';
 import StoriesSlide from '@components/SlideTypes/StoriesSlide';
@@ -59,9 +60,7 @@ const createStories = stories =>
     })
     .flat();
 
-const Sprint = ({ user, currentSprint, data, error }) => {
-  // TODO if error show modal
-  // TODO if no user (unauthenticated) in session display error modal
+const Sprint = ({ user, currentSprint, data }) => {
   // TODO assignee/team overview
 
   const memoUser = useMemo(() => user, [user]);
@@ -86,6 +85,7 @@ const Sprint = ({ user, currentSprint, data, error }) => {
       user={memoUser}
       tasks={data}
       currentSprint={memoCurrentSprint}
+      assignees={data.assignees}
     >
       <Presentation isSaved={!!memoCurrentSprint.isSaved}>
         <IntroSlide
@@ -95,6 +95,7 @@ const Sprint = ({ user, currentSprint, data, error }) => {
           endDate={memoCurrentSprint.endDate}
           presenterName={memoUser.displayName || memoUser.name}
         />
+        <TeamOverview assignees={data.assignees} />
         {stories !== {} && <Overview stories={stories} />}
         {/* <HighlightsImpediments /> */}
         {createStories(stories)}
@@ -154,15 +155,17 @@ const handler = async (req, res, query) => {
       bugs: jsonData.tasks.bugs,
       others: jsonData.tasks.others,
       inReview: jsonData.tasks.inReview,
+      assignee: jsonData.assignees,
     };
   }
+
+  errors.length > 0 && console.error(errors);
 
   return {
     props: {
       user: user.name !== undefined ? user : jsonData.user,
       currentSprint,
       data,
-      errors,
     },
     // TODO: SSG
     // revalidate: 1,
@@ -181,5 +184,4 @@ Sprint.propTypes = {
   user: PropTypes.object,
   currentSprint: PropTypes.object,
   data: PropTypes.object,
-  errors: PropTypes.array,
 };

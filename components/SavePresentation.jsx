@@ -7,7 +7,9 @@ import { completedStoryPoints } from '@utils/sprintMetrics';
 
 const SavePresentation = () => {
   const { setVisible, bindings } = useModal();
-  const { user, tasks, currentSprint } = useContext(SprintDataContext);
+  const { user, tasks, currentSprint, assignees } = useContext(
+    SprintDataContext,
+  );
 
   const savePresentation = async () => {
     const achievement = completedStoryPoints(
@@ -16,15 +18,19 @@ const SavePresentation = () => {
       tasks.others,
     );
 
-    const [saved, savedError] = await fetch(
-      `/api/sprints/${currentSprint.id}`,
-      {
-        method: 'PATCH',
-        body: JSON.stringify({
-          sprint: { data: { tasks, user }, achievement },
-        }),
-      },
-    );
+    const [, savedError] = await fetch(`/api/sprints/${currentSprint.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        sprint: { data: { tasks, user, assignees }, achievement },
+      }),
+    });
+
+    // todo modals
+    if (savedError) {
+      // show bad modal
+    } else {
+      // show good modal
+    }
   };
 
   return (

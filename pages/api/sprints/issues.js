@@ -91,6 +91,20 @@ const handler = async (req, res) => {
     }, []),
   };
 
+  let assignees = issues
+    .map(issue => issue.fields.assignee)
+    .filter(assignee => assignee && assignee.emailAddress.includes('@towa.at'))
+    .reduce((acc, current) => {
+      const x = acc.find(
+        item => current.key && item.key && item.key === current.key,
+      );
+      if (!x) {
+        return acc.concat([current]);
+      } else {
+        return acc;
+      }
+    }, []);
+
   const bugs = issues.filter(
     issue =>
       issue.fields.issuetype.name === 'Bug' &&
@@ -113,7 +127,7 @@ const handler = async (req, res) => {
       issue.fields.status.name === 'In Review',
   );
 
-  return res.status(200).send({ stories, bugs, others, inReview });
+  return res.status(200).send({ stories, bugs, others, inReview, assignees });
 };
 
 export default db()(handler);
