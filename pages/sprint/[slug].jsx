@@ -117,7 +117,7 @@ const getSessionData = withSession(async (req, res) => ({
 }));
 
 const handler = async (req, res, query) => {
-  let data;
+  let data, jsonData;
   let errors = [];
   const knex = req.db;
   const { user, authToken } = await getSessionData(req, res);
@@ -148,7 +148,7 @@ const handler = async (req, res, query) => {
     issuesError && errors.push(issuesError);
     data = issues;
   } else {
-    let jsonData = JSON.parse(currentSprint.data);
+    jsonData = JSON.parse(currentSprint.data);
     data = {
       stories: jsonData.tasks.stories,
       bugs: jsonData.tasks.bugs,
@@ -159,7 +159,7 @@ const handler = async (req, res, query) => {
 
   return {
     props: {
-      user,
+      user: user.name !== undefined ? user : jsonData.user,
       currentSprint,
       data,
       errors,
