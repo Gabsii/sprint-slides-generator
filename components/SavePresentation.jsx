@@ -1,6 +1,7 @@
 import { useContext } from 'react';
-import { useModal, Modal, Button, Text } from '@zeit-ui/react';
+import { useModal, Modal, Button, Text, useToasts } from '@zeit-ui/react';
 import { Save } from '@zeit-ui/react-icons';
+import { useRouter } from 'next/router';
 
 import { SprintDataContext } from '@utils/ctx/SprintDataContext';
 import { completedStoryPoints } from '@utils/sprintMetrics';
@@ -10,12 +11,13 @@ const SavePresentation = () => {
   const { user, tasks, currentSprint, assignees } = useContext(
     SprintDataContext,
   );
+  const [, setToast] = useToasts();
+  const router = useRouter();
 
   const savePresentation = () => {
     const { stories, bugs, others } = tasks;
     const achievement = completedStoryPoints(stories, bugs, others);
 
-    // todo toasts
     fetch(`/api/sprints/${currentSprint.id}`, {
       method: 'PATCH',
       body: JSON.stringify({
@@ -23,11 +25,18 @@ const SavePresentation = () => {
       }),
     }).then(res => {
       if (res.ok) {
-        // show good toast
-        setVisible(false);
+        setToast({
+          text: 'Successfully saved the Presentation!',
+          type: 'success',
+        });
+        setTimeout(() => router.reload(), 1000);
       } else {
-        // show bad toast
+        setToast({
+          text: 'Successfully updated the Forecast!',
+          type: 'error',
+        });
       }
+      setVisible(false);
     });
   };
 
