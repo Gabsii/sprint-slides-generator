@@ -185,7 +185,7 @@ const handler = async (req, res, query) => {
       bugs: jsonData.tasks.bugs,
       others: jsonData.tasks.others,
       inReview: jsonData.tasks.inReview,
-      assignee: jsonData.assignees,
+      assignees: jsonData.assignees,
     };
   }
 
