@@ -11,6 +11,7 @@ import {
   Button,
   Input,
   Spacer,
+  Spinner,
 } from '@zeit-ui/react';
 import { RefreshCw } from '@zeit-ui/react-icons';
 import Head from 'next/head';
@@ -57,11 +58,11 @@ const GridItem = ({ board, favouriteBoards, toggleFavourite }) => (
   </HoverableGrid>
 );
 
-// TODO: Search behaves strange --> investigate
 const Boards = ({ boards, user, authToken, favourites, errors }) => {
   const [favouriteBoards, addFavouriteBoard] = useState(favourites);
   const [projectBoards, setProjectBoards] = useState(null);
   const [search, setSearch] = useState('');
+  const [isFetching, setIsFetching] = useState(false);
 
   const toggleFavourite = board => {
     if (favouriteBoards.some(fav => fav.id === board.id)) {
@@ -84,6 +85,7 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
   };
 
   const loadAll = async () => {
+    setIsFetching(true);
     const res = await fetch(`api/boards`, {
       method: 'POST',
       body: JSON.stringify({ authToken, showMore: true, search }),
@@ -92,6 +94,7 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
       .catch(err => console.error(err));
 
     setProjectBoards(res);
+    setIsFetching(false);
   };
 
   return (
@@ -138,6 +141,7 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
           ></Input>
         )}
         <Spacer y={2} />
+        {isFetching && <Spinner />}
         <Grid.Container gap={2}>
           {projectBoards &&
             projectBoards.map(board => (
