@@ -58,6 +58,12 @@ const PopoverContent = ({ user }) => (
         <Toggle disabled style={{ marginLeft: '1rem' }} />
       </Row>
     </Popover.Item>
+    <Popover.Item line />
+    <Popover.Item>
+      <NextLink href="/logout" passHref>
+        <Link>Logout</Link>
+      </NextLink>
+    </Popover.Item>
   </>
 );
 
