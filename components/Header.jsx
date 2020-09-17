@@ -116,9 +116,10 @@ const Header = ({ user }) => {
           </Col>
           <Col
             style={{
+              width: 'auto',
+              marginLeft: 'auto',
               display: 'flex',
               alignItems: 'center',
-              justifyContent: 'flex-end',
             }}
           >
             <Popover content={<PopoverContent user={user} />}>
