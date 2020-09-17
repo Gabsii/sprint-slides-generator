@@ -1,5 +1,7 @@
 # Changelog
 
+## unreleased
+
 ## [v0.0.3]
 
 ### Breaking
@@ -64,5 +66,7 @@
 - Added Sprint Presentation Library with default company style
 - Added Image Fallback component
 
+[v0.0.3]: https://github.com/Gabsii/sprint-slides-generator/tree/v0.0.1
+[v0.0.2]: https://github.com/Gabsii/sprint-slides-generator/tree/v0.0.1
 [v0.0.1]: https://github.com/Gabsii/sprint-slides-generator/tree/v0.0.1
 [unreleased]: https://github.com/Gabsii/sprint-slides-generator/
