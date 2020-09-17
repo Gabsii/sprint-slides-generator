@@ -18,6 +18,14 @@ const StyledTabs = styled(Tabs)`
   width: 100%;
   height: 100%;
 
+  .tab {
+    padding: 0;
+  }
+
+  .tab .link {
+    padding: 15px 12px;
+  }
+
   .content {
     padding: 0;
     margin: 0;
@@ -91,7 +99,7 @@ const Header = ({ user }) => {
               <Tabs.Item
                 label={
                   <NextLink href="/dashboard" passHref>
-                    <Link style={{ padding: '10px 8px' }}>Sprints</Link>
+                    <Link>Sprints</Link>
                   </NextLink>
                 }
                 value="/dashboard"
@@ -99,7 +107,7 @@ const Header = ({ user }) => {
               <Tabs.Item
                 label={
                   <NextLink href="/boards" passHref>
-                    <Link style={{ padding: '10px 8px' }}>Boards</Link>
+                    <Link>Boards</Link>
                   </NextLink>
                 }
                 value="/boards"
@@ -107,7 +115,7 @@ const Header = ({ user }) => {
               <Tabs.Item
                 label={
                   <NextLink href="/presentations" passHref>
-                    <Link style={{ padding: '10px 8px' }}>Presentations</Link>
+                    <Link>Presentations</Link>
                   </NextLink>
                 }
                 value="/presentations"
