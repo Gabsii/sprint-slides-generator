@@ -1,7 +1,16 @@
 import PropTypes from 'prop-types';
 import NextLink from 'next/link';
 import { useRouter } from 'next/router';
-import { Tabs, Link, useTheme, Avatar, Row, Col } from '@zeit-ui/react';
+import {
+  Tabs,
+  Link,
+  useTheme,
+  Avatar,
+  Row,
+  Col,
+  Popover,
+  Toggle,
+} from '@zeit-ui/react';
 import styled from 'styled-components';
 import { useEffect, useState } from 'react';
 
@@ -20,7 +29,29 @@ const Container = styled(Row)`
   max-width: 750pt;
   padding: 0 16pt;
   margin: 0 auto !important;
+  height: 100%;
 `;
+
+const HoverableAvatar = styled(Avatar)`
+  &:hover {
+    cursor: pointer;
+    box-shadow: 0 0px 30px rgba(0, 0, 0, 0.12);
+  }
+`;
+
+const PopoverContent = ({ user }) => (
+  <>
+    <Popover.Item title>
+      <span>Hello {user && user.displayName}!</span>
+    </Popover.Item>
+    <Popover.Item>
+      <Row>
+        Dark Mode
+        <Toggle disabled style={{ marginLeft: '1rem' }} />
+      </Row>
+    </Popover.Item>
+  </>
+);
 
 const Header = ({ user }) => {
   const router = useRouter();
@@ -90,7 +121,12 @@ const Header = ({ user }) => {
               justifyContent: 'flex-end',
             }}
           >
-            <Avatar size="small" src={`/api/users/${user.name}?size=xxlarge`} />
+            <Popover content={<PopoverContent user={user} />}>
+              <HoverableAvatar
+                size="small"
+                src={`/api/users/${user.name}?size=medium`}
+              />
+            </Popover>
           </Col>
           {!stickyHeader && (
             <hr
@@ -113,6 +149,10 @@ const Header = ({ user }) => {
 };
 
 export default Header;
+
+PopoverContent.propTypes = {
+  user: PropTypes.object,
+};
 
 Header.propTypes = {
   user: PropTypes.object,
