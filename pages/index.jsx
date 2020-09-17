@@ -5,7 +5,7 @@ import withSession from '@utils/session';
 import LoginForm from '@components/LoginForm';
 
 const Home = () => (
-  <Page>
+  <Page dotBackdrop>
     <Head>
       <title>Homepage | SprintGenerator</title>
     </Head>

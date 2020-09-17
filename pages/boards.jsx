@@ -18,6 +18,7 @@ import Head from 'next/head';
 import withSession from '@utils/session';
 import sessionData from '@utils/session/data';
 import api from '@utils/api';
+import Header from '@components/Header';
 
 const HoverableGrid = styled(Grid)`
   &:hover {
@@ -56,6 +57,7 @@ const GridItem = ({ board, favouriteBoards, toggleFavourite }) => (
   </HoverableGrid>
 );
 
+// TODO: Search behaves strange --> investigate
 const Boards = ({ boards, user, authToken, favourites, errors }) => {
   const [favouriteBoards, addFavouriteBoard] = useState(favourites);
   const [projectBoards, setProjectBoards] = useState(null);
@@ -89,9 +91,7 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
       .then(res => res.json())
       .catch(err => console.error(err));
 
-    const boardsResponse = res.filter(res => !res.name.includes('Team'));
-
-    setProjectBoards(boardsResponse);
+    setProjectBoards(res);
   };
 
   return (
@@ -99,7 +99,13 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
       <Head>
         <title>Boards | SprintGenerator</title>
       </Head>
+      <Page.Header>
+        <Header user={user} />
+      </Page.Header>
       <Page.Content>
+        <Text h2 style={{ marginBottom: '1rem' }}>
+          Recommended Boards
+        </Text>
         <Grid.Container gap={2}>
           {boards.map(board => (
             <GridItem
@@ -120,7 +126,10 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
             type="text"
             name="search"
             id="search"
-            onChange={e => setSearch(e.target.value)}
+            onChange={e => {
+              setSearch(e.target.value);
+              loadAll();
+            }}
             onKeyDown={e => (e.key === 'Enter' ? loadAll() : null)}
             onBlur={() => loadAll()}
             onClearClick={() => loadAll()}

@@ -4,7 +4,7 @@ import Router from 'next/router';
 import styled from 'styled-components';
 
 import Spinner, { SpinnerWrapper } from '@components/Spinner';
-import Button from '@components/Atoms/Button';
+import { Button } from '@zeit-ui/react';
 
 const Form = styled.form`
   display: flex;
@@ -104,14 +104,14 @@ const LoginForm = () => {
     { shouldRetryOnError: false },
   );
 
+  if (data && !error) {
+    Router.push('/dashboard');
+  }
+
   useEffect(() => {
     // Prefetch the dashboard page as the user will go there after the login
     Router.prefetch('/dashboard');
   }, []);
-
-  if (data && !error) {
-    Router.push('/dashboard');
-  }
 
   // TODO: BEWARE: wrong data 3x goto jira page !message!
   return (
@@ -152,7 +152,17 @@ const LoginForm = () => {
           onChange={e => setPassword(e.target.value)}
         />
       </InputWrapper>
-      <Button type="submit" role="button" disabled={isValidating}>
+      <Button
+        role="button"
+        loading={isValidating}
+        disabled={isValidating}
+        auto
+        onClick={() => {
+          if (password && username) {
+            setShouldFetch(true);
+          }
+        }}
+      >
         login
       </Button>
       {error ? <div>{error.message}</div> : null}

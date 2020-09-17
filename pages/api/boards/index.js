@@ -1,3 +1,11 @@
+function cleanupBoards(boards) {
+  return boards.map((board) => {
+    delete board.self;
+    delete board.type;
+    return board;
+  });
+}
+
 export default async (req, res) => {
   const { authToken, showMore = false, search = 'Team' } = JSON.parse(req.body);
 
@@ -18,7 +26,7 @@ export default async (req, res) => {
             Authorization: `Basic ${authToken}`,
           },
         },
-      ).then(response => response.json());
+      ).then((response) => response.json());
 
       try {
         isLast = data.isLast;
@@ -38,15 +46,18 @@ export default async (req, res) => {
         },
       },
     )
-      .then(response => response.json())
-      .then(response => response.values);
+      .then((response) => response.json())
+      .then((response) => response.values);
   }
 
-  boards.map(board => {
-    delete board.self;
-    delete board.type;
-    return board;
-  });
+  console.log(search);
+  if (search === 'Team') {
+    boards = boards
+      .filter((board) => !board.name.includes('Copy'))
+      .filter((board) => !board.name.includes('intern'));
+  }
+
+  boards = cleanupBoards(boards);
 
   return res.status(200).send(boards);
 };
