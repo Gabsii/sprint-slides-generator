@@ -12,6 +12,7 @@ import { Button, Row, Text, Link, Col, Loading, Page } from '@zeit-ui/react';
 import { RefreshCw } from '@zeit-ui/react-icons';
 import api from '@utils/api';
 import { DashboardLoaderProvider } from '@utils/ctx/DashboardLoaderContext';
+import Header from '@components/Header';
 
 const SprintOverview = dynamic(() => import('@components/SprintOverview'), {
   loading: () => <Loading />,
@@ -53,6 +54,9 @@ const Dashboard = ({ user, favourites, activeSprints, authToken, errors }) => {
       <Head>
         <title>Dashboard | SprintGenerator</title>
       </Head>
+      <Page.Header>
+        <Header user={user} />
+      </Page.Header>
       <Page.Content>
         <DashboardLoaderProvider setSpinner={setSpinner}>
           {spinner && (
