@@ -209,7 +209,7 @@ const handler = async (req, res, query) => {
 export const getStaticProps = async ({ req, res, query }) =>
   db()(handler)(req, res, query);
 
-const handlePaths = async req => {
+export const getStaticPaths = async () => {
   const knex = getDatabaseConnector();
 
   const paths = JSON.parse(JSON.stringify(getAllSprintSlugs(knex))).map(
@@ -225,9 +225,6 @@ const handlePaths = async req => {
     fallback: true,
   };
 };
-
-export const getStaticPaths = async ({ req, res }) =>
-  db()(handlePaths)(req, res);
 
 export default Sprint;
 
