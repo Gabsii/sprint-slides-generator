@@ -19,7 +19,7 @@ const StyledTabs = styled(Tabs)`
   height: 100%;
 
   .tab {
-    padding: 0;
+    padding: 0 !important;
   }
 
   .tab .link {
