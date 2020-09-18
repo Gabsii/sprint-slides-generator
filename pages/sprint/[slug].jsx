@@ -199,15 +199,13 @@ const handler = async (req, res, query) => {
       currentSprint,
       data,
     },
-    // TODO: SSG
-    // revalidate: 1,
-    // fallback: true,
+    revalidate: 1,
+    fallback: true,
   };
 };
 
-// TODO export const getStaticProps
 // had to do it like this so that I wouldn't need any extra api calls if necessary
-export const getServerSideProps = async ({ req, res, query }) =>
+export const getStaticProps = async ({ req, res, query }) =>
   db()(handler)(req, res, query);
 
 export default Sprint;
