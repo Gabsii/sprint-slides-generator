@@ -11,7 +11,7 @@ const PageLoader = ({ externalSpinner }) => {
   useEffect(() => {
     router.events.on('routeChangeStart', e => {
       if (router.asPath !== e) {
-        setSpinner(true);
+        setTimeout(() => setSpinner(true), 150);
       }
     });
 
