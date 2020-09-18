@@ -156,12 +156,8 @@ const LoginForm = () => {
         role="button"
         loading={isValidating}
         disabled={isValidating}
+        htmlType="submit"
         auto
-        onClick={() => {
-          if (password && username) {
-            setShouldFetch(true);
-          }
-        }}
       >
         login
       </Button>
