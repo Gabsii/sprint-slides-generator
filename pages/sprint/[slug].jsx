@@ -5,6 +5,7 @@ import Head from 'next/head';
 
 import api from '@utils/api';
 import db from '@utils/db';
+import { getDatabaseConnector } from '@utils/db/db-injector';
 import { getAllSprintSlugs, getSprintBySlug } from '@utils/queries';
 import { SprintDataProvider } from '@utils/ctx/SprintDataContext';
 import withSession from '@utils/session';
@@ -209,7 +210,7 @@ export const getStaticProps = async ({ req, res, query }) =>
   db()(handler)(req, res, query);
 
 const handlePaths = async req => {
-  const knex = req.db;
+  const knex = getDatabaseConnector();
 
   const paths = JSON.parse(JSON.stringify(getAllSprintSlugs(knex))).map(
     slug => ({
