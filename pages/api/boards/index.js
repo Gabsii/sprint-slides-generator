@@ -50,7 +50,6 @@ export default async (req, res) => {
       .then((response) => response.values);
   }
 
-  console.log(search);
   if (search === 'Team') {
     boards = boards
       .filter((board) => !board.name.includes('Copy'))

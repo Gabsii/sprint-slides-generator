@@ -8,8 +8,6 @@ const PageLoader = ({ externalSpinner }) => {
   const [spinner, setSpinner] = useState(false);
   const router = useRouter();
 
-  console.log(router);
-
   useEffect(() => {
     router.events.on('routeChangeStart', e => {
       if (router.asPath !== e) {
