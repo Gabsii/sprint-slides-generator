@@ -143,4 +143,4 @@ export const addSprintData = async (knex, id, sprint) =>
     });
 
 export const getAllSprintSlugs = async (knex) =>
-  await knex.select('slug').from('sprints');
+  await knex.select('slug').from('sprints').where('isSaved', 1);
