@@ -5,7 +5,7 @@ import Head from 'next/head';
 
 import api from '@utils/api';
 import db from '@utils/db';
-import { getSprintBySlug } from '@utils/queries';
+import { getAllSprintSlugs, getSprintBySlug } from '@utils/queries';
 import { SprintDataProvider } from '@utils/ctx/SprintDataContext';
 import withSession from '@utils/session';
 import sessionData from '@utils/session/data';
@@ -207,6 +207,26 @@ const handler = async (req, res, query) => {
 // had to do it like this so that I wouldn't need any extra api calls if necessary
 export const getStaticProps = async ({ req, res, query }) =>
   db()(handler)(req, res, query);
+
+const handlePaths = async req => {
+  const knex = req.db;
+
+  const paths = JSON.parse(JSON.stringify(getAllSprintSlugs(knex))).map(
+    slug => ({
+      params: {
+        slug,
+      },
+    }),
+  );
+
+  return {
+    paths,
+    fallback: true,
+  };
+};
+
+export const getStaticPaths = async ({ req, res }) =>
+  db()(handlePaths)(req, res);
 
 export default Sprint;
 

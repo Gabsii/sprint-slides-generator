@@ -3,10 +3,10 @@ import slugify from 'slugify';
 
 export const findOrCreateBoard = async (knex, id, name) =>
   knex
-    .transaction(trx =>
+    .transaction((trx) =>
       trx('boards')
         .whereRaw('id = ?', id)
-        .then(res => {
+        .then((res) => {
           if (res.length === 0) {
             return trx('boards')
               .insert({
@@ -20,13 +20,13 @@ export const findOrCreateBoard = async (knex, id, name) =>
           }
         }),
     )
-    .then(res => res[0]);
+    .then((res) => res[0]);
 
 export const createOrUpdateSprint = async (knex, id, sprint) =>
-  knex.transaction(trx =>
+  knex.transaction((trx) =>
     trx('sprints')
       .whereRaw('id = ?', id)
-      .then(res => {
+      .then((res) => {
         if (res.length === 0) {
           return trx('sprints').insert({
             id: sprint.id,
@@ -71,10 +71,10 @@ export const findOrCreateUser = async (
   { emailAddress, name, displayName, avatarUrls },
 ) =>
   knex
-    .transaction(trx =>
+    .transaction((trx) =>
       trx('users')
         .whereRaw('email = ?', emailAddress)
-        .then(res => {
+        .then((res) => {
           if (res.length === 0) {
             return trx('users')
               .insert({
@@ -89,7 +89,7 @@ export const findOrCreateUser = async (
           }
         }),
     )
-    .then(res => res[0]);
+    .then((res) => res[0]);
 
 export const addFavourite = async (knex, dbBoard, dbUser) =>
   await knex('user_has_favourite_boards').insert({
@@ -112,7 +112,7 @@ export const getAllFavouriteBoardsByUser = async (knex, dbUser) =>
     .innerJoin('boards', 'user_has_favourite_boards.board_id', '=', 'boards.id')
     .whereRaw('user_has_favourite_boards.user_id = ?', dbUser.id);
 
-export const allSprints = async knex =>
+export const allSprints = async (knex) =>
   await knex('sprints').whereRaw('endDate > ?', sub(Date.now(), { days: 1 }));
 
 export const getSprintBySlug = async (knex, slug) =>
@@ -141,3 +141,6 @@ export const addSprintData = async (knex, id, sprint) =>
       data: JSON.stringify(sprint.data),
       achievement: sprint.achievement,
     });
+
+export const getAllSprintSlugs = async (knex) =>
+  await knex.select('slug').from('sprints');
