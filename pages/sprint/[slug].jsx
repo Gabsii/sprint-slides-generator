@@ -206,24 +206,24 @@ const handler = async (req, res, query) => {
 };
 
 // had to do it like this so that I wouldn't need any extra api calls if necessary
-export const getStaticProps = async ({ req, res, query }) =>
+export const getServerSideProps = async ({ req, res, query }) =>
   db()(handler)(req, res, query);
 
-export const getStaticPaths = async () => {
-  const knex = getDatabaseConnector()();
+// ! SSG is too much of a hassle
+// export const getStaticPaths = async () => {
+//   const knex = getDatabaseConnector()();
 
-  const paths = JSON.parse(JSON.stringify(await getAllSprintSlugs(knex)))
-    .map(slug => ({
-      params: slug,
-    }))
-    .filter(sprint => sprint.params.slug !== '');
-  console.log(paths);
+//   const paths = JSON.parse(JSON.stringify(await getAllSprintSlugs(knex)))
+//     .map(slug => ({
+//       params: slug,
+//     }))
+//     .filter(sprint => sprint.params.slug !== '');
 
-  return {
-    paths,
-    fallback: true,
-  };
-};
+//   return {
+//     paths,
+//     fallback: true,
+//   };
+// };
 
 export default Sprint;
 
