@@ -14,7 +14,8 @@
     "lint:eslint:fix": "eslint --ignore-path .eslintignore --fix",
     "lint:eslint": "eslint --ignore-path .eslintignore",
     "lint:js": "yarn lint:eslint -- . ",
-    "lint:staged": "lint-staged"
+    "lint:staged": "lint-staged",
+    "analyze": "cross-env ANALYZE=true yarn build"
   },
   "browserslist": [
     "last 2 versions",
@@ -57,8 +58,10 @@
     "swr": "^0.3.2"
   },
   "devDependencies": {
+    "@next/bundle-analyzer": "^9.5.3",
     "babel-eslint": "^10.1.0",
     "babel-plugin-styled-components": "^1.10.7",
+    "cross-env": "^7.0.2",
     "eslint": "^7.9.0",
     "eslint-config-airbnb": "^18.1.0",
     "eslint-config-airbnb-base": "^14.1.0",
