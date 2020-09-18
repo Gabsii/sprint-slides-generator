@@ -214,9 +214,7 @@ export const getStaticPaths = async () => {
 
   const paths = JSON.parse(JSON.stringify(await getAllSprintSlugs(knex)))
     .map(slug => ({
-      params: {
-        slug,
-      },
+      params: slug,
     }))
     .filter(sprint => sprint.params.slug !== '');
   console.log(paths);
