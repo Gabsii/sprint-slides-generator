@@ -210,7 +210,7 @@ export const getStaticProps = async ({ req, res, query }) =>
   db()(handler)(req, res, query);
 
 export const getStaticPaths = async () => {
-  const knex = getDatabaseConnector();
+  const knex = getDatabaseConnector()();
 
   const paths = JSON.parse(JSON.stringify(await getAllSprintSlugs(knex)));
   console.log(paths);
