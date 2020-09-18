@@ -101,6 +101,8 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
     <Page>
       <Head>
         <title>Boards | SprintGenerator</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Page.Header>
         <Header user={user} />
