@@ -5,6 +5,7 @@ import Head from 'next/head';
 import sessionData from '@utils/session/data';
 import withSession from '@utils/session';
 import Header from '@components/Header';
+import PageLoader from '@components/PageLoader';
 
 const Presentations = ({ user }) => (
   <Page>
@@ -17,6 +18,7 @@ const Presentations = ({ user }) => (
       <Header user={user} />
     </Page.Header>
     <Page.Content>
+      <PageLoader />
       <Text h2 style={{ marginBottom: '1rem' }}>
         Presentations
       </Text>

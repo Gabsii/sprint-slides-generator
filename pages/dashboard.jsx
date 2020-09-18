@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 
-import Spinner, { FullSpinnerWrapper } from '@components/Spinner';
+import PageLoader from '@components/PageLoader';
 import { TokenContext } from '@utils/ctx/TokenContext';
 import withSession from '@utils/session';
 import sessionData from '@utils/session/data';
@@ -61,11 +61,7 @@ const Dashboard = ({ user, favourites, activeSprints, authToken, errors }) => {
       </Page.Header>
       <Page.Content>
         <DashboardLoaderProvider setSpinner={setSpinner}>
-          {spinner && (
-            <FullSpinnerWrapper>
-              <Spinner />
-            </FullSpinnerWrapper>
-          )}
+          <PageLoader externalSpinner={spinner} />
           <Row align="middle" justify="space-between" style={{ width: '100%' }}>
             <Text h2>Active Sprints</Text>
             <Button

@@ -16,10 +16,11 @@ import {
 import { RefreshCw } from '@zeit-ui/react-icons';
 import Head from 'next/head';
 
+import Header from '@components/Header';
 import withSession from '@utils/session';
 import sessionData from '@utils/session/data';
 import api from '@utils/api';
-import Header from '@components/Header';
+import PageLoader from '@components/PageLoader';
 
 const HoverableGrid = styled(Grid)`
   &:hover {
@@ -108,6 +109,7 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
         <Header user={user} />
       </Page.Header>
       <Page.Content>
+        <PageLoader />
         <Text h2 style={{ marginBottom: '1rem' }}>
           Recommended Boards
         </Text>
