@@ -5,8 +5,7 @@ import Head from 'next/head';
 
 import api from '@utils/api';
 import db from '@utils/db';
-import { getDatabaseConnector } from '@utils/db/db-injector';
-import { getAllSprintSlugs, getSprintBySlug } from '@utils/queries';
+import { getSprintBySlug } from '@utils/queries';
 import { SprintDataProvider } from '@utils/ctx/SprintDataContext';
 import withSession from '@utils/session';
 import sessionData from '@utils/session/data';
@@ -200,14 +199,19 @@ const handler = async (req, res, query) => {
       currentSprint,
       data,
     },
-    revalidate: 1,
-    fallback: true,
   };
 };
 
-// had to do it like this so that I wouldn't need any extra api calls if necessary
 export const getServerSideProps = async ({ req, res, query }) =>
   db()(handler)(req, res, query);
+
+export default Sprint;
+
+Sprint.propTypes = {
+  user: PropTypes.object,
+  currentSprint: PropTypes.object,
+  data: PropTypes.object,
+};
 
 // ! SSG is too much of a hassle
 // export const getStaticPaths = async () => {
@@ -224,11 +228,3 @@ export const getServerSideProps = async ({ req, res, query }) =>
 //     fallback: true,
 //   };
 // };
-
-export default Sprint;
-
-Sprint.propTypes = {
-  user: PropTypes.object,
-  currentSprint: PropTypes.object,
-  data: PropTypes.object,
-};
