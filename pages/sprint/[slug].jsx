@@ -212,13 +212,17 @@ export const getStaticProps = async ({ req, res, query }) =>
 export const getStaticPaths = async () => {
   const knex = getDatabaseConnector();
 
-  const paths = JSON.parse(JSON.stringify(getAllSprintSlugs(knex))).map(
-    slug => ({
-      params: {
-        slug,
-      },
-    }),
-  );
+  const paths = JSON.parse(JSON.stringify(getAllSprintSlugs(knex)));
+  console.log(paths);
+  console.log(typeof paths);
+
+  // .map(
+  //   slug => ({
+  //     params: {
+  //       slug,
+  //     },
+  //   }),
+  // );
 
   return {
     paths,
