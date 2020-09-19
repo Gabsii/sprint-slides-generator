@@ -3,11 +3,7 @@ import React from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { CssBaseline, ZeitProvider } from '@zeit-ui/react';
 
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
 import theme from '@utils/theme';
-import { TokenProvider } from '@utils/ctx/TokenContext';
 
 const GlobalStyle = createGlobalStyle`
   html,
@@ -30,11 +26,9 @@ export default class MyApp extends App {
     return (
       <ZeitProvider>
         <ThemeProvider theme={theme}>
-          <TokenProvider>
-            <GlobalStyle />
-            <CssBaseline />
-            <Component {...pageProps} />
-          </TokenProvider>
+          <GlobalStyle />
+          <CssBaseline />
+          <Component {...pageProps} />
         </ThemeProvider>
       </ZeitProvider>
     );

@@ -11,13 +11,16 @@ import {
   Button,
   Input,
   Spacer,
+  Spinner,
 } from '@zeit-ui/react';
 import { RefreshCw } from '@zeit-ui/react-icons';
 import Head from 'next/head';
 
+import Header from '@components/Header';
 import withSession from '@utils/session';
 import sessionData from '@utils/session/data';
 import api from '@utils/api';
+import PageLoader from '@components/PageLoader';
 
 const HoverableGrid = styled(Grid)`
   &:hover {
@@ -60,6 +63,7 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
   const [favouriteBoards, addFavouriteBoard] = useState(favourites);
   const [projectBoards, setProjectBoards] = useState(null);
   const [search, setSearch] = useState('');
+  const [isFetching, setIsFetching] = useState(false);
 
   const toggleFavourite = board => {
     if (favouriteBoards.some(fav => fav.id === board.id)) {
@@ -82,6 +86,7 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
   };
 
   const loadAll = async () => {
+    setIsFetching(true);
     const res = await fetch(`api/boards`, {
       method: 'POST',
       body: JSON.stringify({ authToken, showMore: true, search }),
@@ -89,17 +94,25 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
       .then(res => res.json())
       .catch(err => console.error(err));
 
-    const boardsResponse = res.filter(res => !res.name.includes('Team'));
-
-    setProjectBoards(boardsResponse);
+    setProjectBoards(res);
+    setIsFetching(false);
   };
 
   return (
     <Page>
       <Head>
         <title>Boards | SprintGenerator</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
+      <Page.Header>
+        <Header user={user} />
+      </Page.Header>
       <Page.Content>
+        <PageLoader />
+        <Text h2 style={{ marginBottom: '1rem' }}>
+          Recommended Boards
+        </Text>
         <Grid.Container gap={2}>
           {boards.map(board => (
             <GridItem
@@ -120,7 +133,10 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
             type="text"
             name="search"
             id="search"
-            onChange={e => setSearch(e.target.value)}
+            onChange={e => {
+              setSearch(e.target.value);
+              loadAll();
+            }}
             onKeyDown={e => (e.key === 'Enter' ? loadAll() : null)}
             onBlur={() => loadAll()}
             onClearClick={() => loadAll()}
@@ -129,6 +145,7 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
           ></Input>
         )}
         <Spacer y={2} />
+        {isFetching && <Spinner />}
         <Grid.Container gap={2}>
           {projectBoards &&
             projectBoards.map(board => (

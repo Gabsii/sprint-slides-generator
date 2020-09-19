@@ -96,11 +96,6 @@ const Sprint = ({ user, currentSprint, data }) => {
 
   const completedStories = storiesDone(stories);
 
-  if (completedStories === 0) {
-    // todo improve this
-    return <div>no stories done</div>;
-  }
-
   const completedPoints = completedStoryPoints(stories, bugs, others);
 
   const pointsInReview = pointsNeedReview(data);
@@ -114,6 +109,8 @@ const Sprint = ({ user, currentSprint, data }) => {
     >
       <Head>
         <title>{memoCurrentSprint.sprintName} | SprintGenerator</title>
+        <meta charSet="utf-8" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Presentation isSaved={!!memoCurrentSprint.isSaved}>
         <IntroSlide
@@ -157,16 +154,13 @@ const handler = async (req, res, query) => {
     JSON.stringify(await getSprintBySlug(knex, query.slug)),
   )[0];
 
-  if (!currentSprint) {
+  if (
+    !currentSprint ||
+    (!user.name && !currentSprint.isSaved) ||
+    !currentSprint.forecast
+  ) {
     res.statusCode = 302;
     res.setHeader('Location', '/404');
-    res.end();
-    return { props: {} };
-  }
-
-  if (!user.name && !currentSprint.isSaved) {
-    res.statusCode = 302;
-    res.setHeader('Location', '/');
     res.end();
     return { props: {} };
   }
@@ -197,14 +191,9 @@ const handler = async (req, res, query) => {
       currentSprint,
       data,
     },
-    // TODO: SSG
-    // revalidate: 1,
-    // fallback: true,
   };
 };
 
-// TODO export const getStaticProps
-// had to do it like this so that I wouldn't need any extra api calls if necessary
 export const getServerSideProps = async ({ req, res, query }) =>
   db()(handler)(req, res, query);
 
@@ -215,3 +204,19 @@ Sprint.propTypes = {
   currentSprint: PropTypes.object,
   data: PropTypes.object,
 };
+
+// ! SSG is too much of a hassle rn
+// export const getStaticPaths = async () => {
+//   const knex = getDatabaseConnector()();
+
+//   const paths = JSON.parse(JSON.stringify(await getAllSprintSlugs(knex)))
+//     .map(slug => ({
+//       params: slug,
+//     }))
+//     .filter(sprint => sprint.params.slug !== '');
+
+//   return {
+//     paths,
+//     fallback: true,
+//   };
+// };

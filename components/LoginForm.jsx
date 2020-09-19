@@ -4,7 +4,7 @@ import Router from 'next/router';
 import styled from 'styled-components';
 
 import Spinner, { SpinnerWrapper } from '@components/Spinner';
-import Button from '@components/Atoms/Button';
+import { Button, Link, Text } from '@zeit-ui/react';
 
 const Form = styled.form`
   display: flex;
@@ -94,26 +94,28 @@ const LoginForm = () => {
           password: password.trim(),
         }),
       }).then(res => {
-        if (res.ok) {
+        if (res.status !== 403) {
           return res.json();
+        } else {
+          throw new Error(403);
         }
-        setShouldFetch(false);
-        // TODO: improve error messages
-        throw new Error(`HTTP Code ${res.status} - ${res.statusText}`);
       }),
-    { shouldRetryOnError: false },
+    {
+      shouldRetryOnError: false,
+      revalidateOnFocus: false,
+      refreshWhenHidden: false,
+    },
   );
+
+  if (data && !error) {
+    Router.push('/dashboard');
+  }
 
   useEffect(() => {
     // Prefetch the dashboard page as the user will go there after the login
     Router.prefetch('/dashboard');
   }, []);
 
-  if (data && !error) {
-    Router.push('/dashboard');
-  }
-
-  // TODO: BEWARE: wrong data 3x goto jira page !message!
   return (
     <Form
       onSubmit={e => {
@@ -129,7 +131,15 @@ const LoginForm = () => {
           <Spinner />
         </SpinnerWrapper>
       ) : null}
-      <h2>Login</h2>
+      <Text h1>Login</Text>
+      <Text>
+        Please log in using your&nbsp;
+        <Link href="https://jira.towa-digital.com" color icon target="_blank">
+          Jira Credentials.
+        </Link>
+        <Text b>Beware: </Text> If you enter the wrong credentials more than
+        three times you have to log in through Jira again.
+      </Text>
       <InputWrapper>
         <Label htmlFor="username">Username</Label>
         <Input
@@ -152,10 +162,32 @@ const LoginForm = () => {
           onChange={e => setPassword(e.target.value)}
         />
       </InputWrapper>
-      <Button type="submit" role="button" disabled={isValidating}>
+      <Button
+        role="button"
+        loading={isValidating}
+        disabled={isValidating}
+        htmlType="submit"
+        auto
+      >
         login
       </Button>
-      {error ? <div>{error.message}</div> : null}
+      {error ? (
+        error.message === '403' ? (
+          <Text type="error">
+            Password entered incorrectly three times.&nbsp;
+            <Link
+              href="https://jira.towa-digital.com/logout"
+              color
+              icon
+              target="_blank"
+            >
+              Login through Jira again
+            </Link>
+          </Text>
+        ) : (
+          <Text type="error">Oh Oh something went wrong!</Text>
+        )
+      ) : null}
     </Form>
   );
 };

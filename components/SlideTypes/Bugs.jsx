@@ -9,7 +9,7 @@ import SavePresentation from '@components/SavePresentation';
 const Bugs = ({ bugs, isActive, isSaved }) => (
   <Slide isActive={isActive}>
     <Heading type="h6" textAlign="left">
-      {bugs.length + 1} Bugs
+      {bugs.length} Bugs
     </Heading>
     <Overflowable>
       <UnorderedList listStyle="square">

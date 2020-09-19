@@ -1,6 +1,10 @@
 const path = require('path');
 
-module.exports = {
+const withBundleAnalyzer = require('@next/bundle-analyzer')({
+  enabled: process.env.ANALYZE === 'true',
+})
+
+module.exports = withBundleAnalyzer({
   poweredByHeader: false,
   webpack: config => {
     config.resolve.alias['@components'] = path.resolve(
@@ -13,4 +17,4 @@ module.exports = {
     );
     return config;
   },
-};
+});

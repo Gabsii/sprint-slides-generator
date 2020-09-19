@@ -5,9 +5,11 @@ import withSession from '@utils/session';
 import LoginForm from '@components/LoginForm';
 
 const Home = () => (
-  <Page>
+  <Page dotBackdrop>
     <Head>
       <title>Homepage | SprintGenerator</title>
+      <meta charSet="utf-8" />
+      <meta name="viewport" content="initial-scale=1.0, width=device-width" />
     </Head>
     <Page.Content>
       <LoginForm />

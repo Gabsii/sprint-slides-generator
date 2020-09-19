@@ -1,5 +1,26 @@
 # Changelog
 
+## unreleased
+
+Did some quality control mostly
+
+### Added
+
+- Navigation through header inside the app section
+- Meta tags and titles
+- Bundle analyzer to cry over how big @zeit-ui is
+- Custom 404 page
+
+### Updated
+
+- Login error handling and UX
+- simplified layout by using @zeit-ui components everywhere possible
+
+#### Fixed
+
+- Login Problems (no error thrown, etc.)
+- Removed some dead code
+
 ## [v0.0.3]
 
 ### Breaking
@@ -64,5 +85,7 @@
 - Added Sprint Presentation Library with default company style
 - Added Image Fallback component
 
+[v0.0.3]: https://github.com/Gabsii/sprint-slides-generator/tree/v0.0.1
+[v0.0.2]: https://github.com/Gabsii/sprint-slides-generator/tree/v0.0.1
 [v0.0.1]: https://github.com/Gabsii/sprint-slides-generator/tree/v0.0.1
 [unreleased]: https://github.com/Gabsii/sprint-slides-generator/
