@@ -96,11 +96,6 @@ const Sprint = ({ user, currentSprint, data }) => {
 
   const completedStories = storiesDone(stories);
 
-  if (completedStories === 0) {
-    // todo improve this
-    return <div>no stories done</div>;
-  }
-
   const completedPoints = completedStoryPoints(stories, bugs, others);
 
   const pointsInReview = pointsNeedReview(data);
@@ -159,16 +154,13 @@ const handler = async (req, res, query) => {
     JSON.stringify(await getSprintBySlug(knex, query.slug)),
   )[0];
 
-  if (!currentSprint) {
+  if (
+    !currentSprint ||
+    (!user.name && !currentSprint.isSaved) ||
+    !currentSprint.forecast
+  ) {
     res.statusCode = 302;
     res.setHeader('Location', '/404');
-    res.end();
-    return { props: {} };
-  }
-
-  if (!user.name && !currentSprint.isSaved) {
-    res.statusCode = 302;
-    res.setHeader('Location', '/');
     res.end();
     return { props: {} };
   }
@@ -213,7 +205,7 @@ Sprint.propTypes = {
   data: PropTypes.object,
 };
 
-// ! SSG is too much of a hassle
+// ! SSG is too much of a hassle rn
 // export const getStaticPaths = async () => {
 //   const knex = getDatabaseConnector()();
 
