@@ -116,7 +116,6 @@ const LoginForm = () => {
     Router.prefetch('/dashboard');
   }, []);
 
-  // TODO: BEWARE: wrong data 3x goto jira page !message!
   return (
     <Form
       onSubmit={e => {
