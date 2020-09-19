@@ -72,7 +72,6 @@ const Dashboard = ({ user, favourites, activeSprints, authToken, errors }) => {
               <Text span>oh no something went wrong {error.message}</Text>
             </Row>
           )}
-          {/* {!!favourites.length && <FavouritesSlider favourites={favourites} />} */}
           {(sprints && sprints.length > 0) || activeSprints.length > 0 ? (
             <Row style={{ width: '100%' }}>
               <SprintOverview

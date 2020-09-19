@@ -3,9 +3,6 @@ import React from 'react';
 import { createGlobalStyle, ThemeProvider } from 'styled-components';
 import { CssBaseline, ZeitProvider } from '@zeit-ui/react';
 
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
-
 import theme from '@utils/theme';
 
 const GlobalStyle = createGlobalStyle`
