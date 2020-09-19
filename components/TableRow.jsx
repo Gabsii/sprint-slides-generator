@@ -34,7 +34,7 @@ const PopoverContent = ({ original, setInputFocus, setVisible }) => {
       <Popover.Item>
         <Button
           disabled={original.forecast === 0}
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault;
             setSpinner(true);
             setTimeout(() => setSpinner(false), 2000);
@@ -65,7 +65,7 @@ const PopoverContent = ({ original, setInputFocus, setVisible }) => {
   );
 };
 
-const TableRow = ({ row }) => {
+const TableRow = ({ row, disableEditable, disableActions }) => {
   const ref = useRef();
   const [visible, setVisible] = useState(false);
   const [inputRef, setInputFocus] = useFocus();
@@ -80,30 +80,32 @@ const TableRow = ({ row }) => {
           key={j}
           style={{ borderBottom: `1px solid ${palette.accents_2}` }}
         >
-          {cell.column.id === 'forecast'
+          {!disableEditable && cell.column.id === 'forecast'
             ? cell.render('EditableCell', { inputRef })
             : cell.render('Cell')}
         </TD>
       ))}
-      <TD style={{ borderBottom: `1px solid ${palette.accents_2}` }}>
-        <Popover
-          content={
-            <PopoverContent
-              original={row.original}
-              setInputFocus={setInputFocus}
-              setVisible={setVisible}
-            />
-          }
-          visible={visible}
-          onVisibleChange={next => {
-            setVisible(next);
-          }}
-        >
-          <Button auto type="secondary">
-            Actions
-          </Button>
-        </Popover>
-      </TD>
+      {!disableActions && (
+        <TD style={{ borderBottom: `1px solid ${palette.accents_2}` }}>
+          <Popover
+            content={
+              <PopoverContent
+                original={row.original}
+                setInputFocus={setInputFocus}
+                setVisible={setVisible}
+              />
+            }
+            visible={visible}
+            onVisibleChange={(next) => {
+              setVisible(next);
+            }}
+          >
+            <Button auto type="secondary">
+              Actions
+            </Button>
+          </Popover>
+        </TD>
+      )}
     </TR>
   );
 };
@@ -112,6 +114,8 @@ export default TableRow;
 
 TableRow.propTypes = {
   row: PropTypes.object,
+  disableEditable: PropTypes.bool,
+  disableActions: PropTypes.bool,
 };
 
 PopoverContent.propTypes = {

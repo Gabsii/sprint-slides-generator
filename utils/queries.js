@@ -150,4 +150,8 @@ export const addSprintData = async (knex, id, sprint) =>
     });
 
 export const getAllActivePresentations = async (knex) =>
-  await knex('sprints').where('isSaved', 1);
+  await knex
+    .select('name', 'slug', 'endDate', 'forecast', 'achievement')
+    .from('sprints')
+    .where('isSaved', 1)
+    .orderBy('endDate', 'desc');
