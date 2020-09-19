@@ -1,10 +1,9 @@
-import { useContext, useEffect, useState } from 'react';
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 
 import PageLoader from '@components/PageLoader';
-import { TokenContext } from '@utils/ctx/TokenContext';
 import withSession from '@utils/session';
 import sessionData from '@utils/session/data';
 import useSWR from 'swr';
@@ -19,15 +18,8 @@ const SprintOverview = dynamic(() => import('@components/SprintOverview'), {
 });
 
 const Dashboard = ({ user, favourites, activeSprints, authToken, errors }) => {
-  const { token, setToken } = useContext(TokenContext);
   const [shouldFetch, setShouldFetch] = useState(false);
   const [spinner, setSpinner] = useState(false);
-
-  useEffect(() => {
-    if (token && authToken) {
-      setToken(authToken);
-    }
-  }, [authToken]);
 
   const retoggleFetch = () => {
     setShouldFetch(false);
