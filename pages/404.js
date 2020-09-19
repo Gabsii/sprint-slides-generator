@@ -21,6 +21,7 @@ const Custom404 = () => (
         </Text>
         <Image
           height={500}
+          alt="This is not the page you are looking for"
           src="https://media.giphy.com/media/VwoJkTfZAUBSU/source.gif"
         ></Image>
       </Row>
