@@ -137,6 +137,7 @@ const LoginForm = () => {
         <Link href="https://jira.towa-digital.com" color icon target="_blank">
           Jira Credentials.
         </Link>
+        <br />
         <Text b>Beware: </Text> If you enter the wrong credentials more than
         three times you have to log in through Jira again.
       </Text>
