@@ -2,6 +2,25 @@
 
 ## unreleased
 
+Did some quality control mostly
+
+### Added
+
+- Navigation through header inside the app section
+- Meta tags and titles
+- Bundle analyzer to cry over how big @zeit-ui is
+- Custom 404 page
+
+### Updated
+
+- Login error handling and UX
+- simplified layout by using @zeit-ui components everywhere possible
+
+#### Fixed
+
+- Login Problems (no error thrown, etc.)
+- Removed some dead code
+
 ## [v0.0.3]
 
 ### Breaking
