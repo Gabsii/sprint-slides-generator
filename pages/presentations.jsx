@@ -51,7 +51,10 @@ const Presentations = ({ user, presentations }) => {
 
 export const getServerSideProps = withSession(async function ({ req, res }) {
   const user = sessionData(req, res, 'user');
-  if (!user) return { props: null };
+  if (!user) {
+    res.end();
+    return { props: null };
+  }
 
   const [presentations, presentationsError] = await api('/presentations', {
     method: 'POST',
