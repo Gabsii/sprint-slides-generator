@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## [v0.0.4]
 
 Did some quality control mostly
 
@@ -21,6 +21,7 @@ Did some quality control mostly
 
 - Login Problems (no error thrown, etc.)
 - Removed some dead code
+- Fixed the 502 error which occured because redirection for unauthorized users wasn't working
 
 ## [v0.0.3]
 
