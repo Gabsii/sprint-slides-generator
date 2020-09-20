@@ -34,7 +34,7 @@ const PopoverContent = ({ original, setInputFocus, setVisible }) => {
       <Popover.Item>
         <Button
           disabled={original.forecast === 0}
-          onClick={e => {
+          onClick={(e) => {
             e.preventDefault;
             setSpinner(true);
             setTimeout(() => setSpinner(false), 2000);
@@ -65,7 +65,21 @@ const PopoverContent = ({ original, setInputFocus, setVisible }) => {
   );
 };
 
-const TableRow = ({ row }) => {
+const PopoverContentPresentation = () => (
+  <>
+    <Popover.Item title>
+      <span>Actions</span>
+    </Popover.Item>
+    <Popover.Item>
+      <Button disabled>Generate PDF</Button>
+    </Popover.Item>
+    <Popover.Item>
+      <Button disabled>Delete Presentation</Button>
+    </Popover.Item>
+  </>
+);
+
+const TableRow = ({ row, disableEditable, isPresentation }) => {
   const ref = useRef();
   const [visible, setVisible] = useState(false);
   const [inputRef, setInputFocus] = useFocus();
@@ -80,7 +94,7 @@ const TableRow = ({ row }) => {
           key={j}
           style={{ borderBottom: `1px solid ${palette.accents_2}` }}
         >
-          {cell.column.id === 'forecast'
+          {!disableEditable && cell.column.id === 'forecast'
             ? cell.render('EditableCell', { inputRef })
             : cell.render('Cell')}
         </TD>
@@ -88,14 +102,18 @@ const TableRow = ({ row }) => {
       <TD style={{ borderBottom: `1px solid ${palette.accents_2}` }}>
         <Popover
           content={
-            <PopoverContent
-              original={row.original}
-              setInputFocus={setInputFocus}
-              setVisible={setVisible}
-            />
+            isPresentation ? (
+              <PopoverContentPresentation />
+            ) : (
+              <PopoverContent
+                original={row.original}
+                setInputFocus={setInputFocus}
+                setVisible={setVisible}
+              />
+            )
           }
           visible={visible}
-          onVisibleChange={next => {
+          onVisibleChange={(next) => {
             setVisible(next);
           }}
         >
@@ -112,6 +130,8 @@ export default TableRow;
 
 TableRow.propTypes = {
   row: PropTypes.object,
+  disableEditable: PropTypes.bool,
+  isPresentation: PropTypes.bool,
 };
 
 PopoverContent.propTypes = {

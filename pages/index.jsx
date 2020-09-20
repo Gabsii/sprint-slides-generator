@@ -17,7 +17,7 @@ const Home = () => (
   </Page>
 );
 
-export const getServerSideProps = withSession(async function({ req, res }) {
+export const getServerSideProps = withSession(async function ({ req, res }) {
   const authToken = req.session.get('authToken');
 
   if (authToken === undefined) {
@@ -28,7 +28,7 @@ export const getServerSideProps = withSession(async function({ req, res }) {
   res.statusCode = 302;
   res.end();
   return {
-    props: { authToken: req.session.get('authToken') },
+    props: { authToken },
   };
 });
 

@@ -126,11 +126,18 @@ export const getSprintBySlug = async (knex, slug) =>
       'sprints.forecast',
       'sprints.achievement',
       'sprints.isSaved',
-      'sprints.data',
+      'presentations.user',
+      'presentations.stories',
+      'presentations.bugs',
+      'presentations.others',
+      'presentations.inReview',
+      'presentations.assignees',
+      'presentations.highlights_impediments',
       'boards.name as boardName',
     )
     .from('sprints')
     .innerJoin('boards', 'boards.id', 'sprints.boardId')
+    .leftJoin('presentations', 'presentations.sprint_id', 'sprints.id')
     .whereRaw('sprints.slug = ?', slug);
 
 export const addSprintData = async (knex, id, sprint) =>
@@ -142,5 +149,9 @@ export const addSprintData = async (knex, id, sprint) =>
       achievement: sprint.achievement,
     });
 
-export const getAllSprintSlugs = async (knex) =>
-  await knex.select('slug').from('sprints').where('isSaved', 1);
+export const getAllActivePresentations = async (knex) =>
+  await knex
+    .select('name', 'slug', 'endDate', 'forecast', 'achievement')
+    .from('sprints')
+    .where('isSaved', 1)
+    .orderBy('endDate', 'desc');

@@ -1,6 +1,6 @@
 # Changelog
 
-## unreleased
+## [v0.0.4]
 
 Did some quality control mostly
 
@@ -10,6 +10,7 @@ Did some quality control mostly
 - Meta tags and titles
 - Bundle analyzer to cry over how big @zeit-ui is
 - Custom 404 page
+- Presentation Overview
 
 ### Updated
 
@@ -20,6 +21,7 @@ Did some quality control mostly
 
 - Login Problems (no error thrown, etc.)
 - Removed some dead code
+- Fixed the 502 error which occured because redirection for unauthorized users wasn't working
 
 ## [v0.0.3]
 

@@ -34,7 +34,9 @@ const GridItem = ({ board, favouriteBoards, toggleFavourite }) => (
       shadow
       hoverable
       type={
-        favouriteBoards.some(fav => fav.id === board.id) ? 'success' : 'default'
+        favouriteBoards.some((fav) => fav.id === board.id)
+          ? 'success'
+          : 'default'
       }
       onClick={() => toggleFavourite(board)}
       style={{ width: '100%', height: '150px' }}
@@ -49,7 +51,7 @@ const GridItem = ({ board, favouriteBoards, toggleFavourite }) => (
             `https://jira.towa-digital.com/secure/RapidBoard.jspa?rapidView=${board.id}`
           }
           target="_blank"
-          color={!favouriteBoards.some(fav => fav.id === board.id)}
+          color={!favouriteBoards.some((fav) => fav.id === board.id)}
           icon
         >
           Link to Jira
@@ -65,14 +67,14 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
   const [search, setSearch] = useState('');
   const [isFetching, setIsFetching] = useState(false);
 
-  const toggleFavourite = board => {
-    if (favouriteBoards.some(fav => fav.id === board.id)) {
+  const toggleFavourite = (board) => {
+    if (favouriteBoards.some((fav) => fav.id === board.id)) {
       fetch(`/api/boards/${board.id}/favourite`, {
         method: 'DELETE',
         body: JSON.stringify({ user }),
       });
       const boards = favouriteBoards.filter(
-        favBoard => favBoard.id !== board.id,
+        (favBoard) => favBoard.id !== board.id,
       );
       addFavouriteBoard(boards);
     } else {
@@ -91,8 +93,8 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
       method: 'POST',
       body: JSON.stringify({ authToken, showMore: true, search }),
     })
-      .then(res => res.json())
-      .catch(err => console.error(err));
+      .then((res) => res.json())
+      .catch((err) => console.error(err));
 
     setProjectBoards(res);
     setIsFetching(false);
@@ -114,7 +116,7 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
           Recommended Boards
         </Text>
         <Grid.Container gap={2}>
-          {boards.map(board => (
+          {boards.map((board) => (
             <GridItem
               key={board.id}
               board={board}
@@ -133,11 +135,11 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
             type="text"
             name="search"
             id="search"
-            onChange={e => {
+            onChange={(e) => {
               setSearch(e.target.value);
               loadAll();
             }}
-            onKeyDown={e => (e.key === 'Enter' ? loadAll() : null)}
+            onKeyDown={(e) => e.key === 'Enter' && loadAll()}
             onBlur={() => loadAll()}
             onClearClick={() => loadAll()}
             placeholder="Search for a Jira board"
@@ -148,7 +150,7 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
         {isFetching && <Spinner />}
         <Grid.Container gap={2}>
           {projectBoards &&
-            projectBoards.map(board => (
+            projectBoards.map((board) => (
               <GridItem
                 key={board.id}
                 board={board}
@@ -162,12 +164,15 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
   );
 };
 
-export const getServerSideProps = withSession(async function({ req, res }) {
+export const getServerSideProps = withSession(async function ({ req, res }) {
   let errors = [];
   const user = sessionData(req, res, 'user');
   const authToken = sessionData(req, res, 'authToken');
 
-  if (!user || !authToken) return { props: null };
+  if (!user || !authToken) {
+    res.end();
+    return { props: null };
+  }
 
   const [boards, boardsError] = await api('/boards', {
     method: 'POST',
@@ -183,8 +188,8 @@ export const getServerSideProps = withSession(async function({ req, res }) {
 
   return {
     props: {
-      user: req.session.get('user'),
-      authToken: req.session.get('authToken'),
+      user,
+      authToken,
       boards,
       favourites,
       errors,

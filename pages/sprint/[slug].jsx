@@ -48,7 +48,7 @@ const StoriesSlide = dynamic(
 );
 // ? unused for now import HighlightsImpediments from '@components/Presentation/SlideTypes/HighlightsImpediments';
 
-const createStories = stories =>
+const createStories = (stories) =>
   Object.entries(stories)
     .map(([projectName, stories]) => {
       let temp = [];
@@ -62,7 +62,7 @@ const createStories = stories =>
           }
           temp.push(story);
         })
-        .filter(stories => stories)
+        .filter((stories) => stories)
         .sort((first, second) => {
           if (first.length < second.length) {
             return 1;
@@ -95,9 +95,7 @@ const Sprint = ({ user, currentSprint, data }) => {
   const others = useMemo(() => data.others, [data]);
 
   const completedStories = storiesDone(stories);
-
   const completedPoints = completedStoryPoints(stories, bugs, others);
-
   const pointsInReview = pointsNeedReview(data);
 
   return (
@@ -145,7 +143,7 @@ const getSessionData = withSession(async (req, res) => ({
 }));
 
 const handler = async (req, res, query) => {
-  let data, jsonData;
+  let data;
   let errors = [];
   const knex = req.db;
   const { user, authToken } = await getSessionData(req, res);
@@ -173,13 +171,12 @@ const handler = async (req, res, query) => {
     issuesError && errors.push(issuesError);
     data = issues;
   } else {
-    jsonData = JSON.parse(currentSprint.data);
     data = {
-      stories: jsonData.tasks.stories,
-      bugs: jsonData.tasks.bugs,
-      others: jsonData.tasks.others,
-      inReview: jsonData.tasks.inReview,
-      assignees: jsonData.assignees,
+      stories: JSON.parse(currentSprint.stories),
+      bugs: JSON.parse(currentSprint.bugs),
+      others: JSON.parse(currentSprint.others),
+      inReview: JSON.parse(currentSprint.inReview),
+      assignees: JSON.parse(currentSprint.assignees),
     };
   }
 
@@ -187,7 +184,7 @@ const handler = async (req, res, query) => {
 
   return {
     props: {
-      user: user.name !== undefined ? user : jsonData.user,
+      user: user.name !== undefined ? user : currentSprint.user,
       currentSprint,
       data,
     },
