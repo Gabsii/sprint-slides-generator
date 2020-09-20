@@ -116,6 +116,12 @@ const PresentationOverview = ({ presentations, isValidating, user }) => {
                   <SortedIcon column={column} />
                 </TH>
               ))}
+              <TH
+                style={{
+                  backgroundColor: palette.accents_1,
+                  color: palette.accents_5,
+                }}
+              />
             </TR>
           ))}
         </thead>
@@ -123,12 +129,7 @@ const PresentationOverview = ({ presentations, isValidating, user }) => {
           {page.map((row, i) => {
             prepareRow(row);
             return (
-              <TableRow
-                key={i}
-                row={row}
-                disableEditable
-                disableActions
-              ></TableRow>
+              <TableRow key={i} row={row} disableEditable isPresentation />
             );
           })}
         </tbody>

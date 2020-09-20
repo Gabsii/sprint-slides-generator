@@ -65,7 +65,21 @@ const PopoverContent = ({ original, setInputFocus, setVisible }) => {
   );
 };
 
-const TableRow = ({ row, disableEditable, disableActions }) => {
+const PopoverContentPresentation = () => (
+  <>
+    <Popover.Item title>
+      <span>Actions</span>
+    </Popover.Item>
+    <Popover.Item>
+      <Button disabled>Generate PDF</Button>
+    </Popover.Item>
+    <Popover.Item>
+      <Button disabled>Delete Presentation</Button>
+    </Popover.Item>
+  </>
+);
+
+const TableRow = ({ row, disableEditable, isPresentation }) => {
   const ref = useRef();
   const [visible, setVisible] = useState(false);
   const [inputRef, setInputFocus] = useFocus();
@@ -85,27 +99,29 @@ const TableRow = ({ row, disableEditable, disableActions }) => {
             : cell.render('Cell')}
         </TD>
       ))}
-      {!disableActions && (
-        <TD style={{ borderBottom: `1px solid ${palette.accents_2}` }}>
-          <Popover
-            content={
+      <TD style={{ borderBottom: `1px solid ${palette.accents_2}` }}>
+        <Popover
+          content={
+            isPresentation ? (
+              <PopoverContentPresentation />
+            ) : (
               <PopoverContent
                 original={row.original}
                 setInputFocus={setInputFocus}
                 setVisible={setVisible}
               />
-            }
-            visible={visible}
-            onVisibleChange={(next) => {
-              setVisible(next);
-            }}
-          >
-            <Button auto type="secondary">
-              Actions
-            </Button>
-          </Popover>
-        </TD>
-      )}
+            )
+          }
+          visible={visible}
+          onVisibleChange={(next) => {
+            setVisible(next);
+          }}
+        >
+          <Button auto type="secondary">
+            Actions
+          </Button>
+        </Popover>
+      </TD>
     </TR>
   );
 };
@@ -115,7 +131,7 @@ export default TableRow;
 TableRow.propTypes = {
   row: PropTypes.object,
   disableEditable: PropTypes.bool,
-  disableActions: PropTypes.bool,
+  isPresentation: PropTypes.bool,
 };
 
 PopoverContent.propTypes = {
