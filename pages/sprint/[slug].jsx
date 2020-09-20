@@ -157,11 +157,6 @@ const handler = async (req, res, query) => {
     (!user.name && !currentSprint.isSaved) ||
     !currentSprint.forecast
   ) {
-    console.log(
-      !currentSprint,
-      !user.name && !currentSprint.isSaved,
-      !currentSprint.forecast,
-    );
     res.statusCode = 302;
     res.setHeader('Location', '/404');
     res.end();

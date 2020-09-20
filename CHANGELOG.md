@@ -10,6 +10,7 @@ Did some quality control mostly
 - Meta tags and titles
 - Bundle analyzer to cry over how big @zeit-ui is
 - Custom 404 page
+- Presentation Overview
 
 ### Updated
 

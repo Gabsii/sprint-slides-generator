@@ -139,7 +139,7 @@ const Boards = ({ boards, user, authToken, favourites, errors }) => {
               setSearch(e.target.value);
               loadAll();
             }}
-            onKeyDown={(e) => (e.key === 'Enter' ? loadAll() : null)}
+            onKeyDown={(e) => e.key === 'Enter' && loadAll()}
             onBlur={() => loadAll()}
             onClearClick={() => loadAll()}
             placeholder="Search for a Jira board"
