@@ -169,7 +169,10 @@ export const getServerSideProps = withSession(async function ({ req, res }) {
   const user = sessionData(req, res, 'user');
   const authToken = sessionData(req, res, 'authToken');
 
-  if (!user || !authToken) return { props: null };
+  if (!user || !authToken) {
+    res.end();
+    return { props: null };
+  }
 
   const [boards, boardsError] = await api('/boards', {
     method: 'POST',

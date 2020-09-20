@@ -103,7 +103,10 @@ export const getServerSideProps = withSession(async function({ req, res }) {
   let errors = [];
   const user = sessionData(req, res, 'user');
   const authToken = sessionData(req, res, 'authToken');
-  if (!user || !authToken) return { props: null };
+  if (!user || !authToken) {
+res.end();
+return { props: null };
+}
 
   const [favourites, favouritesError] = await api('/boards/favourites', {
     method: 'POST',
