@@ -5,10 +5,9 @@ const sessionData = (req, res, key, redirect = true) => {
     // todo add something to display a "401 unauthenticated" message/toast after redirect
     res.setHeader('location', '/');
     res.statusCode = 302;
-    res.end();
     // getServerSideProps expects an object of props
     // but we can bypass that with the use of rerouting
-    return;
+    return false;
   }
 
   return data || {};
