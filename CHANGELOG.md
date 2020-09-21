@@ -1,5 +1,11 @@
 # Changelog
 
+## unreleased
+
+### Fixed
+
+- Fixed bug where sprints weren't aligned with the boards
+
 ## [v0.0.4]
 
 Did some quality control mostly

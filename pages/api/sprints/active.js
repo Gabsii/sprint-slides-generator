@@ -10,9 +10,11 @@ const handler = async (req, res) => {
   let apiData = [];
   let dbData = [];
 
+  console.log(favourites);
+
   try {
     await Promise.all(
-      favourites.map(favourite =>
+      favourites.map((favourite) =>
         fetch(
           `https://jira.towa-digital.com/rest/agile/1.0/board/${favourite.id}/sprint?state=active`,
           {
@@ -21,15 +23,15 @@ const handler = async (req, res) => {
             },
           },
         )
-          .then(res => res.json())
-          .then(res =>
-            res.values.map(sprint => {
+          .then((res) => res.json())
+          .then((res) =>
+            res.values.map((sprint) => {
               apiData.push({ jiraBoardId: favourite.id, ...sprint });
             }),
           ),
       ),
       await allSprints(knex).then(
-        res => (dbData = JSON.parse(JSON.stringify(res))),
+        (res) => (dbData = JSON.parse(JSON.stringify(res))),
       ),
     );
 
@@ -38,9 +40,9 @@ const handler = async (req, res) => {
       .filter(
         (sprint, index, array) =>
           new Date(sprint.endDate) > sub(Date.now(), { days: 1 }) &&
-          array.findIndex(t => t.id === sprint.id) === index,
+          array.findIndex((t) => t.id === sprint.id) === index,
       )
-      .map(sprint => {
+      .map((sprint) => {
         sprint.forecast = sprint.forecast || 0;
         sprint.slug =
           sprint.slug ||
@@ -52,10 +54,18 @@ const handler = async (req, res) => {
         return sprint;
       })
       .filter(
-        apiSprint => !dbData.some(dbSprint => dbSprint.id === apiSprint.id),
+        (apiSprint) => !dbData.some((dbSprint) => dbSprint.id === apiSprint.id),
       );
 
-    const data = [...apiData, ...dbData];
+    const data = [...apiData, ...dbData].filter((sprint) =>
+      favourites.some(
+        (fav) =>
+          fav.id === sprint.originBoardId ||
+          fav.id === parseInt(sprint.boardId),
+      ),
+    );
+
+    console.log({ data, apiData, dbData });
 
     return res.status(200).send(data);
   } catch (error) {

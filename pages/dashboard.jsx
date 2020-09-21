@@ -28,11 +28,11 @@ const Dashboard = ({ user, favourites, activeSprints, authToken, errors }) => {
 
   const { sprints, error, isValidating } = useSWR(
     shouldFetch ? '/api/sprints/active' : null,
-    url =>
+    (url) =>
       fetch(url, {
         method: 'POST',
         body: JSON.stringify({ favourites, authToken }),
-      }).then(res => {
+      }).then((res) => {
         if (res.ok) {
           return res.json();
         }
@@ -99,14 +99,14 @@ const Dashboard = ({ user, favourites, activeSprints, authToken, errors }) => {
   );
 };
 
-export const getServerSideProps = withSession(async function({ req, res }) {
+export const getServerSideProps = withSession(async function ({ req, res }) {
   let errors = [];
   const user = sessionData(req, res, 'user');
   const authToken = sessionData(req, res, 'authToken');
   if (!user || !authToken) {
-res.end();
-return { props: null };
-}
+    res.end();
+    return { props: null };
+  }
 
   const [favourites, favouritesError] = await api('/boards/favourites', {
     method: 'POST',
@@ -123,8 +123,8 @@ return { props: null };
 
   return {
     props: {
-      user: req.session.get('user'),
-      authToken: req.session.get('authToken'),
+      user,
+      authToken,
       favourites,
       activeSprints,
       errors,
