@@ -65,8 +65,6 @@ const handler = async (req, res) => {
       ),
     );
 
-    console.log({ data, apiData, dbData });
-
     return res.status(200).send(data);
   } catch (error) {
     return res.status(500).send(error);
