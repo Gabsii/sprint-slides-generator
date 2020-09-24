@@ -141,13 +141,21 @@ export const getSprintBySlug = async (knex, slug) =>
     .whereRaw('sprints.slug = ?', slug);
 
 export const addSprintData = async (knex, id, sprint) =>
-  await knex('sprints')
-    .whereRaw('id = ?', id)
-    .update({
+  Promise.all(
+    await knex('sprints').whereRaw('id = ?', id).update({
       isSaved: true,
-      data: JSON.stringify(sprint.data),
       achievement: sprint.achievement,
-    });
+    }),
+    await knex('presentations').insert({
+      sprint_id: id,
+      user: JSON.stringify(sprint.data.user),
+      assignees: JSON.stringify(sprint.data.assignees),
+      stories: JSON.stringify(sprint.data.tasks.stories),
+      bugs: JSON.stringify(sprint.data.tasks.bugs),
+      others: JSON.stringify(sprint.data.tasks.others),
+      inReview: JSON.stringify(sprint.data.tasks.inReview),
+    }),
+  );
 
 export const getAllActivePresentations = async (knex) =>
   await knex
