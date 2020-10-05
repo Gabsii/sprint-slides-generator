@@ -152,11 +152,14 @@ const handler = async (req, res, query) => {
     JSON.stringify(await getSprintBySlug(knex, query.slug)),
   )[0];
 
-  if (
-    !currentSprint ||
-    (!user.name && !currentSprint.isSaved) ||
-    !currentSprint.forecast
-  ) {
+  if (!user.name && !currentSprint.isSaved) {
+    res.statusCode = 302;
+    res.setHeader('Location', '/login');
+    res.end();
+    return { props: {} };
+  }
+
+  if (!currentSprint || !currentSprint.forecast) {
     res.statusCode = 302;
     res.setHeader('Location', '/404');
     res.end();
