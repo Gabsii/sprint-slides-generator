@@ -154,7 +154,7 @@ const handler = async (req, res, query) => {
 
   if (!user.name && !currentSprint.isSaved) {
     res.statusCode = 302;
-    res.setHeader('Location', '/login');
+    res.setHeader('Location', '/');
     res.end();
     return { props: {} };
   }
