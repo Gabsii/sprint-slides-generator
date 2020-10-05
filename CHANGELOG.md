@@ -5,6 +5,7 @@
 ### Fixed
 
 - Fixed bug where sprints weren't aligned with the boards
+- redirect unauthed user to login
 
 ## [v0.0.4]
 
