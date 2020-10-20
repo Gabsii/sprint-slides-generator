@@ -28,7 +28,10 @@ const IntroSlide = ({
       <br />
       Presented by {presenterName}
     </Text>
-    <Background src="/sprint-final-background.png" alt="dayoum a bee" />
+    <Background
+      src="/sprint-final-background.png"
+      alt="sprint final background"
+    />
     {!isSaved && <SavePresentation />}
   </Slide>
 );

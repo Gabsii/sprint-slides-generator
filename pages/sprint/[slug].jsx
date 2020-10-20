@@ -38,6 +38,14 @@ const TeamOverview = dynamic(
   loading,
 );
 const Bugs = dynamic(() => import('@components/SlideTypes/Bugs'), loading);
+const Improvements = dynamic(
+  () => import('@components/SlideTypes/Improvements'),
+  loading,
+);
+const ChangeRequests = dynamic(
+  () => import('@components/SlideTypes/ChangeRequests'),
+  loading,
+);
 const CompletedStorypoints = dynamic(
   () => import('@components/SlideTypes/CompletedStorypoints'),
   loading,
@@ -93,6 +101,12 @@ const Sprint = ({ user, currentSprint, data }) => {
   const stories = useMemo(() => data.stories, [data]);
   const bugs = useMemo(() => data.bugs, [data]);
   const others = useMemo(() => data.others, [data]);
+  const changeRequests = others.filter(
+    (story) => story.fields.issuetype.name === 'Change Request',
+  );
+  const improvements = others.filter(
+    (story) => story.fields.issuetype.name === 'Improvement',
+  );
 
   const completedStories = storiesDone(stories);
   const completedPoints = completedStoryPoints(stories, bugs, others);
@@ -124,6 +138,12 @@ const Sprint = ({ user, currentSprint, data }) => {
         )}
         {/* <HighlightsImpediments /> */}
         {createStories(stories)}
+        {changeRequests.length > 0 && (
+          <ChangeRequests changeRequests={changeRequests} />
+        )}
+        {improvements.length > 0 && (
+          <Improvements improvements={improvements} />
+        )}
         {bugs.length > 0 && <Bugs bugs={bugs} />}
         <CompletedStorypoints
           completed={memoCurrentSprint.achievement || completedPoints}

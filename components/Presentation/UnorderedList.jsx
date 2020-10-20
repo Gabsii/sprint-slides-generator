@@ -9,9 +9,14 @@ const ULWrapper = styled.ul`
 
 export const LI = styled.li`
   font-size: 18px;
+  margin-bottom: 0;
 
   &::before {
     display: none;
+  }
+
+  > * {
+    margin-bottom: 0.625rem;
   }
 `;
 
