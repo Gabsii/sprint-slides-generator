@@ -123,14 +123,6 @@ const MarkdownParser = styled(ReactMarkdown)`
   }
 `;
 
-/**
- * story: {
- *   name: fields.summary
- *   shortName: key,
- *   points: customfield_10008
- * }
- */
-
 const Story = ({ assignee, story, hasBorder }) => {
   // TODO: filter link from description, otherwise remove field
   const link = null;

@@ -2,6 +2,10 @@
 
 ## unreleased
 
+### Added
+
+- Change Requests will now be displayed as well as Improvents
+
 ### Fixed
 
 - Fixed bug where sprints weren't aligned with the boards

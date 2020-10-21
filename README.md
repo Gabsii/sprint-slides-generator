@@ -8,6 +8,10 @@ First install the dependencies:
 yarn
 ```
 
+Copy the exisiting `.env.example` into `.env.local` and adjust the accordingly.
+
+Then migrate the database using `yarn migrate`.
+
 Now run the development server:
 
 ```bash
