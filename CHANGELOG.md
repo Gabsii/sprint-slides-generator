@@ -10,6 +10,7 @@
 
 - Fixed bug where sprints weren't aligned with the boards
 - redirect unauthed user to login
+- Fixed a bug where the intro slides background was missing
 
 ## [v0.0.4]
 
