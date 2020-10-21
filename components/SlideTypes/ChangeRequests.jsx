@@ -8,6 +8,7 @@ import { Overflowable } from '@components/Presentation/Overflowable';
 import UnorderedList from '@components/Presentation/UnorderedList';
 import SavePresentation from '@components/SavePresentation';
 import AvatarPlaceholder from '@components/AvatarPlaceholder';
+import StoryPoints from '@components/Atoms/StoryPoints';
 
 const Avatar = styled.img`
   height: 24px;
@@ -18,22 +19,6 @@ const Avatar = styled.img`
   border: 3px solid ${({ theme }) => theme.colors.avatar};
   border-radius: 100%;
   margin-right: 25px;
-`;
-
-const StoryPoints = styled.span`
-  width: 70px;
-  height: 30px;
-  background-color: ${({ theme }) => theme.colors.story.general || 'gray'};
-
-  border-radius: 99999px;
-  margin-right: 1.5rem;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-size: 18px;
-  text-align: center;
 `;
 
 const ChangeRequests = ({ changeRequests, isActive, isSaved }) => (
