@@ -25,7 +25,7 @@ const Slide = ({ children, isActive }) => {
   let hasBackground;
 
   if (children.length > 1) {
-    hasBackground = children.map(
+    hasBackground = !!children.find(
       (child) =>
         child &&
         child.props &&
@@ -33,7 +33,10 @@ const Slide = ({ children, isActive }) => {
     );
     console.log('children', children);
   } else {
-    hasBackground = children.props.src === '/sprint-final-background.png';
+    hasBackground =
+      children &&
+      children.props &&
+      children.props.props.src === '/sprint-final-background.png';
     console.log('child', children);
   }
 
