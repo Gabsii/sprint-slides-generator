@@ -31,16 +31,12 @@ const Slide = ({ children, isActive }) => {
         child.props &&
         child.props.src === '/sprint-final-background.png',
     );
-    console.log('children', children);
   } else {
     hasBackground =
       children &&
       children.props &&
       children.props.props.src === '/sprint-final-background.png';
-    console.log('child', children);
   }
-
-  console.log(hasBackground);
 
   return (
     <Wrapper hasBackground={hasBackground} isActive={isActive}>
