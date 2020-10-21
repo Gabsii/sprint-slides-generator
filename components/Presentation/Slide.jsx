@@ -32,6 +32,8 @@ const Slide = ({ children, isActive }) => {
     hasBackground = children.type.name === 'Background';
   }
 
+  console.log(hasBackground);
+
   return (
     <Wrapper hasBackground={hasBackground} isActive={isActive}>
       {children}
