@@ -26,10 +26,12 @@ const Slide = ({ children, isActive }) => {
 
   if (children.length > 1) {
     hasBackground = children
-      .map(child => child && child.type && child.type.name)
+      .map((child) => child && child.type && child.type.name)
       .includes('Background');
+    console.log('children', children);
   } else {
     hasBackground = children.type.name === 'Background';
+    console.log('child', children);
   }
 
   console.log(hasBackground);
