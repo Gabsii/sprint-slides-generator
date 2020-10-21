@@ -12,10 +12,28 @@ import AvatarPlaceholder from '@components/AvatarPlaceholder';
 const Avatar = styled.img`
   height: 24px;
 
+  transition: 500ms ease-in-out;
+
   box-sizing: content-box;
   border: 3px solid ${({ theme }) => theme.colors.avatar};
   border-radius: 100%;
   margin-right: 25px;
+`;
+
+const StoryPoints = styled.span`
+  width: 70px;
+  height: 30px;
+  background-color: ${({ theme }) => theme.colors.story.general || 'gray'};
+
+  border-radius: 99999px;
+  margin-right: 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  text-align: center;
 `;
 
 const ChangeRequests = ({ changeRequests, isActive, isSaved }) => (
@@ -39,7 +57,11 @@ const ChangeRequests = ({ changeRequests, isActive, isSaved }) => (
                   loading ? (
                     <AvatarPlaceholder
                       size="24px"
-                      stlye={{ display: 'inline-block', marginRight: '1.5rem' }}
+                      stlye={{
+                        display: 'inline-block',
+                        marginRight: '1rem',
+                        transition: '500ms ease-in-out',
+                      }}
                       hasBorder={true}
                     />
                   ) : (
@@ -51,7 +73,7 @@ const ChangeRequests = ({ changeRequests, isActive, isSaved }) => (
                       style={{
                         display: 'inline-block',
                         margin: 0,
-                        marginRight: '1.5rem',
+                        marginRight: '1rem',
                       }}
                     />
                   )
@@ -62,12 +84,13 @@ const ChangeRequests = ({ changeRequests, isActive, isSaved }) => (
                 size="24px"
                 hasBorder={true}
                 style={{
-                  marginRight: '1.5rem',
+                  marginRight: '1rem',
                   height: '30px',
                   minWidth: '30px',
                 }}
               />
             )}
+            <StoryPoints>{story.fields.customfield_10008}</StoryPoints>
             <span>{`${story.key}: ${story.fields.summary}`}</span>
           </div>
         ))}

@@ -18,6 +18,22 @@ const Avatar = styled.img`
   margin-right: 25px;
 `;
 
+const StoryPoints = styled.span`
+  width: 70px;
+  height: 30px;
+  background-color: ${({ theme }) => theme.colors.story.general || 'gray'};
+
+  border-radius: 99999px;
+  margin-right: 1.5rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 18px;
+  text-align: center;
+`;
+
 const Improvements = ({ improvements, isActive, isSaved }) => (
   <Slide isActive={isActive}>
     <Heading type="h6" textAlign="left">
@@ -68,6 +84,7 @@ const Improvements = ({ improvements, isActive, isSaved }) => (
                 }}
               />
             )}
+            <StoryPoints>{story.fields.customfield_10008}</StoryPoints>
             <span>{`${story.key}: ${story.fields.summary}`}</span>
           </div>
         ))}
