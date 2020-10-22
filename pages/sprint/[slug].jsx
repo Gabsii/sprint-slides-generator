@@ -37,7 +37,6 @@ const TeamOverview = dynamic(
   () => import('@components/SlideTypes/TeamOverview'),
   loading,
 );
-const Bugs = dynamic(() => import('@components/SlideTypes/Bugs'), loading);
 const Improvements = dynamic(
   () => import('@components/SlideTypes/Improvements'),
   loading,
@@ -144,7 +143,6 @@ const Sprint = ({ user, currentSprint, data }) => {
         {improvements.length > 0 && (
           <Improvements improvements={improvements} />
         )}
-        {bugs.length > 0 && <Bugs bugs={bugs} />}
         <CompletedStorypoints
           completed={memoCurrentSprint.achievement || completedPoints}
           forecast={memoCurrentSprint.forecast}
@@ -224,19 +222,3 @@ Sprint.propTypes = {
   currentSprint: PropTypes.object,
   data: PropTypes.object,
 };
-
-// ! SSG is too much of a hassle rn
-// export const getStaticPaths = async () => {
-//   const knex = getDatabaseConnector()();
-
-//   const paths = JSON.parse(JSON.stringify(await getAllSprintSlugs(knex)))
-//     .map(slug => ({
-//       params: slug,
-//     }))
-//     .filter(sprint => sprint.params.slug !== '');
-
-//   return {
-//     paths,
-//     fallback: true,
-//   };
-// };
