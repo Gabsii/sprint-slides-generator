@@ -8,6 +8,7 @@
 
 ## Presentation
 
+- before you're able to generate a presentation you need to add a forecast manually
 - stories/CRQs/improvements/etc. need to be assigned to the one who will present it
 - task descriptions need to be checked (they will be used for the slides, so check if they were appropriate if customers came too)
 
