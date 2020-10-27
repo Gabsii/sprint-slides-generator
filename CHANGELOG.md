@@ -2,6 +2,10 @@
 
 ## unreleased
 
+### Updated
+
+- Next.js v10
+
 ### Added
 
 - Change Requests will now be displayed as well as Improvents

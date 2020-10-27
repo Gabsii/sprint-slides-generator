@@ -18,6 +18,7 @@ const Wrapper = styled.div`
   top: 0;
   left: 0;
   overflow: hidden;
+  box-sizing: border-box;
 `;
 
 const Slide = ({ children, isActive }) => {
