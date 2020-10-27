@@ -1,6 +1,7 @@
 import { Input, Text, Tooltip, useTheme } from '@zeit-ui/react';
 import { Check } from '@zeit-ui/react-icons';
 import PropTypes from 'prop-types';
+import { useState, useEffect } from 'react';
 
 const EditableCell = ({
   value: initialValue,
@@ -10,13 +11,13 @@ const EditableCell = ({
   inputRef,
 }) => {
   // We need to keep and update the state of the cell normally
-  const [value, setValue] = React.useState(initialValue);
-  const [isFocused, setFocused] = React.useState(false);
-  const [status, setStatus] = React.useState('default');
+  const [value, setValue] = useState(initialValue);
+  const [isFocused, setFocused] = useState(false);
+  const [status, setStatus] = useState('default');
 
   const { palette } = useTheme();
 
-  const onChange = e => {
+  const onChange = (e) => {
     if (isNaN(e.target.value)) {
       setStatus('error');
       return;
@@ -34,7 +35,7 @@ const EditableCell = ({
   };
 
   // If the initialValue is changed external, sync it up with our state
-  React.useEffect(() => {
+  useEffect(() => {
     setValue(initialValue);
   }, [initialValue]);
 
