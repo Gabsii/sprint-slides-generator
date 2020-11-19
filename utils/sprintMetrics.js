@@ -3,7 +3,6 @@ export const storiesDone = (stories) =>
   Object.values(stories).reduce((acc, curr) => (acc += curr.length), 0);
 
 export const completedStoryPoints = (stories, bugs, others) =>
-  stories &&
   Object.values(stories).reduce(
     (acc, curr) =>
       (acc += curr.reduce(
@@ -11,9 +10,11 @@ export const completedStoryPoints = (stories, bugs, others) =>
         0,
       )),
     0,
-  ) +
-    bugs.reduce((acc, bug) => (acc += bug.fields.customfield_10008), 0) +
-    others.reduce((acc, other) => (acc += other.fields.customfield_10008), 0);
+  ) ||
+  0 + bugs.reduce((acc, bug) => (acc += bug.fields.customfield_10008), 0) ||
+  0 +
+    others.reduce((acc, other) => (acc += other.fields.customfield_10008), 0) ||
+  0;
 
 export const pointsNeedReview = (data) =>
   data.inReview.reduce(
