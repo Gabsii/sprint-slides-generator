@@ -100,12 +100,12 @@ const Sprint = ({ user, currentSprint, data }) => {
   const stories = useMemo(() => data.stories, [data]);
   const bugs = useMemo(() => data.bugs, [data]);
   const others = useMemo(() => data.others, [data]);
-  const changeRequests = others.filter(
-    (story) => story.fields.issuetype.name === 'Change Request',
-  );
-  const improvements = others.filter(
-    (story) => story.fields.issuetype.name === 'Improvement',
-  );
+  const changeRequests =
+    others &&
+    others.filter((story) => story.fields.issuetype.name === 'Change Request');
+  const improvements =
+    others &&
+    others.filter((story) => story.fields.issuetype.name === 'Improvement');
 
   const completedStories = storiesDone(stories);
   const completedPoints = completedStoryPoints(stories, bugs, others);
