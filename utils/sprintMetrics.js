@@ -1,4 +1,5 @@
-export const storiesDone = stories =>
+export const storiesDone = (stories) =>
+  stories &&
   Object.values(stories).reduce((acc, curr) => (acc += curr.length), 0);
 
 export const completedStoryPoints = (stories, bugs, others) =>
@@ -13,7 +14,7 @@ export const completedStoryPoints = (stories, bugs, others) =>
   bugs.reduce((acc, bug) => (acc += bug.fields.customfield_10008), 0) +
   others.reduce((acc, other) => (acc += other.fields.customfield_10008), 0);
 
-export const pointsNeedReview = data =>
+export const pointsNeedReview = (data) =>
   data.inReview.reduce(
     (acc, ticket) => (acc += ticket.fields.customfield_10008),
     0,
