@@ -5,7 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 module.exports = withBundleAnalyzer({
-  target: "serverless",
+  target: "experimental-serverless-trace", // necessary for mysql binaries
   poweredByHeader: false,
   webpack: config => {
     config.resolve.alias['@components'] = path.resolve(
