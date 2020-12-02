@@ -16,8 +16,7 @@
     "lint:eslint": "eslint --ignore-path .eslintignore",
     "lint:js": "yarn lint:eslint -- . ",
     "lint:staged": "lint-staged",
-    "analyze": "cross-env ANALYZE=true yarn build",
-    "postbuild": "next-on-netlify"
+    "analyze": "cross-env ANALYZE=true yarn build"
   },
   "browserslist": [
     "last 2 versions",
