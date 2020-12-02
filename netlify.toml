@@ -1,0 +1,4 @@
+[build]
+  command   = "npm run build && npm run start"
+  functions = "out_functions"
+  publish   = "out_publish"
