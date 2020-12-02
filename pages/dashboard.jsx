@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
 import Head from 'next/head';
 
-import PageLoader from '@components/PageLoader';
-import withSession from '@utils/session';
-import sessionData from '@utils/session/data';
+import PageLoader from '../components/PageLoader';
+import withSession from '../utils/session';
+import sessionData from '../utils/session/data';
 import useSWR from 'swr';
 import { Button, Row, Text, Link, Col, Loading, Page } from '@zeit-ui/react';
 import { RefreshCw } from '@zeit-ui/react-icons';
-import api from '@utils/api';
-import { DashboardLoaderProvider } from '@utils/ctx/DashboardLoaderContext';
-import Header from '@components/Header';
+import api from '../utils/api';
+import { DashboardLoaderProvider } from '../utils/ctx/DashboardLoaderContext';
+import Header from '../components/Header';
 
-const SprintOverview = dynamic(() => import('@components/SprintOverview'), {
+const SprintOverview = dynamic(() => import('../components/SprintOverview'), {
   loading: () => <Loading />,
 });
 
