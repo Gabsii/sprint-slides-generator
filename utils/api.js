@@ -6,7 +6,7 @@ const api = async (apiUrl, ...params) => {
     url = `${
       process.env.APP_URL
         ? `http://${process.env.APP_URL}`
-        : `https://${process.env.VERCEL_URL}`
+        : `https://${process.env.VERCEL_URL || process.env.DEPLOY_PRIME_URL}`
     }/api${apiUrl}`;
   }
   const apiResponse = await fetch(url, ...params);
