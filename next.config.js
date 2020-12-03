@@ -5,7 +5,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 const exportsData = {
-  target: 'serverless',
+  target: 'experimental-serverless-trace',
   poweredByHeader: false,
   webpack: config => {
     config.resolve.alias['@components'] = path.resolve(
