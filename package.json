@@ -43,7 +43,6 @@
     "mysql": "^2.18.1",
     "next": "^9.5.5",
     "next-iron-session": "^4.1.9",
-    "next-on-netlify": "^2.6.3",
     "next-seo": "^4.4.0",
     "polished": "^3.6.7",
     "react": "16.13.1",
