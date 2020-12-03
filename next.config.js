@@ -4,7 +4,7 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 
-module.exports = withBundleAnalyzer({
+const exports = {
   target: 'experimental-serverless-trace',
   poweredByHeader: false,
   webpack: config => {
@@ -18,4 +18,6 @@ module.exports = withBundleAnalyzer({
     );
     return config;
   },
-});
+};
+
+module.exports = process.env.NODE_ENV === 'production' ? exports :  withBundleAnalyzer(exports);
